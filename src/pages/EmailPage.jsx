@@ -41,7 +41,7 @@ export default function EmailPage() {
         "status": email.status,
     }));
     return (
-        <div style={{marginTop:"20px", paddingInlineStart:100}}>
+        <div style={{marginTop:"20px", paddingInlineStart:8}}>
             <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Emails"/>
             <DataList i18nIsDynamicList={true} listItems={listItems}/>
         </div>
