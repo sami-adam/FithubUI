@@ -9,6 +9,9 @@ import SubscriptionPage from './pages/SubscriptionPage';
 import MemberPage from './pages/MemberPage';
 import EmployeePage from './pages/EmployeePage';
 import EmailPage from './pages/EmailPage';
+import ProductPage from './pages/ProductPage';
+import UserPage from './pages/UserPage';
+import SubscriptionForm from './components/common/subscription/SubscriptionForm';
 
 
 function App() {
@@ -19,12 +22,16 @@ function App() {
       <Sidebar>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/undefined" element={<LoginPage />} />
         <Route path="/home" element={<HomePage/>} />
         <Route path="/" element={<HomePage/>} />
         <Route  path="/subscriptions" element={<SubscriptionPage />} />
+        <Route  path="/subscription-form" element={<SubscriptionForm />} />
         <Route path="/members" element={<MemberPage/>} />
         <Route path="/employees" element={<EmployeePage/>} />
         <Route path="/emails" element={<EmailPage/>} />
+        <Route path="/products" element={<ProductPage/>} />
+        <Route path="/users" element={<UserPage/>} />
       </Routes>
       </Sidebar>
     </BrowserRouter>

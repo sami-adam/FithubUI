@@ -30,7 +30,6 @@ export default function SubscriptionPage() {
     if (subscriptions.length === 0) {
         return <div>Loading...</div>;
     }
-    console.log("Subscriptios",subscriptions)
     const rows = subscriptions.map((subscription) => ({
         "id": subscription.reference,
         "name": (subscription.member&&subscription.member.firstName) + " " + (subscription.member&&subscription.member.lastName),
@@ -61,7 +60,7 @@ export default function SubscriptionPage() {
     
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={filters} pageTitle="Subscriptions"/>
+            <DataTable columns={columns} rows={rows} selectionFilters={filters} pageTitle="Subscriptions" formUrl="/subscription-form"/>
             <DataList i18nIsDynamicList={true} listItems={listItems}/>
         </div>
     );

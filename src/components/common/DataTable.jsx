@@ -35,7 +35,11 @@ import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import SyncDisabledIcon from '@mui/icons-material/SyncDisabled';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+//import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+import AddNewButton from './Buttons';
+import { useNavigate } from 'react-router-dom';
+//import { useTranslation } from 'react-i18next';
+//import { IoInformationCircle } from "react-icons/io5";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -106,11 +110,12 @@ function RowMenu() {
   );
 }
 
-export default function DataTable({columns, rows, selectionFilters, pageTitle=""}) {
+export default function DataTable({columns, rows, selectionFilters, pageTitle="", formUrl=""}) {
   const [order, setOrder] = React.useState('desc');
   const [selected, setSelected] = React.useState([]);
   const [open, setOpen] = React.useState(false);
-  console.log("selectionFilters", selectionFilters);
+
+  const navigate = useNavigate();
   const renderFilters = () => (
     <React.Fragment>
         {selectionFilters.map((filter) => 
@@ -143,13 +148,14 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
             <Typography level="h2" component="h1">
                 {pageTitle}
             </Typography>
-            <Button
+            {/* <Button
                 color="primary"
                 startDecorator={<DownloadRoundedIcon />}
                 size="sm"
             >
                 Download PDF
-            </Button>
+            </Button> */}
+            <AddNewButton title={pageTitle} />
         </Box>
       <Sheet
         className="SearchAndFilters-mobile"
@@ -311,8 +317,8 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                 
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Link level="body-xs" component="button">
-                      Download
+                    <Link level="body-xs" component="button" onClick={() => navigate(formUrl, { state: {row: row}})}>
+                      Details
                     </Link>
                     <RowMenu />
                   </Box>

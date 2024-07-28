@@ -27,11 +27,14 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { BsFillPersonVcardFill } from "react-icons/bs";
-import useEmailStore from "../../state/emailState";
+import { ListSubheader } from '@mui/joy';
+import { BiNews } from "react-icons/bi";
+//import useEmailStore from "../../state/emailState";
+import { FaUsersRectangle } from "react-icons/fa6";
 
 
 export default function Sidebar({children}) {
-  const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
+  //const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
 
@@ -43,11 +46,11 @@ export default function Sidebar({children}) {
 
 
   useEffect(() => {
-    fetchEmails();
+    //fetchEmails();
     if (user && !user.name && window.location.pathname !== "/login") {
       window.location.href = "/login";
     }
-  }, [user, fetchEmails]);
+  }, [user]);
   return (
     <div style={{display:"flex",flexDirection:"row"}}>
       {user && user.name &&
@@ -179,10 +182,33 @@ export default function Sidebar({children}) {
                 <Typography level="title-sm">Emails</Typography>
               </ListItemContent>
               <Chip size="sm" color="primary" variant="solid">
-                {emails.length}
+                {14}
               </Chip>
             </ListItemButton>
           </ListItem>
+          <ListItem nested>
+            <ListSubheader>Master Data</ListSubheader>
+            <List>
+              <ListItem>
+                <ListItemButton role="menuitem" onClick={() => navigate("/products")} selected={"/products" === window.location.pathname}>
+                  <BiNews />
+                  <ListItemContent>
+                    <Typography level="title-sm">Subscription Types</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem>
+                <ListItemButton role="menuitem" onClick={() => navigate("/users")} selected={"/users" === window.location.pathname}>
+                  <FaUsersRectangle />
+                  <ListItemContent>
+                    <Typography level="title-sm">Users</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </ListItem>
+          
           <ListItem nested>
     
           </ListItem>
