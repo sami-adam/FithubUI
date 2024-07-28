@@ -6,7 +6,7 @@ export default function AddNewButton({ title }){
     const theme = useTheme();
     return (
         <Button variant="solid"
-            sx={{ backgroundColor: theme.palette.primary.dark, color: theme.palette.primary.light, 
+            sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, color: theme.palette.primary.light, 
                 '&:hover': { backgroundColor: theme.palette.primary.dark },
                 '&:active': { backgroundColor: theme.palette.primary.dark, opacity: 0.8 },
             }}

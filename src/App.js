@@ -12,29 +12,36 @@ import EmailPage from './pages/EmailPage';
 import ProductPage from './pages/ProductPage';
 import UserPage from './pages/UserPage';
 import SubscriptionForm from './components/common/subscription/SubscriptionForm';
+import { Experimental_CssVarsProvider as MaterialCssVarsProvider } from '@mui/material/styles';
+import { CssVarsProvider, extendTheme as extendJoyTheme, THEME_ID } from '@mui/joy/styles';
+const joyTheme = extendJoyTheme();
 
 
 function App() {
   return (
-    <BrowserRouter>
-      <CssBaseline />
-      <Header />
-      <Sidebar>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/undefined" element={<LoginPage />} />
-        <Route path="/home" element={<HomePage/>} />
-        <Route path="/" element={<HomePage/>} />
-        <Route  path="/subscriptions" element={<SubscriptionPage />} />
-        <Route  path="/subscription-form" element={<SubscriptionForm />} />
-        <Route path="/members" element={<MemberPage/>} />
-        <Route path="/employees" element={<EmployeePage/>} />
-        <Route path="/emails" element={<EmailPage/>} />
-        <Route path="/products" element={<ProductPage/>} />
-        <Route path="/users" element={<UserPage/>} />
-      </Routes>
-      </Sidebar>
-    </BrowserRouter>
+    <MaterialCssVarsProvider>
+    <CssVarsProvider theme={{ [THEME_ID]: joyTheme }}>
+      <BrowserRouter>
+        <CssBaseline />
+        <Header />
+        <Sidebar>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/undefined" element={<LoginPage />} />
+          <Route path="/home" element={<HomePage/>} />
+          <Route path="/" element={<HomePage/>} />
+          <Route  path="/subscriptions" element={<SubscriptionPage />} />
+          <Route  path="/subscription-form" element={<SubscriptionForm />} />
+          <Route path="/members" element={<MemberPage/>} />
+          <Route path="/employees" element={<EmployeePage/>} />
+          <Route path="/emails" element={<EmailPage/>} />
+          <Route path="/products" element={<ProductPage/>} />
+          <Route path="/users" element={<UserPage/>} />
+        </Routes>
+        </Sidebar>
+      </BrowserRouter>
+    </CssVarsProvider>
+    </MaterialCssVarsProvider>
   );
 }
 

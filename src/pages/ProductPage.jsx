@@ -22,7 +22,8 @@ export default function ProductPage() {
                 alignItems: { xs: 'start', sm: 'center' },
                 flexWrap: 'wrap',
                 justifyContent: 'space-between',
-                pt: { xs: 5, sm: 5 },
+                pt: { xs: 8, sm: 5 },
+                pl: { xs: 6, sm: 8 },
             }}
             >
             <Typography level="h2" component="h1">
@@ -37,7 +38,7 @@ export default function ProductPage() {
                 container
                 spacing={{ xs: 1, md: 1 }}
                 columns={{ xs: 2, sm: 8, md: 16 }}
-                sx={{ flexGrow: 1 }}>
+                sx={{ flexGrow: 1 , pl:{xs:8, md:"auto"}}}>
                 {products.map((product, index) => (
                     <Grid xs={2} sm={4} md={4} key={index}>
                         <ProductCard product={product} />
