@@ -30,6 +30,7 @@ export default function LoginPage() {
   return (
     <main>
       <CssBaseline />
+      <div style={{ paddingInlineStart: 80, paddingBlockStart: 30 }}>
       <Sheet
         sx={{
           width: 300,
@@ -83,6 +84,7 @@ export default function LoginPage() {
           Don&apos;t have an account?
         </Typography>
       </Sheet>
+      </div>
     </main>
   );
 }

@@ -26,6 +26,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import SyncDisabledIcon from '@mui/icons-material/SyncDisabled';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { useNavigate } from 'react-router-dom';
 
 function RowMenu() {
   return (
@@ -47,7 +48,8 @@ function RowMenu() {
   );
 }
 
-export default function DataList({ listItems=[] }) {
+export default function DataList({ listItems=[] , formUrl=""}) {
+  const navigate = useNavigate();
   return (
     <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
       {listItems.map((listItem) => (
@@ -100,9 +102,9 @@ export default function DataList({ listItems=[] }) {
                   </Box>
                 )}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                  <Link level="body-sm" component="button">
-                    Download
-                  </Link>
+                    <Link level="body-xs" component="button" onClick={() => navigate(formUrl, { state: {object: listItem.object}})}>
+                      Details
+                    </Link>
                   <RowMenu />
                 </Box>
               </div>

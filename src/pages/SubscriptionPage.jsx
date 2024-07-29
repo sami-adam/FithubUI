@@ -45,23 +45,25 @@ export default function SubscriptionPage() {
         "discount": subscription.discountAmount,
         "netAmount": subscription.netAmount,
         "status": subscription.status,
+        "object": subscription
     }));
 
     const listItems = subscriptions.map((subscription) => ({
         "id": subscription.reference,
-        "avatar": (subscription.member&&subscription.member.firstName.charAt(0)),
+        "avatar": (subscription.member&&subscription.member.firstName&&subscription.member.firstName.charAt(0)),
         "title": (subscription.member&&subscription.member.firstName) + " " + (subscription.member&&subscription.member.lastName),
         "subtitle": subscription.member&&subscription.member.email,
         "firstRow": [subscription.member&&subscription.member.identificationNumber, subscription.startDate],
         "secondRow": [subscription.endDate, ""],
         "thirdRow": [subscription.totalAmount, subscription.netAmount],
         "status": subscription.status,
+        "object": subscription
     }));
     
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
             <DataTable columns={columns} rows={rows} selectionFilters={filters} pageTitle="Subscriptions" formUrl="/subscription-form"/>
-            <DataList i18nIsDynamicList={true} listItems={listItems}/>
+            <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/subscription-form"/>
         </div>
     );
 }

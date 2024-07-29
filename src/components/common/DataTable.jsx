@@ -155,7 +155,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
             >
                 Download PDF
             </Button> */}
-            <AddNewButton title={pageTitle} />
+            <AddNewButton title={pageTitle} formUrl={formUrl}/>
         </Box>
       <Sheet
         className="SearchAndFilters-mobile"
@@ -317,7 +317,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                 
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Link level="body-xs" component="button" onClick={() => navigate(formUrl, { state: {row: row}})}>
+                    <Link level="body-xs" component="button" onClick={() => navigate(formUrl, { state: {object: row.object}})}>
                       Details
                     </Link>
                     <RowMenu />
