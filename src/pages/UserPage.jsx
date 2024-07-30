@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import useUsersStore from "../state/usersState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
-import { CircularProgress } from "@mui/joy";
 
 export default function UserPage() {
     const [users, fetchUsers] = useUsersStore((state) => [state.users, state.fetchUsers]);
@@ -17,10 +16,6 @@ export default function UserPage() {
         {"name": "email", "label": "Email"},
         {"name": "role", "label": "Role"}
     ]
-
-    if (users.length === 0) {
-        return <div style={{ display: "flex", justifyContent: "center",paddingTop:"20%"}}><CircularProgress /></div>;
-    }
 
     const rows = users.map((user) => ({
         "id": user.id,

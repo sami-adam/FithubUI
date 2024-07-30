@@ -110,7 +110,7 @@ function RowMenu() {
   );
 }
 
-export default function DataTable({columns, rows, selectionFilters, pageTitle="", formUrl=""}) {
+export default function DataTable({columns, rows, selectionFilters, pageTitle="", formUrl="", setSearch}) {
   const [order, setOrder] = React.useState('desc');
   const [selected, setSelected] = React.useState([]);
   const [open, setOpen] = React.useState(false);
@@ -124,8 +124,10 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                 <Select
                 size="sm"
                 placeholder={filter.placeholder}
+                onChange={(event, newValue) => setSearch(newValue)}
                 slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}>
                 {filter.options.map((option) => <Option value={option}>{option}</Option>)}
+                <Option value="">All</Option>
                 </Select>
             </FormControl>
         )}
@@ -169,7 +171,8 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           size="sm"
           placeholder="Search"
           startDecorator={<SearchIcon />}
-          sx={{ flexGrow: 1 }}
+          sx={{ flexGrow: 1 }} 
+          onChange={(event) => setSearch(event.target.value)}
         />
         <IconButton
           size="sm"
@@ -210,7 +213,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
       >
         <FormControl sx={{ flex: 1 }} size="sm">
           <FormLabel>Search for {pageTitle}</FormLabel>
-          <Input size="sm" placeholder="Search" startDecorator={<SearchIcon />} />
+          <Input size="sm" placeholder="Search" startDecorator={<SearchIcon />} onChange={(event) => setSearch(event.target.value)} />
         </FormControl>
         {renderFilters()}
       </Box>

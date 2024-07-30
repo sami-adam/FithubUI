@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import useEmailStore from "../state/emailState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
-import { CircularProgress } from "@mui/joy";
 
 export default function EmailPage() {
     const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
@@ -18,10 +17,6 @@ export default function EmailPage() {
         {"name": "scheduledDate", "label": "Scheduled Date", "width": 150},
         {"name": "status", "label": "Status", "special": "status"},
     ]
-
-    if (emails.length === 0) {
-        return <div style={{ display: "flex", justifyContent: "center",paddingTop:"20%"}}><CircularProgress /></div>;
-    }
 
     const rows = emails.map((email) => ({
         "id": "EM"+`${email.id}`.padStart(6, "0"),

@@ -6,8 +6,10 @@ import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
 import { Chip, Skeleton } from '@mui/joy';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProductCard({ product }) {
+  const navigate = useNavigate();
   return (
     <Card sx={{ width: { xs: 1, sm: 1 , md: 1 }, height: { xs: 1, sm: 1, md: 1 } }}>
       <div>
@@ -22,13 +24,7 @@ export default function ProductCard({ product }) {
         </Chip>
       </div>
       <AspectRatio minHeight="120px" maxHeight="200px">
-        <Skeleton variant="overlay" animation={false} children={product.category && product.category.name}>
-        <img
-          src={product.image}
-          loading="lazy"
-          alt=""
-        />
-        </Skeleton>
+        {(product.image && <img src={product.image} loading="lazy" alt={product.name} />) || <Skeleton variant="overlay" animation={false}/> }
       </AspectRatio>
       <CardContent orientation="horizontal">
         <div>
@@ -38,13 +34,14 @@ export default function ProductCard({ product }) {
           </Typography>
         </div>
         <Button
-          variant="solid"
+          variant="soft"
           size="md"
           color="primary"
           aria-label="Explore Bahamas Islands"
           sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 , width: { xs: '50%', sm: 'auto' } }}
+          onClick={() => {navigate("/product-form", {state: {object: product}})}}
         >
-          Explore
+          Details
         </Button>
       </CardContent>
     </Card>

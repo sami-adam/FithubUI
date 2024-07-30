@@ -1,17 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DataTable from "../components/common/DataTable";
 import useSubscriptionStore from "../state/subscriptionState";
 import useProductStore from "../state/productState";
 import DataList from "../components/common/DataList";
-import { CircularProgress } from "@mui/joy";
 
-export default function SubscriptionPage() {
+export default function SubscriptionPage({ defaultSearch="" }) {
     const [subscriptions, fetchSubscriptions] = useSubscriptionStore((state) => [state.subscriptions, state.fetchSubscriptions]);
     const [products, fetchProducts] = useProductStore((state) => [state.products, state.fetchProducts]);
+    const searchSubscriptions = useSubscriptionStore((state) => state.searchSubscriptions);
+
+    const [search, setSearch] = useState(defaultSearch);
     useEffect(() => {
-        fetchSubscriptions();
+        if (search === "" && defaultSearch === "") {
+            fetchSubscriptions();
+        }
+        if (search !== "") {
+            searchSubscriptions(search);
+        }
         fetchProducts();
-    }, [fetchSubscriptions, fetchProducts]);
+    }, [fetchSubscriptions, fetchProducts, search, searchSubscriptions, defaultSearch]);
     const filters = [
         {"name": "status", "label": "Status", "type": "select", "placeholder": "Filter By Status", "options": ["NEW", "PAID", "ACTIVE", "EXPIRED", "CANCELLED"]},
         {"name": "subscriptionType", "label": "Subscription Type", "type": "select", "placeholder": "Filter By Subscription Type", "options": products.map((product) => product.name)},
@@ -28,9 +35,7 @@ export default function SubscriptionPage() {
         {"name": "netAmount", "label": "Net Amount", "width": 80},
         {"name": "status", "label": "Status", "special": "status"},
     ]
-    if (subscriptions.length === 0) {
-        return <div style={{ display: "flex", justifyContent: "center",paddingTop:"20%"}}><CircularProgress /></div>;
-    }
+    
     const rows = subscriptions.map((subscription) => ({
         "id": subscription.reference,
         "name": (subscription.member&&subscription.member.firstName) + " " + (subscription.member&&subscription.member.lastName),
@@ -63,8 +68,8 @@ export default function SubscriptionPage() {
     
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={filters} pageTitle="Subscriptions" formUrl="/subscription-form"/>
-            <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/subscription-form"/>
+            <DataTable columns={columns} rows={rows} selectionFilters={filters} pageTitle="Subscriptions" formUrl="/subscription-form" setSearch={setSearch}/>
+            <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/subscription-form" setSearch={setSearch}/>
         </div>
     );
 }

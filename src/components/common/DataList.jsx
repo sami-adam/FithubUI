@@ -48,7 +48,7 @@ function RowMenu() {
   );
 }
 
-export default function DataList({ listItems=[] , formUrl=""}) {
+export default function DataList({ listItems=[] , formUrl="" }) {
   const navigate = useNavigate();
   return (
     <Box sx={{ display: { xs: 'block', sm: 'none' } }}>

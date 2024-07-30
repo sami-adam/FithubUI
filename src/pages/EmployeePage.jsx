@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import useEmployeeStore from "../state/employeeState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
-import { CircularProgress } from "@mui/joy";
 
 export default function EmployeePage() {
     const [employees, fetchEmployees] = useEmployeeStore((state) => [state.employees, state.fetchEmployees]);
@@ -18,10 +17,6 @@ export default function EmployeePage() {
         {"name": "phone", "label": "Phone"},
         {"name": "address", "label": "Address"}
     ]
-
-    if (employees.length === 0) {
-        return <div style={{ display: "flex", justifyContent: "center",paddingTop:"20%"}}><CircularProgress /></div>;
-    }
 
     const rows = employees.map((employee) => ({
         "id": employee.identificationNumber,

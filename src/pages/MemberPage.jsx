@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import useMemberStore from "../state/memberState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
-import { CircularProgress } from "@mui/joy";
 
 export default function MemberPage() {
     const [members, fetchMembers] = useMemberStore((state) => [state.members, state.fetchMembers]);
@@ -19,9 +18,6 @@ export default function MemberPage() {
         {"name": "status", "label": "Status", "special": "status"},
     ]
 
-    if (members.length === 0) {
-        return <div style={{ display: "flex", justifyContent: "center",paddingTop:"20%"}}><CircularProgress /></div>;
-    }
 
     const rows = members.map((member) => ({
         "id": member.identificationNumber,

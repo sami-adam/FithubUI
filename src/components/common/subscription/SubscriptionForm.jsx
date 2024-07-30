@@ -138,8 +138,8 @@ export default function SubscriptionForm() {
       <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />
       {/* <Divider inset="none" /> */}
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-        <Typography level="title-lg" startDecorator={<BiNews />}>
-          Add Subscription
+        <Typography level="title-md" startDecorator={<BiNews />}>
+        {(subscription&&subscription.reference)||"New Subscription"}
         </Typography>
         <Dropdown>
           <MenuButton
@@ -161,6 +161,7 @@ export default function SubscriptionForm() {
       <CardContent
         sx={{
           display: 'grid',
+          paddingTop: 2,
           gridTemplateColumns: 'repeat(2, minmax(80px, 1fr))',
           gap: 1.5,
         }}
@@ -268,7 +269,7 @@ export default function SubscriptionForm() {
                       thousandSeparator
                       customInput={Input} 
                       sx={{ border: 'none' }}
-                      onChange={(e) => setDiscount(e.target.value)}
+                      onChange={(e) => setDiscount(e.target.value.replace(',', ''))}
                       disabled={mode === 'view'}
                     />
                 </div>

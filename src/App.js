@@ -14,6 +14,7 @@ import UserPage from './pages/UserPage';
 import SubscriptionForm from './components/common/subscription/SubscriptionForm';
 import { Experimental_CssVarsProvider as MaterialCssVarsProvider } from '@mui/material/styles';
 import { CssVarsProvider, extendTheme as extendJoyTheme, THEME_ID } from '@mui/joy/styles';
+import ProductForm from './components/common/product/ProductForm';
 const joyTheme = extendJoyTheme();
 
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="/employees" element={<EmployeePage/>} />
           <Route path="/emails" element={<EmailPage/>} />
           <Route path="/products" element={<ProductPage/>} />
+          <Route path="/product-form" element={<ProductForm/>} />
           <Route path="/users" element={<UserPage/>} />
         </Routes>
         </Sidebar>
