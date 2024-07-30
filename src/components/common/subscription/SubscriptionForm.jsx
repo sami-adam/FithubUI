@@ -26,6 +26,8 @@ import { NumericFormat } from 'react-number-format';
 import { useLocation } from 'react-router-dom';
 import { HorozontalStepper } from '../Common';
 import { GiSaveArrow } from "react-icons/gi";
+import PDFPrint from '../ReportTools';
+import SubscriptionInvoice from '../../../reports/SubscriptionInvoice';
 
 
 export default function SubscriptionForm() {
@@ -138,9 +140,14 @@ export default function SubscriptionForm() {
       <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />
       {/* <Divider inset="none" /> */}
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-        <Typography level="title-md" startDecorator={<BiNews />}>
-        {(subscription&&subscription.reference)||"New Subscription"}
-        </Typography>
+        <div style={{display:"flex", flexDirection:"row"}}>
+          <Typography level="title-md" startDecorator={<BiNews />}>
+          {(subscription&&subscription.reference)||"New Subscription"}
+          </Typography>
+          <IconButton sx={{paddingInlineStart:2}} variant="contained">
+            <PDFPrint document={subscription&& <SubscriptionInvoice subscription={subscription}/>} fileName="subscription_invoice" title="Invoice"/>
+          </IconButton>
+        </div>
         <Dropdown>
           <MenuButton
             slots={{ root: IconButton }}
@@ -204,7 +211,7 @@ export default function SubscriptionForm() {
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>Unit Price</FormLabel>
           <NumericFormat
-            value={unitPrice}
+            value={unitPrice.toLocaleString()}
             thousandSeparator
             customInput={Input} 
             startDecorator={<Typography variant="body2">SAR</Typography>}
@@ -246,7 +253,7 @@ export default function SubscriptionForm() {
               <td style={{ border: "none" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
                   <Typography variant="body2" paddingInlineEnd={1.5}>SAR</Typography>
-                  <Typography variant="body2">{subtotal}</Typography>
+                  <Typography variant="body2">{subtotal.toLocaleString()}</Typography>
                 </div>
               </td>
             </tr>
@@ -280,7 +287,7 @@ export default function SubscriptionForm() {
               <td style={{ border: "none" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <Typography variant="body2" paddingInlineEnd={1.5}>SAR</Typography>
-                    <Typography variant="body2">{total}</Typography>
+                    <Typography variant="body2">{total.toLocaleString()}</Typography>
                 </div>
               </td>
             </tr>
