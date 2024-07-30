@@ -20,7 +20,7 @@ export default function EmailPage() {
     ]
 
     if (emails.length === 0) {
-        return <div style={{ display: "flex", justifyContent: "center", alignItems : "center"}}><CircularProgress /></div>;
+        return <div style={{ display: "flex", justifyContent: "center",paddingTop:"20%"}}><CircularProgress /></div>;
     }
 
     const rows = emails.map((email) => ({

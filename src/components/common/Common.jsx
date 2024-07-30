@@ -7,6 +7,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { useState } from "react";
 import { Check } from "@mui/icons-material";
 import { FaRegDotCircle } from "react-icons/fa";
+
 export default function StatusChip({ status }) {
     return (
         <Chip

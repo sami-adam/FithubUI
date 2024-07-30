@@ -34,6 +34,7 @@ export default function SubscriptionForm() {
   const [products, fetchProducts] = useProductStore((state) => [state.products, state.fetchProducts]);
   const updateSubscription = useSubscriptionStore((state) => state.updateSubscription);
   const addSubscription = useSubscriptionStore((state) => state.addSubscription);
+  const deleteSubscription = useSubscriptionStore((state) => state.deleteSubscription);
   const [mode, setMode] = useState(location.state.viewMode||'view');
   const [fetchData, setFetchData] = useState(true);
 
@@ -62,10 +63,10 @@ export default function SubscriptionForm() {
     }
 
     if(!subscription){
-      setMode('add');
+      //setMode('add');
       setUnitPrice(product&&product.price);
       setSubtotal(unitPrice * quantity);
-      setTax(subtotal * ((product&&(product.tax.rat / 100)) || 0));
+      setTax(subtotal * ((product&&(((product.tax&&product.tax.rate)||0) / 100)) || 0));
       setTotal(subtotal + tax - discount);
     } else {
       setMember(member=>member||subscription.member);
@@ -75,7 +76,7 @@ export default function SubscriptionForm() {
       setUnitPrice(unitPrice=>unitPrice||subscription.subscriptionUnitPrice);
       setQuantity(quantity=>quantity > 1? quantity : subscription.subscriptionQty);
       setSubtotal(unitPrice * quantity);
-      setTax(subtotal * ((product&&(product.tax.rat / 100)) || 0));
+      setTax(subtotal * ((product&&(((product.tax&&product.tax.rate)||0) / 100)) || 0));
       setDiscount(discount=> discount || subscription.discountAmount);
       setTotal(subtotal + tax - discount);
     }
@@ -97,13 +98,21 @@ export default function SubscriptionForm() {
   const handleAdd = () => {
     addSubscription({
       member: member && {"id": member.id},
-      product: product && {"id": product.id},
+      product: product && {"id": product.id, "price": product.price},
       startDate: startDate,
       endDate: endDate,
       subscriptionQty: quantity,
       discountAmount: discount
     });
     setMode('view');
+  }
+
+  const handelDelete = () => {
+    const confirm = window.confirm("Are you sure you want to delete this subscription?");
+    if(confirm){
+    deleteSubscription(subscription.id);
+    window.history.back();
+    }
   }
 
   return (
@@ -144,7 +153,7 @@ export default function SubscriptionForm() {
             <MenuItem>Rename</MenuItem>
             <MenuItem>Move</MenuItem>
             <Divider />
-            <MenuItem color="danger">Delete</MenuItem>
+            <MenuItem color="danger" onClick={handelDelete}>Delete</MenuItem>
           </Menu>
         </Dropdown>
       </div>

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useProductStore from "../state/productState";
 import ProductCard from "../components/common/product/ProductCard";
-import { Box, Grid, Typography } from "@mui/joy";
+import { Box, CircularProgress, Grid, Typography } from "@mui/joy";
 import AddNewButton from "../components/common/Buttons";
 
 export default function ProductPage() {
@@ -10,6 +10,10 @@ export default function ProductPage() {
     useEffect(() => {
         fetchProducts();
     }, [fetchProducts]);
+
+    if (products.length === 0) {
+        return <div style={{ display: "flex", justifyContent: "center",paddingTop:"20%"}}><CircularProgress /></div>;
+    }
 
     return (
         <div style={{paddingInlineStart:5}}>

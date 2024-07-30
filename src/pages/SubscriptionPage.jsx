@@ -3,6 +3,7 @@ import DataTable from "../components/common/DataTable";
 import useSubscriptionStore from "../state/subscriptionState";
 import useProductStore from "../state/productState";
 import DataList from "../components/common/DataList";
+import { CircularProgress } from "@mui/joy";
 
 export default function SubscriptionPage() {
     const [subscriptions, fetchSubscriptions] = useSubscriptionStore((state) => [state.subscriptions, state.fetchSubscriptions]);
@@ -28,7 +29,7 @@ export default function SubscriptionPage() {
         {"name": "status", "label": "Status", "special": "status"},
     ]
     if (subscriptions.length === 0) {
-        return <div>Loading...</div>;
+        return <div style={{ display: "flex", justifyContent: "center",paddingTop:"20%"}}><CircularProgress /></div>;
     }
     const rows = subscriptions.map((subscription) => ({
         "id": subscription.reference,
