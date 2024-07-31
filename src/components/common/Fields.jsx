@@ -22,7 +22,7 @@ function ButtonField(props) {
       ref={ref}
       aria-label={ariaLabel}
       sx={{display: "flex", justifyContent: "flex-start", color: 'var(--color-neutral-800)'}}
-      onClick={() => setOpen?.((prev) => !prev)} startDecorator={<FaRegCalendarAlt />}
+      onClick={() => setOpen?.((prev) => !prev)} startDecorator={<FaRegCalendarAlt fontSize={18}/>}
     >
       {label ? `${label}` : 'MM/DD/YYYY'}
     </Button>

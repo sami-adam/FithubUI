@@ -2,12 +2,15 @@ import { useTheme } from '@emotion/react';
 import useEmployeeStore from '../../state/employeeState';
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Card, CardContent, Divider, Dropdown, FormControl, FormLabel, IconButton, Input, Menu, MenuButton, MenuItem, Typography } from '@mui/joy';
-import { MoreHoriz } from '@mui/icons-material';
+import { Box, Button, Card, CardActions, CardContent, Divider, Dropdown, FormControl, FormLabel, IconButton, Input, Menu, MenuButton, MenuItem, Typography } from '@mui/joy';
+import { Add, MoreHoriz } from '@mui/icons-material';
 import { BiNews } from "react-icons/bi";
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { HiOutlineIdentification } from "react-icons/hi2";
 import { MdOutlineMailOutline } from "react-icons/md";
+import { BsFilePerson } from "react-icons/bs";
+import { LiaPhoneSquareSolid } from "react-icons/lia";
+import { FaLocationDot } from "react-icons/fa6";
+import { GiSaveArrow } from 'react-icons/gi';
 
 
 export default function EmployeeForm() {
@@ -119,25 +122,47 @@ export default function EmployeeForm() {
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>Name</FormLabel>
-          <Input startDecorator={<InfoOutlinedIcon />} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
+          <Input startDecorator={<BsFilePerson fontSize={18}/>} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>ID Number</FormLabel>
-          <Input startDecorator={<HiOutlineIdentification fontSize={24} />} value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
+          <Input startDecorator={<HiOutlineIdentification fontSize={18} />} value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>Email</FormLabel>
-          <Input startDecorator={<MdOutlineMailOutline fontSize={24}/>} value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
+          <Input type="email" startDecorator={<MdOutlineMailOutline fontSize={18}/>} value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>Phone</FormLabel>
-          <Input startDecorator={<InfoOutlinedIcon />} value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
+          <Input startDecorator={<LiaPhoneSquareSolid fontSize={22} />} value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
-        </CardContent>
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
+          <FormLabel>Address</FormLabel>
+          <Input startDecorator={<FaLocationDot fontSize={18}/>} value={address} onChange={(e) => setAddress(e.target.value)} disabled={mode === 'view'} />
+        </FormControl>
 
+
+        </CardContent>
+        <Box height={8} sx={{ gridColumn: '1/-1' }} />
+        <CardActions sx={{ gridColumn: '1/-1' }}>
+          {mode === 'add' &&
+          <Button variant="solid" sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, 
+            '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
+            '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
+           }} startDecorator={<Add />} onClick={handleAdd}>
+            Add Employee
+          </Button>}
+          {mode === 'edit' &&
+          <Button variant="solid" sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, 
+            '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
+            '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
+           }} startDecorator={<GiSaveArrow />} onClick={handleSave} >
+            Save Employee
+          </Button>}
+        </CardActions>
 
         </Card>
         

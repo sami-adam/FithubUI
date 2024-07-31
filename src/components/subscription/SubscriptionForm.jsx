@@ -184,7 +184,7 @@ export default function SubscriptionForm() {
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>Subscription</FormLabel>
-          <Autocomplete startDecorator={<BiNews />} 
+          <Autocomplete startDecorator={<BiNews fontSize={18}/>} 
           options={products} 
           getOptionLabel={(option) => option.name}
           value={product} onChange={(event, newValue) => setProduct(newValue)}
@@ -203,7 +203,7 @@ export default function SubscriptionForm() {
                 step: 1,
               },
             }} 
-            startDecorator={<AiOutlineNumber />}
+            startDecorator={<AiOutlineNumber fontSize={18}/>}
             value={quantity} onChange={(e) => setQuantity(e.target.value)}
             disabled={mode === 'view'}
           />
