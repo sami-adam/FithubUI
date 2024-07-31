@@ -23,7 +23,8 @@ export default function EmployeePage() {
         "name": employee.name,
         "email": employee.email,
         "phone": employee.phone,
-        "address": employee.address
+        "address": employee.address,
+        "object": employee
     }));
 
     const listItems = employees.map((employee) => ({
@@ -35,12 +36,13 @@ export default function EmployeePage() {
         "secondRow": [employee.phone, ""],
         "thirdRow": [employee.email, ""],
         "status": "NEW",
+        "object": employee
     }));
 
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Employees"/>
-            <DataList i18nIsDynamicList={true} listItems={listItems}/>
+            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Employees" formUrl="/employee-form"/>
+            <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/employee-form"/>
         </div>
     );
 }

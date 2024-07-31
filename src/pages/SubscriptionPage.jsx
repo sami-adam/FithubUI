@@ -8,6 +8,7 @@ export default function SubscriptionPage({ defaultSearch="" }) {
     const [subscriptions, fetchSubscriptions] = useSubscriptionStore((state) => [state.subscriptions, state.fetchSubscriptions]);
     const [products, fetchProducts] = useProductStore((state) => [state.products, state.fetchProducts]);
     const searchSubscriptions = useSubscriptionStore((state) => state.searchSubscriptions);
+    const exportExcel = useSubscriptionStore((state) => state.exportExcel);
 
     const [search, setSearch] = useState(defaultSearch);
     useEffect(() => {
@@ -24,7 +25,7 @@ export default function SubscriptionPage({ defaultSearch="" }) {
         {"name": "subscriptionType", "label": "Subscription Type", "type": "select", "placeholder": "Filter By Subscription Type", "options": products.map((product) => product.name)},
     ]
     const columns = [
-        {"name": "id", "label": "Reference", "width": 85},
+        {"name": "reference", "label": "Reference", "width": 85},
         {"name": "identificationNumber", "label": "Identification Number"},
         {"name": "member", "label": "Member", "special": "person", "width": 150},
         {"name": "startDate", "label": "Start Date"},
@@ -37,7 +38,8 @@ export default function SubscriptionPage({ defaultSearch="" }) {
     ]
     
     const rows = subscriptions.map((subscription) => ({
-        "id": subscription.reference,
+        "id": subscription.id,
+        "reference": subscription.reference,
         "name": (subscription.member&&subscription.member.firstName) + " " + (subscription.member&&subscription.member.lastName),
         "member": subscription.member,
         "identificationNumber": subscription.member&&subscription.member.identificationNumber,
@@ -65,10 +67,15 @@ export default function SubscriptionPage({ defaultSearch="" }) {
         "status": subscription.status,
         "object": subscription
     }));
+
+    const handleExport = (subscriptionIds) => {
+        console.log("Exporting", subscriptionIds);
+        exportExcel(subscriptionIds);
+    }
     
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={filters} pageTitle="Subscriptions" formUrl="/subscription-form" setSearch={setSearch}/>
+            <DataTable columns={columns} rows={rows} selectionFilters={filters} pageTitle="Subscriptions" formUrl="/subscription-form" setSearch={setSearch} excelExport={handleExport}/>
             <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/subscription-form" setSearch={setSearch}/>
         </div>
     );

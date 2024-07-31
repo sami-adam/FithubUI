@@ -84,6 +84,25 @@ const useSubscriptionStore = create((set) => ({
             console.error("Error searching subscriptions", error);
         }
 
+    },
+    exportExcel: async (ids) => {
+        try {
+            const response = await axios.get(`${useSubscriptionStore.getState().baseURL}/subscriptions/excel/${ids}`, {
+                headers: {
+                    "Authorization": "Bearer " + useSubscriptionStore.getState().token,
+                },
+                responseType: "blob",
+            });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Subscriptions.xlsx');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error("Error printing excel", error);
+        }
     }
 }))
 

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useProductStore from "../state/productState";
-import ProductCard from "../components/common/product/ProductCard";
+import ProductCard from "../components/product/ProductCard";
 import { Box, Grid, Typography } from "@mui/joy";
 import AddNewButton from "../components/common/Buttons";
 

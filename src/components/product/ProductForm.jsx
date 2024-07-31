@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
-import useProductStore from '../../../state/productState';
-import useProductCategoryStore from '../../../state/productCategoryState';
-import useTaxStore from '../../../state/taxState';
+import useProductStore from '../../state/productState';
+import useProductCategoryStore from '../../state/productCategoryState';
+import useTaxStore from '../../state/taxState';
 import { useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Card, CardActions, CardContent, Divider, Dropdown, FormControl, FormLabel, IconButton, Input, Menu, MenuButton, MenuItem, Textarea, Typography, useTheme } from '@mui/joy';
 import { Add, MoreHoriz } from '@mui/icons-material';

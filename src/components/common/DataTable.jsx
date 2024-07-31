@@ -40,6 +40,9 @@ import AddNewButton from './Buttons';
 import { useNavigate } from 'react-router-dom';
 //import { useTranslation } from 'react-i18next';
 //import { IoInformationCircle } from "react-icons/io5";
+import { SiMicrosoftexcel } from "react-icons/si";
+import { MdOutlineDeleteForever } from "react-icons/md";
+import { CardActions } from '@mui/joy';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -110,7 +113,7 @@ function RowMenu() {
   );
 }
 
-export default function DataTable({columns, rows, selectionFilters, pageTitle="", formUrl="", setSearch}) {
+export default function DataTable({columns, rows, selectionFilters, pageTitle="", formUrl="", setSearch, excelExport}) {
   const [order, setOrder] = React.useState('desc');
   const [selected, setSelected] = React.useState([]);
   const [open, setOpen] = React.useState(false);
@@ -133,6 +136,18 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
         )}
     </React.Fragment>
   );
+
+  const handleExport = () => {
+    if(!excelExport){
+      alert("Excel Export function not implemented");
+      return;
+    }
+    if (selected.length > 0) {
+      excelExport(selected);
+    } else {
+      excelExport(rows.map((row) => row.id));
+    }
+  }
   return (
     <React.Fragment>
         <Box
@@ -243,6 +258,21 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           }}
         >
           <thead>
+            <tr>
+              <CardActions>
+                <Button onClick={handleExport} size="sm" variant="contained" color="primary" 
+                  startDecorator={<SiMicrosoftexcel />} sx={{
+                    ':hover': {backgroundColor: "primary", opacity: 0.5},
+                    }}>
+                    Export
+                </Button>
+                <Button size="sm" variant="contained" sx={{ color: "red", display: selected.length > 0? "flex": "none",
+                    ':hover': {backgroundColor: "danger", opacity: 0.5}
+                    }} startDecorator={<MdOutlineDeleteForever fontSize={18}/>}>
+                    Delete
+                </Button>
+              </CardActions>
+            </tr>
             <tr>
               <th style={{ width: 48, textAlign: 'center', padding: '12px 6px' }}>
                 <Checkbox
