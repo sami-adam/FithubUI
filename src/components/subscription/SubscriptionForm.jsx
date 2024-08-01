@@ -45,7 +45,7 @@ export default function SubscriptionForm() {
   const [startDate, setStartDate] = useState(dayjs(new Date()));
   const [endDate, setEndDate] = useState(null);
   const [unitPrice, setUnitPrice] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const [subtotal, setSubtotal] = useState(0);
   const [tax, setTax] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -80,13 +80,33 @@ export default function SubscriptionForm() {
       setStartDate(startDate=>dayjs(startDate||subscription.startDate));
       setEndDate(endDate=>dayjs(endDate||subscription.endDate));
       setUnitPrice(unitPrice=>unitPrice||subscription.subscriptionUnitPrice);
-      setQuantity(quantity=>quantity > 1? quantity : subscription.subscriptionQty);
+      setQuantity(quantity=>quantity ? quantity : subscription.subscriptionQty);
       setSubtotal(unitPrice * quantity);
       setTax(subtotal * ((product&&(((product.tax&&product.tax.rate)||0) / 100)) || 0));
       setDiscount(discount=> discount || subscription.discountAmount);
       setTotal(subtotal + tax - discount);
     }
-  }, [members, products, subscription, mode, product, unitPrice, quantity, subtotal, tax, discount, fetchData, fetchMembers, fetchProducts]);
+    if(product && product.durationType && mode !== 'view'&&startDate){
+      switch(product.durationType){
+        case 'DAY':
+          setEndDate(startDate.add(quantity, 'day'));
+          break;
+        case 'WEEK':
+          setEndDate(startDate.add(quantity, 'week'));
+          break;
+        case 'MONTH':
+          setEndDate(startDate.add(quantity, 'month'));
+          break;
+        case 'YEAR':
+          setEndDate(startDate.add(quantity, 'year'));
+          break;
+        default:
+          setEndDate(startDate);
+          break;
+      }
+    }
+  }, [members, products, subscription, mode, product, unitPrice, quantity, subtotal, tax, 
+    discount, fetchData, fetchMembers, fetchProducts]);
 
   const handleSave = () => {
     updateSubscription({
@@ -151,7 +171,7 @@ export default function SubscriptionForm() {
       <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
       {/* <Divider inset="none" /> */}
       <div style={{paddingTop:16}}>
-        <Button variant="soft" startDecorator={<BsFilePdfFill fontSize={18}/>} onClick={() => setOpenDownload(true)}>
+        <Button variant="soft" color='neutral' startDecorator={<BsFilePdfFill fontSize={18}/>} onClick={() => setOpenDownload(true)}>
             <Typography fontSize="small">INVOICE</Typography>
         </Button>
       </div>
@@ -266,6 +286,7 @@ export default function SubscriptionForm() {
         <Divider sx={{ gridColumn: '1/-1' }} />
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <Table variant="outlined">
+            <tbody>
             <tr>
               <th style={{ width:80 }}>Subtotal</th>
               <td style={{ border: "none" }}>
@@ -309,6 +330,7 @@ export default function SubscriptionForm() {
                 </div>
               </td>
             </tr>
+            </tbody>
           </Table>
         </FormControl>
       
