@@ -1,22 +1,19 @@
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { FaRegFilePdf } from "react-icons/fa";
+import { BsFilePdfFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "@emotion/react";
-import { Typography } from "@mui/joy";
+import { Button, Typography } from "@mui/joy";
 
 
-export default function PDFPrint({document, fileName="report", title="Download PDF"}) {
-    const theme = useTheme();
-    const primaryMainColor = theme.palette.primary.main;
+export default function PDFPrint({document, fileName="report", title="Download PDF", setOpen}) {
     const {t} = useTranslation();
     return (
         <div>
-            <PDFDownloadLink document={document} fileName={`${t(fileName)}.pdf`} style={{textDecoration:"none"}}>
+            <PDFDownloadLink document={document} fileName={`${t(fileName)}.pdf`} style={{textDecoration:"none"}} onClick={()=> setOpen(false)}>
             {({ blob, url, loading, error }) =>
                 loading ? `${t('Loading document')}...` : <>
-                <div style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
-                    <FaRegFilePdf color={primaryMainColor}/> <Typography style={{color:"gray",fontSize:"14px",paddingInlineStart:"8px"}}>{t(title)}</Typography>
-                </div>
+                <Button variant="soft" style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
+                    <BsFilePdfFill fontSize={18}/> <Typography style={{fontSize:"14px",paddingInlineStart:"8px"}}>{t(title)}</Typography>
+                </Button>
             </>
             }
             </PDFDownloadLink>

@@ -3,7 +3,7 @@ import useProductStore from '../../state/productState';
 import useProductCategoryStore from '../../state/productCategoryState';
 import useTaxStore from '../../state/taxState';
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, Card, CardActions, CardContent, Divider, Dropdown, FormControl, FormLabel, IconButton, Input, Menu, MenuButton, MenuItem, Textarea, Typography, useTheme } from '@mui/joy';
+import { Autocomplete, Box, Button, Card, CardActions, CardContent, Divider, Dropdown, FormControl, FormLabel, IconButton, Input, Menu, MenuButton, MenuItem, Option, Select, Textarea, Typography, useTheme } from '@mui/joy';
 import { Add, MoreHoriz } from '@mui/icons-material';
 import { BiNews } from "react-icons/bi";
 import ImageIcon from '@mui/icons-material/Image';
@@ -31,6 +31,7 @@ export default function ProductForm() {
     const [tax, setTax] = useState(null);
     const [image, setImage] = useState('');
     const [description, setDescription] = useState('');
+    const [durationType, setDurationType] = useState("");
     const [fetchData, setFetchData] = useState(true);
 
     const product = location.state.object;
@@ -44,12 +45,14 @@ export default function ProductForm() {
         }
     
         if(product){
+          console.log(product.durationType, typeof product.durationType);
             setName(name=>name||product.name);
             setImage(image=>image||product.image);
             setPrice(price=>price||product.price);
             setCategory(category=>category||product.category);
             setTax(tax=>tax||product.tax);
             setDescription(description=>description||product.description);
+            setDurationType(durationType=>durationType||product.durationType);
         }
       }, [mode, fetchData, product, fetchProductCategories, fetchTaxes]);
     
@@ -61,7 +64,8 @@ export default function ProductForm() {
             name: name,
             price: price,
             image: image,
-            description: description
+            description: description,
+            durationType: durationType
         });
         setMode('view');
     }
@@ -73,7 +77,8 @@ export default function ProductForm() {
             name: name,
             price: price,
             image: image,
-            description: description
+            description: description,
+            durationType: durationType
         });
         setMode('view');
     }
@@ -175,6 +180,15 @@ export default function ProductForm() {
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
             <FormLabel>Description</FormLabel>
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
+        </FormControl>
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
+            <FormLabel>Duration</FormLabel>
+            <Select value={durationType} onChange={(event, newValue) => setDurationType(newValue)} disabled={mode === 'view'} >
+                <Option value="DAY">Day</Option>
+                <Option value="WEEK">Week</Option>
+                <Option value="MONTH">Month</Option>
+                <Option value="YEAR">Year</Option>
+            </Select>
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>

@@ -26,9 +26,8 @@ import { NumericFormat } from 'react-number-format';
 import { useLocation } from 'react-router-dom';
 import { DocumentSnackbar, HorozontalStepper, SnackbarCustom } from '../common/Common';
 import { GiSaveArrow } from "react-icons/gi";
-import PDFPrint from '../common/ReportTools';
 import SubscriptionInvoice from '../../reports/SubscriptionInvoice';
-import { BsFilePdf } from 'react-icons/bs';
+import { BsFilePdfFill } from "react-icons/bs";
 
 
 export default function SubscriptionForm() {
@@ -151,7 +150,12 @@ export default function SubscriptionForm() {
       <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />
       <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
       {/* <Divider inset="none" /> */}
-      <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
+      <div style={{paddingTop:16}}>
+        <Button variant="soft" startDecorator={<BsFilePdfFill fontSize={18}/>} onClick={() => setOpenDownload(true)}>
+            <Typography fontSize="small">INVOICE</Typography>
+        </Button>
+      </div>
+      <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
         <div style={{display:"flex", flexDirection:"row"}}>
           <Typography level="title-md" startDecorator={<BiNews />}>
           {(subscription&&subscription.reference)||"New Subscription"}
@@ -161,12 +165,6 @@ export default function SubscriptionForm() {
           open={openDownload} setOpen={setOpenDownload}
           />
           }
-          <Button variant="soft" 
-                startDecorator={<BsFilePdf/>} 
-                onClick={() => setOpenDownload(true)}
-                >
-                    <Typography fontSize="small">SUBSCRIPTIONS</Typography>
-            </Button>
         </div>
         <Dropdown>
           <MenuButton

@@ -38,6 +38,9 @@ export function SnackbarCustom({type, title, message, open, setOpen, duration}) 
           autoHideDuration={duration || 6000}
           onClose={() => setOpen(false)}
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          sx={{
+            zIndex: 9999,
+          }}
           startDecorator={icon}
           endDecorator={
             <Button
@@ -158,11 +161,11 @@ export function HorozontalStepper({ stages = ["NEW", "DONE"], currentStage = 1 }
 export function DocumentSnackbar({document, fileName, title, open, setOpen}) {
 
   return (
-    <>
+    <div>
       <Snackbar
         autoHideDuration={5000}
-        variant="solid"
-        color="primary"
+        variant="soft"
+        color="neutral"
         size="lg"
         invertedColors
         open={open}
@@ -171,17 +174,16 @@ export function DocumentSnackbar({document, fileName, title, open, setOpen}) {
         sx={(theme) => ({
           background: `linear-gradient(45deg, ${theme.palette.primary[600]} 30%, ${theme.palette.primary[500]} 90%})`,
           maxWidth: 360,
+          zIndex: 9999,
+          //paddingTop: { xs: 14, sm: 3 },
         })}
       >
         <div>
-          <Typography level="title-lg">Download {title}</Typography>
           <Typography sx={{ mt: 1, mb: 2 }}>
             Proceed To Download?
           </Typography>
           <Stack direction="row" spacing={1}>
-            <Button variant="solid" color="primary" onClick={() => setOpen(false)}>
-              <PDFPrint document={document} fileName={fileName} title={title}/>
-            </Button>
+            <PDFPrint document={document} fileName={fileName} title={title} setOpen={setOpen}/>
             <Button
               variant="outlined"
               color="primary"
@@ -192,6 +194,6 @@ export function DocumentSnackbar({document, fileName, title, open, setOpen}) {
           </Stack>
         </div>
       </Snackbar>
-    </>
+    </div>
   );
 }
