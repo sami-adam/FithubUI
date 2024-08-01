@@ -5,6 +5,7 @@ const useUserStore = create((set) => ({
     user: {},
     baseURL: process.env.REACT_APP_BASE_URL,
     loginPageUrl: process.env.REACT_APP_LOGIN_PAGE_URL,
+    error: null,
     fetchUser: async (userDict) => {
         try {
             const response = await axios.post(useUserStore.getState().baseURL + "/auth/signIn", userDict);
@@ -20,7 +21,7 @@ const useUserStore = create((set) => ({
             localStorage.setItem('user', JSON.stringify(user.data));
             set({ user: user.data });
         } catch (error) {
-            console.error("Error fetching user", error);
+            set({ error: error.response.data });
         }
     }
 }));

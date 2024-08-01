@@ -8,6 +8,7 @@ import Button from '@mui/joy/Button';
 import Link from '@mui/joy/Link';
 import { useEffect, useState } from 'react';
 import useUserStore from '../state/userState';
+import { SnackbarCustom } from '../components/common/Common';
 
 
 export default function LoginPage() {
@@ -15,6 +16,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const fetchUser = useUserStore((state) => state.fetchUser);
   const user = useUserStore((state) => state.user);
+  const error = useUserStore((state) => state.error);
+  const [open, setOpen] = useState(Boolean(error))
+
+  console.log(error);
 
   const handleLogin = async () => {
     await fetchUser({ email, password });
@@ -24,7 +29,10 @@ export default function LoginPage() {
     if (user && user.name) {
       window.location.href = "/home";
     }
-  }, [user])
+    if (error) {
+      setOpen(true);
+    }
+  }, [user, error]);
 
 
   return (
@@ -50,6 +58,7 @@ export default function LoginPage() {
           <Typography level="h1" component="h1">FitHub</Typography>
         </div>
         <div>
+          <SnackbarCustom type="error" message={error.message} open={open} setOpen={setOpen} />
           <Typography level="h4" component="h1">
             <b>Welcome!</b>
           </Typography>

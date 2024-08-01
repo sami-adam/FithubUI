@@ -16,11 +16,13 @@ import { Experimental_CssVarsProvider as MaterialCssVarsProvider } from '@mui/ma
 import { CssVarsProvider, extendTheme as extendJoyTheme, THEME_ID } from '@mui/joy/styles';
 import ProductForm from './components/product/ProductForm';
 import EmployeeForm from './components/employee/EmployeeForm';
+import ErrorBoundary from './components/common/ErrorBoundary';
 const joyTheme = extendJoyTheme();
 
 
 function App() {
   return (
+    <ErrorBoundary>
     <MaterialCssVarsProvider>
     <CssVarsProvider theme={{ [THEME_ID]: joyTheme }}>
       <BrowserRouter>
@@ -46,6 +48,7 @@ function App() {
       </BrowserRouter>
     </CssVarsProvider>
     </MaterialCssVarsProvider>
+    </ErrorBoundary>
   );
 }
 

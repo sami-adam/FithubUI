@@ -34,8 +34,9 @@ export function SnackbarCustom({type, title, message, open, setOpen}) {
           variant="soft"
           color={color}
           open={open}
+          autoHideDuration={6000}
           onClose={() => setOpen(false)}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           startDecorator={icon}
           endDecorator={
             <Button
