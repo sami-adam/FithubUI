@@ -1,5 +1,5 @@
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { BsFilePdfFill } from "react-icons/bs";
+import { RiFilePdf2Fill } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
 import { Button, Typography } from "@mui/joy";
 
@@ -12,7 +12,7 @@ export default function PDFPrint({document, fileName="report", title="Download P
             {({ blob, url, loading, error }) =>
                 loading ? `${t('Loading document')}...` : <>
                 <Button variant="soft" style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
-                    <BsFilePdfFill fontSize={18}/> <Typography style={{fontSize:"14px",paddingInlineStart:"8px"}}>{t(title)}</Typography>
+                    <RiFilePdf2Fill fontSize={18}/> <Typography style={{fontSize:"14px",paddingInlineStart:"8px"}}>{t(title)}</Typography>
                 </Button>
             </>
             }

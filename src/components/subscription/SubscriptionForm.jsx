@@ -27,7 +27,7 @@ import { useLocation } from 'react-router-dom';
 import { DocumentSnackbar, HorozontalStepper, SnackbarCustom } from '../common/Common';
 import { GiSaveArrow } from "react-icons/gi";
 import SubscriptionInvoice from '../../reports/SubscriptionInvoice';
-import { BsFilePdfFill } from "react-icons/bs";
+import { MdPictureAsPdf } from "react-icons/md";
 
 
 export default function SubscriptionForm() {
@@ -171,7 +171,7 @@ export default function SubscriptionForm() {
       <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
       {/* <Divider inset="none" /> */}
       <div style={{paddingTop:16}}>
-        <Button variant="soft" color='neutral' startDecorator={<BsFilePdfFill fontSize={18}/>} onClick={() => setOpenDownload(true)}>
+        <Button variant="soft" startDecorator={<MdPictureAsPdf fontSize={18}/>} onClick={() => setOpenDownload(true)}>
             <Typography fontSize="small">INVOICE</Typography>
         </Button>
       </div>
