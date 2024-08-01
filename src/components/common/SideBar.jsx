@@ -31,6 +31,7 @@ import { ListSubheader } from '@mui/joy';
 import { BiNews } from "react-icons/bi";
 //import useEmailStore from "../../state/emailState";
 import { FaUsersRectangle } from "react-icons/fa6";
+import { SiFitbit } from "react-icons/si";
 
 
 export default function Sidebar({children}) {
@@ -158,8 +159,16 @@ export default function Sidebar({children}) {
             </ListItemButton>
           </ListItem>
           <ListItem>
+            <ListItemButton role="menuitem" onClick={() => navigate("/fitness-classes")} selected={"/fitness-classes" === window.location.pathname}>
+              <SiFitbit fontSize={18}/>
+              <ListItemContent>
+                <Typography level="title-sm">Fitness Classes</Typography>
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
             <ListItemButton role="menuitem" onClick={() => navigate("/employees")} selected={"/employees" === window.location.pathname}>
-              <BsFillPersonVcardFill />
+              <BsFillPersonVcardFill fontSize={18}/>
               <ListItemContent>
                 <Typography level="title-sm">Employees</Typography>
               </ListItemContent>

@@ -18,6 +18,7 @@ import ProductForm from './components/product/ProductForm';
 import EmployeeForm from './components/employee/EmployeeForm';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import MemberForm from './components/member/MemberForm';
+import FitnessClassPage from './pages/FitnessClassPage';
 const joyTheme = extendJoyTheme();
 
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="/products" element={<ProductPage/>} />
           <Route path="/product-form" element={<ProductForm/>} />
           <Route path="/users" element={<UserPage/>} />
+          <Route path="/fitness-classes" element={<FitnessClassPage/>} />
         </Routes>
         </Sidebar>
       </BrowserRouter>
