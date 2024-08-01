@@ -1,4 +1,4 @@
-import { Button, Chip, Step, StepButton, StepIndicator, Stepper } from "@mui/joy";
+import { Button, Chip, Stack, Step, StepButton, StepIndicator, Stepper } from "@mui/joy";
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import BlockIcon from '@mui/icons-material/Block';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
@@ -17,6 +17,7 @@ import Alert from '@mui/joy/Alert';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import Snackbar from '@mui/joy/Snackbar';
+import PDFPrint from "./ReportTools";
 
 export function SnackbarCustom({type, title, message, open, setOpen, duration}) {
     //const [open, setOpen] = React.useState(false);
@@ -153,3 +154,44 @@ export function HorozontalStepper({ stages = ["NEW", "DONE"], currentStage = 1 }
         </Stepper>
     );
     }
+
+export function DocumentSnackbar({document, fileName, title, open, setOpen}) {
+
+  return (
+    <>
+      <Snackbar
+        autoHideDuration={5000}
+        variant="solid"
+        color="primary"
+        size="lg"
+        invertedColors
+        open={open}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={(theme) => ({
+          background: `linear-gradient(45deg, ${theme.palette.primary[600]} 30%, ${theme.palette.primary[500]} 90%})`,
+          maxWidth: 360,
+        })}
+      >
+        <div>
+          <Typography level="title-lg">Download {title}</Typography>
+          <Typography sx={{ mt: 1, mb: 2 }}>
+            Proceed To Download?
+          </Typography>
+          <Stack direction="row" spacing={1}>
+            <Button variant="solid" color="primary" onClick={() => setOpen(false)}>
+              <PDFPrint document={document} fileName={fileName} title={title}/>
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => setOpen(false)}
+            >
+              Cancel
+            </Button>
+          </Stack>
+        </div>
+      </Snackbar>
+    </>
+  );
+}

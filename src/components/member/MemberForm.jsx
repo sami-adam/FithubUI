@@ -1,5 +1,6 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useMemberStore from '../../state/memberState';
+import useSubscriptionStore from '../../state/subscriptionState';
 import { useTheme } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import { Box, Button, Card, CardActions, CardContent, Divider, Dropdown, FormControl, FormLabel, IconButton, Input, Menu, MenuButton, MenuItem, Radio, Typography } from '@mui/joy';
@@ -10,6 +11,7 @@ import { HiOutlineIdentification } from "react-icons/hi2";
 import { LiaPhoneSquareSolid } from "react-icons/lia";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { GiSaveArrow } from 'react-icons/gi';
+import { FaCalendarAlt } from "react-icons/fa";
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -21,6 +23,8 @@ export default function MemberForm() {
     const updateMember = useMemberStore((state) => state.updateMember);
     const addMember = useMemberStore((state) => state.addMember);
     const deleteMember = useMemberStore((state) => state.deleteMember);
+    const [subscriptions, fetchSubscriptions] = useSubscriptionStore((state) => [state.subscriptions, state.fetchSubscriptions]);
+    const [fetchData, setFetchData] = useState(true);
 
     const [mode, setMode] = useState(location.state.viewMode||'view');
 
@@ -36,6 +40,9 @@ export default function MemberForm() {
 
     const member = location.state.object;
     const theme = useTheme();
+    const navigate = useNavigate();
+
+    const memberSubscriptions = subscriptions.filter(subscription => subscription.member.id === member.id);
 
     useEffect(() => {
         if(member){
@@ -46,7 +53,11 @@ export default function MemberForm() {
             setPhone(phone=>phone||member.phone);
             setGender(gender=>gender);
         }
-    }, [mode, member]);
+        if(fetchData){
+            fetchSubscriptions();
+            setFetchData(false);
+        }
+    }, [mode, member, fetchData, fetchSubscriptions]);
 
     const handleSave = () => {
         updateMember({
@@ -106,7 +117,16 @@ export default function MemberForm() {
         {/* <Divider inset="none" /> */}
         <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
         <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
+        <div style={{ paddingTop: 16}}>
+            <Button variant="soft" 
+                startDecorator={<FaCalendarAlt/>} 
+                endDecorator={<Typography fontSize="small" >{memberSubscriptions.length}</Typography>}
+                onClick={() => navigate("/subscriptions", {state: {search: member.identificationNumber}})}
+                >
+                    <Typography fontSize="small">SUBSCRIPTIONS</Typography>
+            </Button>
+        </div>
+        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
             <Typography level="title-lg" startDecorator={<BiNews />}>
                 Member Info
             </Typography>

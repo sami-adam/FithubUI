@@ -3,13 +3,19 @@ import DataTable from "../components/common/DataTable";
 import useSubscriptionStore from "../state/subscriptionState";
 import useProductStore from "../state/productState";
 import DataList from "../components/common/DataList";
+import { useLocation } from "react-router-dom";
 
 export default function SubscriptionPage({ defaultSearch="" }) {
     const [subscriptions, fetchSubscriptions] = useSubscriptionStore((state) => [state.subscriptions, state.fetchSubscriptions]);
     const [products, fetchProducts] = useProductStore((state) => [state.products, state.fetchProducts]);
     const searchSubscriptions = useSubscriptionStore((state) => state.searchSubscriptions);
     const exportExcel = useSubscriptionStore((state) => state.exportExcel);
+    
+    const location = useLocation();
 
+    if (location.state && location.state.search) {
+        defaultSearch = location.state.search;
+    }
     const [search, setSearch] = useState(defaultSearch);
     useEffect(() => {
         if (search === "" && defaultSearch === "") {

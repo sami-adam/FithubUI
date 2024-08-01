@@ -24,10 +24,11 @@ import { useTheme } from '@emotion/react';
 import { Add, ArrowBack, MoreHoriz } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
 import { useLocation } from 'react-router-dom';
-import { HorozontalStepper } from '../common/Common';
+import { DocumentSnackbar, HorozontalStepper, SnackbarCustom } from '../common/Common';
 import { GiSaveArrow } from "react-icons/gi";
 import PDFPrint from '../common/ReportTools';
 import SubscriptionInvoice from '../../reports/SubscriptionInvoice';
+import { BsFilePdf } from 'react-icons/bs';
 
 
 export default function SubscriptionForm() {
@@ -50,9 +51,13 @@ export default function SubscriptionForm() {
   const [tax, setTax] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
+  const [openDownload, setOpenDownload] = useState(false);
 
   const inputRef = useRef(null);
   const theme = useTheme();
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
   
   const subscription = location.state.object;
   const stages = ['NEW', 'PAID', "ACTIVE", "EXPIRED"];
@@ -95,6 +100,8 @@ export default function SubscriptionForm() {
       discountAmount: discount
     });
     setMode('view');
+    setOpenSnackbar(true);
+    setSnack({type: 'success', title: 'Success', message: 'Subscription updated successfully!'});
   }
 
   const handleAdd = () => {
@@ -107,12 +114,16 @@ export default function SubscriptionForm() {
       discountAmount: discount
     });
     setMode('view');
+    setOpenSnackbar(true);
+    setSnack({type: 'success', title: 'Success', message: 'Subscription added successfully!'});
   }
 
   const handelDelete = () => {
     const confirm = window.confirm("Are you sure you want to delete this subscription?");
     if(confirm){
     deleteSubscription(subscription.id);
+    setOpenSnackbar(true);
+    setSnack({type: 'success', title: 'Success', message: 'Subscription deleted successfully!'});
     window.history.back();
     }
   }
@@ -138,15 +149,24 @@ export default function SubscriptionForm() {
       }}
     >
       <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />
+      <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
       {/* <Divider inset="none" /> */}
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
         <div style={{display:"flex", flexDirection:"row"}}>
           <Typography level="title-md" startDecorator={<BiNews />}>
           {(subscription&&subscription.reference)||"New Subscription"}
           </Typography>
-          <IconButton sx={{paddingInlineStart:2}} variant="contained">
-            <PDFPrint document={subscription&& <SubscriptionInvoice subscription={subscription}/>} fileName="subscription_invoice" title="Invoice"/>
-          </IconButton>
+          {subscription && 
+          <DocumentSnackbar document={<SubscriptionInvoice subscription={subscription} />} fileName="subscription-invoice" title="Subscription Invoice" 
+          open={openDownload} setOpen={setOpenDownload}
+          />
+          }
+          <Button variant="soft" 
+                startDecorator={<BsFilePdf/>} 
+                onClick={() => setOpenDownload(true)}
+                >
+                    <Typography fontSize="small">SUBSCRIPTIONS</Typography>
+            </Button>
         </div>
         <Dropdown>
           <MenuButton
@@ -211,7 +231,7 @@ export default function SubscriptionForm() {
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>Unit Price</FormLabel>
           <NumericFormat
-            value={unitPrice.toLocaleString()}
+            value={unitPrice&&unitPrice.toLocaleString()}
             thousandSeparator
             customInput={Input} 
             startDecorator={<Typography variant="body2">SAR</Typography>}
@@ -253,7 +273,7 @@ export default function SubscriptionForm() {
               <td style={{ border: "none" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
                   <Typography variant="body2" paddingInlineEnd={1.5}>SAR</Typography>
-                  <Typography variant="body2">{subtotal.toLocaleString()}</Typography>
+                  <Typography variant="body2">{subtotal&&subtotal.toLocaleString()}</Typography>
                 </div>
               </td>
             </tr>
@@ -287,7 +307,7 @@ export default function SubscriptionForm() {
               <td style={{ border: "none" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <Typography variant="body2" paddingInlineEnd={1.5}>SAR</Typography>
-                    <Typography variant="body2">{total.toLocaleString()}</Typography>
+                    <Typography variant="body2">{total&&total.toLocaleString()}</Typography>
                 </div>
               </td>
             </tr>
