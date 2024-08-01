@@ -11,6 +11,7 @@ import { BsFilePerson } from "react-icons/bs";
 import { LiaPhoneSquareSolid } from "react-icons/lia";
 import { FaLocationDot } from "react-icons/fa6";
 import { GiSaveArrow } from 'react-icons/gi';
+import { SnackbarCustom } from '../common/Common';
 
 
 export default function EmployeeForm() {
@@ -30,6 +31,9 @@ export default function EmployeeForm() {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
+
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
     const employee = location.state.object;
     const theme = useTheme();
@@ -54,6 +58,8 @@ export default function EmployeeForm() {
             address: address
         });
         setMode('view');
+        setOpenSnackbar(true);
+        setSnack({type: 'success', title: 'Success', message: 'Employee updated successfully'});
     }
 
     const handleAdd = () => {
@@ -65,6 +71,8 @@ export default function EmployeeForm() {
             address: address
         });
         setMode('view');
+        setOpenSnackbar(true);
+        setSnack({type: 'success', title: 'Success', message: 'Employee added successfully'});
     }
 
     const handelDelete = () => {
@@ -73,6 +81,8 @@ export default function EmployeeForm() {
             deleteEmployee(employee.id);
             window.history.back();
         }
+        setOpenSnackbar(true);
+        setSnack({type: 'success', title: 'Success', message: 'Employee deleted successfully'});
     }
 
     return (
@@ -92,6 +102,7 @@ export default function EmployeeForm() {
       }}
     >
       {/* <Divider inset="none" /> */}
+      <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
         <Typography level="title-lg" startDecorator={<BiNews />}>
             Employee Info

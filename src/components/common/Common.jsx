@@ -18,7 +18,7 @@ import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import Snackbar from '@mui/joy/Snackbar';
 
-export function SnackbarCustom({type, title, message, open, setOpen}) {
+export function SnackbarCustom({type, title, message, open, setOpen, duration}) {
     //const [open, setOpen] = React.useState(false);
 
     const types = {
@@ -34,7 +34,7 @@ export function SnackbarCustom({type, title, message, open, setOpen}) {
           variant="soft"
           color={color}
           open={open}
-          autoHideDuration={6000}
+          autoHideDuration={duration || 6000}
           onClose={() => setOpen(false)}
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           startDecorator={icon}

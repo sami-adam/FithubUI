@@ -43,6 +43,7 @@ import { useNavigate } from 'react-router-dom';
 import { SiMicrosoftexcel } from "react-icons/si";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { CardActions } from '@mui/joy';
+import { SnackbarCustom } from './Common';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -117,6 +118,8 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
   const [order, setOrder] = React.useState('desc');
   const [selected, setSelected] = React.useState([]);
   const [open, setOpen] = React.useState(false);
+  const [openError, setOpenError] = React.useState(false);
+  const [error, setError] = React.useState(null);
 
   const navigate = useNavigate();
   const renderFilters = () => (
@@ -139,7 +142,8 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
 
   const handleExport = () => {
     if(!excelExport){
-      alert("Excel Export function not implemented");
+      setError({type:"warning", message: "Export function not implemented"});
+      setOpenError(true);
       return;
     }
     if (selected.length > 0) {
@@ -150,6 +154,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
   }
   return (
     <React.Fragment>
+        {error && <SnackbarCustom type={error.type} message={error.message} open={openError} setOpen={setOpenError} />}
         <Box
             sx={{
                 display: 'flex',
