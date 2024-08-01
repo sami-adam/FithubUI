@@ -10,7 +10,7 @@ export default function MemberPage() {
     }, [fetchMembers]);
 
     const columns = [
-        {"name": "id", "label": "Identification Number", "width": 120},
+        {"name": "id", "label": "ID Number", "width": 120},
         {"name": "name", "label": "Full Name", "sort": true},
         {"name": "email", "label": "Email"},
         {"name": "phone", "label": "Phone"},
@@ -28,6 +28,7 @@ export default function MemberPage() {
         "phone": member.phone,
         "gender": member.gender,
         "status": member.status,
+        "object": member,
     }));
 
     const listItems = members.map((member) => ({
@@ -37,11 +38,12 @@ export default function MemberPage() {
         "subtitle": member.email,
         "firstRow": [member.gender, member.identificationNumber],
         "status":"NEW",
+        "object": member,
     }));
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Members"/>
-            <DataList i18nIsDynamicList={true} listItems={listItems}/>
+            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Members" formUrl="/member-form"/>
+            <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/member-form"/>
         </div>
     );
 }

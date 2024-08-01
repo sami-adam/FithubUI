@@ -58,7 +58,7 @@ export default function LoginPage() {
           <Typography level="h1" component="h1">FitHub</Typography>
         </div>
         <div>
-          <SnackbarCustom type="error" message={error.message} open={open} setOpen={setOpen} />
+          {error && <SnackbarCustom type="error" message={error.message} open={open} setOpen={setOpen} />}
           <Typography level="h4" component="h1">
             <b>Welcome!</b>
           </Typography>

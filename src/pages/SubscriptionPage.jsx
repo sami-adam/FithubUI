@@ -26,7 +26,7 @@ export default function SubscriptionPage({ defaultSearch="" }) {
     ]
     const columns = [
         {"name": "reference", "label": "Reference", "width": 85},
-        {"name": "identificationNumber", "label": "Identification Number"},
+        {"name": "identificationNumber", "label": "ID Number"},
         {"name": "member", "label": "Member", "special": "person", "width": 150},
         {"name": "startDate", "label": "Start Date"},
         {"name": "endDate", "label": "End Date"},
