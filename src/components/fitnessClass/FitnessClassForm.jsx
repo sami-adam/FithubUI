@@ -1,97 +1,89 @@
-import { useTheme } from '@emotion/react';
-import useEmployeeStore from '../../state/employeeState';
+import useFitnessClassStore from "../../state/fitnessClassState";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Box, Button, Card, CardActions, CardContent, Divider, Dropdown, FormControl, FormLabel, IconButton, Input, Menu, MenuButton, MenuItem, Typography } from '@mui/joy';
+import { Dropdown, Menu, MenuButton, MenuItem, Option, Select, useTheme } from '@mui/joy';
+import { Box, Button, Card, CardActions, CardContent, Divider, FormControl, FormLabel, IconButton, Input, Typography } from '@mui/joy';
 import { Add, MoreHoriz } from '@mui/icons-material';
-import { BiNews } from "react-icons/bi";
-import { HiOutlineIdentification } from "react-icons/hi2";
-import { MdOutlineMailOutline } from "react-icons/md";
-import { BsFilePerson } from "react-icons/bs";
-import { LiaPhoneSquareSolid } from "react-icons/lia";
-import { FaLocationDot } from "react-icons/fa6";
-import { GiSaveArrow } from 'react-icons/gi';
 import { SnackbarCustom } from '../common/Common';
+import { BiNews } from "react-icons/bi";
+import { GiSaveArrow } from 'react-icons/gi';
+import { HtmlField } from "../common/Fields";
 
 
-export default function EmployeeForm() {
+export default function FitnessClassForm() {
     const location = useLocation();
     if (!location.state) {
-        window.location.href = '/employees';
+        window.location.href = '/fitness-classes';
     }
 
-    const updateEmployee = useEmployeeStore((state) => state.updateEmployee);
-    const addEmployee = useEmployeeStore((state) => state.addEmployee);
-    const deleteEmployee = useEmployeeStore((state) => state.deleteEmployee);
+    const updateFitnessClass = useFitnessClassStore((state) => state.updateFitnessClass);
+    const addFitnessClass = useFitnessClassStore((state) => state.addFitnessClass);
+    const deleteFitnessClass = useFitnessClassStore((state) => state.deleteFitnessClass);
 
     const [mode, setMode] = useState(location.state.viewMode||'view');
 
     const [name, setName] = useState('');
-    const [identificationNumber, setIdentificationNumber] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
+    const [intensityLevel, setIntensityLevel] = useState('');
+    const [description, setDescription] = useState('');
+    const [images, setImages] = useState('');
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
-    const employee = location.state.object;
+    const fitnessClass = location.state.object;
     const theme = useTheme();
 
     useEffect(() => {
-        if(employee){
-            setName(name=>name||employee.name);
-            setIdentificationNumber(identificationNumber=>identificationNumber||employee.identificationNumber);
-            setEmail(email=>email||employee.email);
-            setPhone(phone=>phone||employee.phone);
-            setAddress(address=>address||employee.address);
+        if(fitnessClass){
+            setName(name=>name||fitnessClass.name);
+            setIntensityLevel(intensityLevel=>intensityLevel||fitnessClass.intensityLevel);
+            setDescription(description=>description||fitnessClass.description);
+            setImages(images=>images||fitnessClass.images);
         }
-      }, [mode, employee]);
+    }, [mode, fitnessClass]);
 
     const handleSave = () => {
-        updateEmployee({
-            id: employee.id,
+        updateFitnessClass({
+            id: fitnessClass.id,
             name: name,
-            identificationNumber: identificationNumber,
-            email: email,
-            phone: phone,
-            address: address
+            intensityLevel: intensityLevel,
+            description: description,
+            images: images
         });
         setMode('view');
         setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Employee updated successfully'});
+        setSnack({type: 'success', title: 'Success', message: 'Fitness Class updated successfully'});
     }
 
     const handleAdd = () => {
-        addEmployee({
+        addFitnessClass({
             name: name,
-            identificationNumber: identificationNumber,
-            email: email,
-            phone: phone,
-            address: address
+            intensityLevel: intensityLevel,
+            description: description,
+            images: images
         });
         setMode('view');
         setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Employee added successfully'});
+        setSnack({type: 'success', title: 'Success', message: 'Fitness Class added successfully'});
     }
 
-    const handelDelete = () => {
+    const handleDelete = () => {
         const confirm = window.confirm("Are you sure you want to delete this subscription?");
         if(confirm){
-            deleteEmployee(employee.id);
+            deleteFitnessClass(fitnessClass.id);
             window.history.back();
         }
         setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Employee deleted successfully'});
+        setSnack({type: 'success', title: 'Success', message: 'Fitness Class deleted successfully'});
     }
 
     return (
-        <div>
-            <Card
+    <div>
+        <Card
       variant="outlined"
       sx={{
         maxHeight: 'max-content',
-        //maxWidth: '100%',
+        maxWidth: { xs: '100%', md: '80%' },
         mx: 'auto',
         // to make the demo resizable
         overflow: 'auto',
@@ -105,7 +97,7 @@ export default function EmployeeForm() {
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
         <Typography level="title-lg" startDecorator={<BiNews />}>
-            Employee Info
+            Fitness Class Info
         </Typography>
         <Dropdown>
           <MenuButton
@@ -119,7 +111,7 @@ export default function EmployeeForm() {
             <MenuItem>Rename</MenuItem>
             <MenuItem>Move</MenuItem>
             <Divider />
-            <MenuItem color="danger" onClick={handelDelete}>Delete</MenuItem>
+            <MenuItem color="danger" onClick={handleDelete}>Delete</MenuItem>
           </Menu>
         </Dropdown>
       </div>
@@ -133,30 +125,29 @@ export default function EmployeeForm() {
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>Name</FormLabel>
-          <Input startDecorator={<BsFilePerson fontSize={18}/>} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
+          <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>ID Number</FormLabel>
-          <Input startDecorator={<HiOutlineIdentification fontSize={18} />} value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
-        </FormControl>
-
-        <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>Email</FormLabel>
-          <Input type="email" startDecorator={<MdOutlineMailOutline fontSize={18}/>} value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
-        </FormControl>
-
-        <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>Phone</FormLabel>
-          <Input startDecorator={<LiaPhoneSquareSolid fontSize={22} />} value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
+          <FormLabel>Intensity Level</FormLabel>
+          <Select value={intensityLevel} onChange={(e, newValue) => setIntensityLevel(newValue)} disabled={mode === 'view'}>
+            <Option value="LOW">Low</Option>
+            <Option value="MEDIUM">Medium</Option>
+            <Option value="HIGH">High</Option>
+        </Select>
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
-          <FormLabel>Address</FormLabel>
-          <Input startDecorator={<FaLocationDot fontSize={18}/>} value={address} onChange={(e) => setAddress(e.target.value)} disabled={mode === 'view'} />
+          <FormLabel>Description</FormLabel>
+          <HtmlField value={description} setValue={setDescription} disabled={mode === 'view'} />
         </FormControl>
 
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
+          <FormLabel>Images</FormLabel>
+          <Input value={images} onChange={(e) => setImages(e.target.value)} disabled={mode === 'view'} />
+        </FormControl>
 
         </CardContent>
+
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
         <CardActions sx={{ gridColumn: '1/-1' }}>
           {mode === 'add' &&
@@ -164,20 +155,21 @@ export default function EmployeeForm() {
             '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
             '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
            }} startDecorator={<Add />} onClick={handleAdd}>
-            Add Employee
+            Add Fitness Class
           </Button>}
           {mode === 'edit' &&
           <Button variant="solid" sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, 
             '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
             '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
            }} startDecorator={<GiSaveArrow />} onClick={handleSave} >
-            Save Employee
+            Save Fitness Class
           </Button>}
         </CardActions>
 
         </Card>
-        
+
         </div>
-    );
-      
+    )
+
+
 }

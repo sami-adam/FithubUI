@@ -109,9 +109,9 @@ export default function MemberForm() {
             // to make the demo resizable
             overflow: 'auto',
             resize: 'vertical',
-            width: { xs: '80%', md: '100%' },
+            width: { xs: '100%', md: '100%' },
             mt: { xs: 10, md: 4 },
-            ml: { xs: 8, md: "auto" },
+            ml: { xs: 5, md: "auto" },
         }}
         >
         {/* <Divider inset="none" /> */}

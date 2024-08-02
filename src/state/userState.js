@@ -21,7 +21,7 @@ const useUserStore = create((set) => ({
             localStorage.setItem('user', JSON.stringify(user.data));
             set({ user: user.data });
         } catch (error) {
-            set({ error: error.response.data });
+            set({ error: error.response&&error.response.data?error.response.data:error });
         }
     }
 }));

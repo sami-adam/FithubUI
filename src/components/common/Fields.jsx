@@ -48,14 +48,13 @@ export function ButtonDatePicker(props) {
 }
 
 
-export function HtmlField() {
-  const [value, setValue] = React.useState('');
-
+export function HtmlField({ value, setValue, disabled }) {
   return (
     <Box sx={{ padding: '16px', backgroundColor: 'background.level1', borderRadius: '8px' }}>
       <ReactQuill 
         value={value} 
-        onChange={setValue} 
+        onChange={(newValue) => setValue(newValue)}
+        readOnly={disabled}
         modules={{
           toolbar: [
             [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
@@ -63,6 +62,7 @@ export function HtmlField() {
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
             [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
             ['link', 'image', 'video'],
+            [{ 'color': [] }, { 'background': [] }],
             ['clean']
           ],
         }}
@@ -70,7 +70,8 @@ export function HtmlField() {
           'header', 'font', 'size',
           'bold', 'italic', 'underline', 'strike', 'blockquote',
           'list', 'bullet', 'indent',
-          'link', 'image', 'video'
+          'link', 'image', 'video',
+          'color', 'background' 
         ]}
         theme="snow" // Choose the Quill theme
       />

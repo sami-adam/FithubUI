@@ -150,9 +150,6 @@ export default function SubscriptionForm() {
   return (
     <>
     <div>
-      <IconButton onClick={() => window.history.back()}><ArrowBack/></IconButton>
-    </div>
-    <div>
     <Card
       variant="outlined"
       sx={{
@@ -162,9 +159,9 @@ export default function SubscriptionForm() {
         // to make the demo resizable
         overflow: 'auto',
         resize: 'vertical',
-        width: { xs: '80%', md: '50%' },
+        width: { xs: '100%', md: '60%' },
         mt: { xs: 10, md: 4 },
-        ml: { xs: 8, md: "auto" },
+        ml: { xs: 5, md: "auto" },
       }}
     >
       <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />

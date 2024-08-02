@@ -32,6 +32,7 @@ import { BiNews } from "react-icons/bi";
 //import useEmailStore from "../../state/emailState";
 import { FaUsersRectangle } from "react-icons/fa6";
 import { SiFitbit } from "react-icons/si";
+import { KeyboardArrowLeft } from '@mui/icons-material';
 
 
 export default function Sidebar({children}) {
