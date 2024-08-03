@@ -2,7 +2,7 @@ import FormLabel from '@mui/joy/FormLabel';
 import Radio, { radioClasses } from '@mui/joy/Radio';
 import RadioGroup from '@mui/joy/RadioGroup';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import { Button, ButtonGroup, Card, Stack, Typography } from '@mui/joy';
+import { Card, Stack, Typography } from '@mui/joy';
 import { Check } from '@mui/icons-material';
 import useProductCategoryStore from '../../state/productCategoryState';
 import useProductStore from '../../state/productState';
