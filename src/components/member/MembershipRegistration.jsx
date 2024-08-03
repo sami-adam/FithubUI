@@ -12,8 +12,7 @@ import { useEffect, useState } from 'react';
 export default function MembershipRegistration({ setProduct, setAmount}) {
   const [fetchData, setFetchData] = useState(true);
   const [productCategories, fetchProductCategories] = useProductCategoryStore((state) => [state.productCategories, state.fetchProductCategories]);
-  const [products, fetchProducts] = useProductStore((state) => [state.products, state.fetchProducts]);
-
+  const products = useProductStore((state) => state.products);
   const [productCategory, setProductCategory] = useState('');
   //const [product, setProduct] = useState('');
 
@@ -22,10 +21,10 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
   useEffect(() => {
     if (fetchData) {
       fetchProductCategories();
-      //fetchProducts();
+      searchProducts("XZ");
       setFetchData(false);
     }
-  }, [fetchData, fetchProductCategories, fetchProducts]);
+  }, [fetchData, fetchProductCategories, searchProducts]);
     const handleProductChange = (event) => {
       setProduct(event.target.value);
       setAmount(products.find((p) => p.name === event.target.value).price);
@@ -80,7 +79,7 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
             minWidth: 120,
           }}
         >
-          <Radio id={productCategory.id} value={productCategory.name} checkedIcon={<CheckCircleRoundedIcon />}/>
+          <Radio id={productCategory.id} value={productCategory.name} checkedIcon={<CheckCircleRoundedIcon/>}/>
           <FormLabel sx={{fontSize:18}} htmlFor={productCategory.name}>{productCategory.name}</FormLabel>
             <Stack direction="column" spacing={0.5} sx={{ display: 'flex', alignItems: "center", justifyContent: "flex-start" }}>
                 <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"flex-start"}}>
