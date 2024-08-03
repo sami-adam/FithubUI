@@ -23,9 +23,13 @@ const useStripeStore = create(set => ({
         console.error('Error fetching public key:', error);
       }
     },
-    createCheckoutSession: async (amount) => {
+    createCheckoutSession: async (product,amount) => {
       try {
-        const response = await axios.post(`${useStripeStore.getState().baseURL}/stripe/create-checkout-session`, new URLSearchParams({ amount }), {
+        const response = await axios.post(`${useStripeStore.getState().baseURL}/stripe/create-checkout-session`, 
+        new URLSearchParams({ 
+          product,
+          amount 
+        }), {
             headers: {
                 "Authorization": `Bearer ${useStripeStore.getState().token}`,
                 "Content-Type": "application/x-www-form-urlencoded"

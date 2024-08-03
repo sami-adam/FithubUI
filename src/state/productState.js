@@ -61,7 +61,19 @@ const useProductStore = create((set) => ({
         } catch (error) {
             console.error("Error deleting product", error);
         }
-    }
+    },
+    searchProducts: async (searchTerm) => {
+       try {
+            const response = await axios.get(`${useProductStore.getState().baseURL}/products/search/${searchTerm}`, {
+                headers: {
+                    "Authorization": "Bearer " + useProductStore.getState().token,
+                },
+            });
+            set({ products: response.data });
+        } catch (error) {
+            console.error("Error searching products", error);
+        }
+    },
 }))
 
 export default useProductStore;

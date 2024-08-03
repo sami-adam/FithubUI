@@ -1,12 +1,37 @@
-import * as React from 'react';
 import FormLabel from '@mui/joy/FormLabel';
 import Radio, { radioClasses } from '@mui/joy/Radio';
 import RadioGroup from '@mui/joy/RadioGroup';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import { Button, ButtonGroup, Card, Stack, Typography } from '@mui/joy';
 import { Check } from '@mui/icons-material';
+import useProductCategoryStore from '../../state/productCategoryState';
+import useProductStore from '../../state/productState';
+import useMembershipStore from '../../state/membershipState';
+import { useEffect, useState } from 'react';
 
-export default function SubscriptionSelection() {
+export default function MembershipRegistration({ setProduct, setAmount}) {
+  const [fetchData, setFetchData] = useState(true);
+  const [productCategories, fetchProductCategories] = useProductCategoryStore((state) => [state.productCategories, state.fetchProductCategories]);
+  const [products, fetchProducts] = useProductStore((state) => [state.products, state.fetchProducts]);
+
+  const [productCategory, setProductCategory] = useState('');
+  //const [product, setProduct] = useState('');
+
+  const searchProducts = useProductStore((state) => state.searchProducts);
+
+  useEffect(() => {
+    if (fetchData) {
+      fetchProductCategories();
+      //fetchProducts();
+      setFetchData(false);
+    }
+  }, [fetchData, fetchProductCategories, fetchProducts]);
+    const handleProductChange = (event) => {
+      setProduct(event.target.value);
+      setAmount(products.find((p) => p.name === event.target.value).price);
+    }
+
+
   return (
     <>
     <RadioGroup
@@ -14,6 +39,7 @@ export default function SubscriptionSelection() {
       defaultValue="Website"
       overlay
       name="platform"
+      onChange={(event) => searchProducts(event.target.value)}
       sx={{
         flexDirection: 'row',
         display: 'flex',
@@ -39,9 +65,9 @@ export default function SubscriptionSelection() {
         },
       }}
     >
-      {['Silver', 'Gold', 'Perimium'].map((value) => (
+      {productCategories.map((productCategory) => (
         <Card
-          key={value}
+          key={productCategory.id}
           variant="soft"
           sx={{
             borderRadius: 'md',
@@ -54,8 +80,8 @@ export default function SubscriptionSelection() {
             minWidth: 120,
           }}
         >
-          <Radio id={value} value={value} checkedIcon={<CheckCircleRoundedIcon />} />
-          <FormLabel sx={{fontSize:18}} htmlFor={value}>{value}</FormLabel>
+          <Radio id={productCategory.id} value={productCategory.name} checkedIcon={<CheckCircleRoundedIcon />}/>
+          <FormLabel sx={{fontSize:18}} htmlFor={productCategory.name}>{productCategory.name}</FormLabel>
             <Stack direction="column" spacing={0.5} sx={{ display: 'flex', alignItems: "center", justifyContent: "flex-start" }}>
                 <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"flex-start"}}>
                 <Typography startDecorator={<Check/>} variant="contained" color="text.primary" >Gym Access</Typography>
@@ -72,7 +98,8 @@ export default function SubscriptionSelection() {
       aria-label="platform"
       defaultValue="Website"
       overlay
-      name="platform"
+      name="platform" 
+      onChange={handleProductChange}
       sx={{
         flexDirection: 'row',
         gap: 2,
@@ -99,9 +126,9 @@ export default function SubscriptionSelection() {
         },
       }}
     >
-      {['1 Month', "3 Months", "6 Months", "1 Year"].map((value) => (
+      {products.map((product) => (
         <Card
-          key={value}
+          key={product.id}
           variant="soft"
           sx={{
             borderRadius: 'md',
@@ -114,11 +141,13 @@ export default function SubscriptionSelection() {
             minWidth: 200,
           }}
         >
-          <Radio id={value} value={value} checkedIcon={<CheckCircleRoundedIcon />} />
-          <FormLabel sx={{ fontSize: 18}} htmlFor={value}>{value}</FormLabel>
+          <Radio id={product.id} value={product.name} checkedIcon={<CheckCircleRoundedIcon />} />
+          <FormLabel sx={{ fontSize: 18}} htmlFor={product.id}>{product.name}</FormLabel>
 
           <div>
-            <Typography variant="contained" color="primary" startDecorator={<Typography>SAR</Typography>}>3,672</Typography>
+            <Typography variant="contained" color="primary" startDecorator={<Typography>SAR</Typography>}>
+              {product.price.toLocaleString()}
+            </Typography>
           </div>
         </Card>
       ))}

@@ -7,7 +7,7 @@ import { RiVisaLine } from "react-icons/ri";
 import { RiMastercardFill } from "react-icons/ri";
 import { FaApplePay } from "react-icons/fa";
 
-export default function StripePayment() {
+export default function StripePayment({ product, amount }) {
     const {sessionId, fetchPublicKey, createCheckoutSession, setStripe } = useStripeStore();
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function StripePayment() {
     const handleCheckout = async () => {
     try {
         const publicKey = localStorage.getItem('stripePublicKey');
-        const sessionId = await createCheckoutSession(5000); // Amount in cents
+        const sessionId = await createCheckoutSession(product, amount * 100); // Amount in cents
         const stripe = window.Stripe(publicKey);
         stripe.redirectToCheckout({ sessionId })
         .then(result => {
