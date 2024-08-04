@@ -44,6 +44,7 @@ import { SiMicrosoftexcel } from "react-icons/si";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { CardActions } from '@mui/joy';
 import { SnackbarCustom } from './Common';
+import SyncProblemIcon from '@mui/icons-material/SyncProblem';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -427,6 +428,7 @@ function StatusChip({ status }) {
                     EXPIRED: <SyncDisabledIcon />,
                     FAILED: <BlockIcon />,
                     CANCELLED: <BlockIcon />,
+                    EXPIRING: <SyncProblemIcon />,
                 }[status]
             }
             color={
@@ -438,6 +440,7 @@ function StatusChip({ status }) {
                     EXPIRED: 'danger',
                     FAILED: 'danger',
                     CANCELLED: 'warning',
+                    EXPIRING: 'warning',
                 }[status]
             }
             >

@@ -42,7 +42,7 @@ export default function MemberForm() {
     const theme = useTheme();
     const navigate = useNavigate();
 
-    const memberSubscriptions = subscriptions.filter(subscription => subscription.member.id === member.id);
+    const memberSubscriptions = member&&subscriptions.filter(subscription => subscription.member.id === member.id);
 
     useEffect(() => {
         if(member){
@@ -118,13 +118,14 @@ export default function MemberForm() {
         <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
         <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
         <div style={{ paddingTop: 16}}>
+            {subscriptions > 0 &&
             <Button variant="soft" 
                 startDecorator={<FaCalendarAlt/>} 
                 endDecorator={<Typography fontSize="small" >{memberSubscriptions.length}</Typography>}
                 onClick={() => navigate("/subscriptions", {state: {search: member.identificationNumber}})}
                 >
                     <Typography fontSize="small">SUBSCRIPTIONS</Typography>
-            </Button>
+            </Button>}
         </div>
         <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
             <Typography level="title-lg" startDecorator={<BiNews />}>
