@@ -118,7 +118,7 @@ export default function MemberForm() {
         <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
         <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
         <div style={{ paddingTop: 16}}>
-            {subscriptions > 0 &&
+            {member &&
             <Button variant="soft" 
                 startDecorator={<FaCalendarAlt/>} 
                 endDecorator={<Typography fontSize="small" >{memberSubscriptions.length}</Typography>}
