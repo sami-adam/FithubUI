@@ -45,6 +45,7 @@ import { MdOutlineDeleteForever } from "react-icons/md";
 import { CardActions } from '@mui/joy';
 import { SnackbarCustom } from './Common';
 import SyncProblemIcon from '@mui/icons-material/SyncProblem';
+import { useTranslation } from 'react-i18next';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -96,6 +97,7 @@ const stableSort = (array, comparator) => {
   };
 
 function RowMenu() {
+  const {t} = useTranslation();
   return (
     <Dropdown>
       <MenuButton
@@ -105,11 +107,11 @@ function RowMenu() {
         <MoreHorizRoundedIcon />
       </MenuButton>
       <Menu size="sm" sx={{ minWidth: 140 }}>
-        <MenuItem>Edit</MenuItem>
-        <MenuItem>Rename</MenuItem>
-        <MenuItem>Move</MenuItem>
+        <MenuItem>{t("Edit")}</MenuItem>
+        <MenuItem>{t("Rename")}</MenuItem>
+        <MenuItem>{t("Move")}</MenuItem>
         <Divider />
-        <MenuItem color="danger">Delete</MenuItem>
+        <MenuItem color="danger">{t("Delete")}</MenuItem>
       </Menu>
     </Dropdown>
   );
@@ -122,19 +124,21 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
   const [openError, setOpenError] = React.useState(false);
   const [error, setError] = React.useState(null);
 
+  const {t} = useTranslation();
+
   const navigate = useNavigate();
   const renderFilters = () => (
     <React.Fragment>
         {selectionFilters.map((filter) => 
             <FormControl size="sm">
-                <FormLabel>{filter.label}</FormLabel>
+                <FormLabel>{t(filter.label)}</FormLabel>
                 <Select
                 size="sm"
-                placeholder={filter.placeholder}
+                placeholder={t(filter.placeholder)}
                 onChange={(event, newValue) => setSearch(newValue)}
                 slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}>
-                {filter.options.map((option) => <Option value={option}>{option}</Option>)}
-                <Option value="">All</Option>
+                {filter.options.map((option) => <Option value={option}>{t(option)}</Option>)}
+                <Option value="">{t("All")}</Option>
                 </Select>
             </FormControl>
         )}
@@ -169,7 +173,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
             }}
             >
             <Typography level="h2" component="h1">
-                {pageTitle}
+                {t(pageTitle)}
             </Typography>
             {/* <Button
                 color="primary"
@@ -178,7 +182,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
             >
                 Download PDF
             </Button> */}
-            <AddNewButton title={pageTitle} formUrl={formUrl}/>
+            <AddNewButton title={t(pageTitle)} formUrl={formUrl}/>
         </Box>
       <Sheet
         className="SearchAndFilters-mobile"
@@ -190,7 +194,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
       >
         <Input
           size="sm"
-          placeholder="Search"
+          placeholder={t("Search")}
           startDecorator={<SearchIcon />}
           sx={{ flexGrow: 1 }} 
           onChange={(event) => setSearch(event.target.value)}
@@ -207,13 +211,13 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           <ModalDialog aria-labelledby="filter-modal" layout="fullscreen">
             <ModalClose />
             <Typography id="filter-modal" level="h2">
-              Filters
+              {t("Filters")}
             </Typography>
             <Divider sx={{ my: 2 }} />
             <Sheet sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {renderFilters()}
               <Button color="primary" onClick={() => setOpen(false)}>
-                Submit
+                {t("Apply")}
               </Button>
             </Sheet>
           </ModalDialog>
@@ -233,8 +237,8 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for {pageTitle}</FormLabel>
-          <Input size="sm" placeholder="Search" startDecorator={<SearchIcon />} onChange={(event) => setSearch(event.target.value)} />
+          <FormLabel>{t("Search for")} {t(pageTitle)}</FormLabel>
+          <Input size="sm" placeholder={t("Search")} startDecorator={<SearchIcon />} onChange={(event) => setSearch(event.target.value)} />
         </FormControl>
         {renderFilters()}
       </Box>
@@ -270,12 +274,12 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                   startDecorator={<SiMicrosoftexcel />} sx={{
                     ':hover': {backgroundColor: "primary", opacity: 0.5},
                     }}>
-                    Export
+                    {t("Export")}
                 </Button>
                 <Button size="sm" variant="contained" sx={{ color: "red", display: selected.length > 0? "flex": "none",
                     ':hover': {backgroundColor: "danger", opacity: 0.5}
                     }} startDecorator={<MdOutlineDeleteForever fontSize={18}/>}>
-                    Delete
+                    {t("Delete")}
                 </Button>
               </CardActions>
             </tr>
@@ -317,11 +321,11 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                     },
                   }}
                 >
-                  {column.label}
+                  {t(column.label)}
                 </Link>
               </th>
               :
-              <th style={{ width: column.width||100, padding: '12px 6px' }}>{column.label}</th>
+              <th style={{ width: column.width||100, padding: '12px 6px' }}>{t(column.label)}</th>
                 )}
                 <th style={{width:120}}></th>
               
@@ -357,7 +361,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                     <Link level="body-xs" component="button" onClick={() => navigate(formUrl, { state: {object: row.object}})}>
-                      Details
+                      {t("Details")}
                     </Link>
                     <RowMenu />
                   </Box>
@@ -385,7 +389,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           color="neutral"
           startDecorator={<KeyboardArrowLeftIcon />}
         >
-          Previous
+          {t("Previous")}
         </Button>
 
         <Box sx={{ flex: 1 }} />
@@ -407,7 +411,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           color="neutral"
           endDecorator={<KeyboardArrowRightIcon />}
         >
-          Next
+          {t("Next")}
         </Button>
       </Box>
     </React.Fragment>
@@ -415,6 +419,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
 }
 
 function StatusChip({ status }) {
+  const {t} = useTranslation();
     return (
         <Chip
             variant="soft"
@@ -444,7 +449,7 @@ function StatusChip({ status }) {
                 }[status]
             }
             >
-            {status}
+            {t(status)}
             </Chip>
     )}
 

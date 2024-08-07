@@ -34,12 +34,14 @@ import { FaUsersRectangle } from "react-icons/fa6";
 import { SiFitbit } from "react-icons/si";
 import LanguageSwitch from './LanguageSwitch';
 import i18n from '../../i18n';
+import { useTranslation } from 'react-i18next';
 
 
 export default function Sidebar({children}) {
   //const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -116,7 +118,7 @@ export default function Sidebar({children}) {
         <Typography level="title-lg">FitHub</Typography>
         <DarkMode sx={{ ml: 'auto' }} />
       </Box>
-      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
+      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder={t("Search")} />
       <Box className="sidebar-overlay"
         sx={{
           minHeight: 0,
@@ -141,7 +143,7 @@ export default function Sidebar({children}) {
             <ListItemButton onClick={() => navigate("/home")} selected={"/home" === window.location.pathname}>
               <HomeRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Home</Typography>
+                <Typography level="title-sm">{t("Home")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -149,7 +151,7 @@ export default function Sidebar({children}) {
             <ListItemButton onClick={() => navigate("/dashboard")} selected={"/dashboard" === window.location.pathname}>
               <DashboardRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Dashboard</Typography>
+                <Typography level="title-sm">{t("Dashboard")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -157,7 +159,7 @@ export default function Sidebar({children}) {
             <ListItemButton role="menuitem" onClick={() => navigate("/subscriptions")} selected={"/subscriptions" === window.location.pathname}>
               <CalendarMonthIcon />
               <ListItemContent>
-                <Typography level="title-sm">Subscriptions</Typography>
+                <Typography level="title-sm">{t("Subscriptions")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -165,7 +167,7 @@ export default function Sidebar({children}) {
             <ListItemButton role="menuitem" onClick={() => navigate("/fitness-classes")} selected={"/fitness-classes" === window.location.pathname}>
               <SiFitbit fontSize={18}/>
               <ListItemContent>
-                <Typography level="title-sm">Fitness Classes</Typography>
+                <Typography level="title-sm">{t("Fitness Classes")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -173,7 +175,7 @@ export default function Sidebar({children}) {
             <ListItemButton role="menuitem" onClick={() => navigate("/employees")} selected={"/employees" === window.location.pathname}>
               <BsFillPersonVcardFill fontSize={18}/>
               <ListItemContent>
-                <Typography level="title-sm">Employees</Typography>
+                <Typography level="title-sm">{t("Employees")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -181,7 +183,7 @@ export default function Sidebar({children}) {
             <ListItemButton role="menuitem" onClick={() => navigate("/members")} selected={"/members" === window.location.pathname}>
               <GroupsIcon />
               <ListItemContent>
-                <Typography level="title-sm">Members</Typography>
+                <Typography level="title-sm">{t("Members")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -191,7 +193,7 @@ export default function Sidebar({children}) {
             <ListItemButton  onClick={() => navigate("/emails")} selected={"/emails" === window.location.pathname}>
               <QuestionAnswerRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Emails</Typography>
+                <Typography level="title-sm">{t("Emails")}</Typography>
               </ListItemContent>
               <Chip size="sm" color="primary" variant="solid">
                 {14}
@@ -199,13 +201,13 @@ export default function Sidebar({children}) {
             </ListItemButton>
           </ListItem>
           <ListItem nested>
-            <ListSubheader>Master Data</ListSubheader>
+            <ListSubheader>{t("Master Data")}</ListSubheader>
             <List>
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/products")} selected={"/products" === window.location.pathname}>
                   <BiNews />
                   <ListItemContent>
-                    <Typography level="title-sm">Subscription Types</Typography>
+                    <Typography level="title-sm">{t("Subscription Types")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
@@ -214,7 +216,7 @@ export default function Sidebar({children}) {
                 <ListItemButton role="menuitem" onClick={() => navigate("/users")} selected={"/users" === window.location.pathname}>
                   <FaUsersRectangle />
                   <ListItemContent>
-                    <Typography level="title-sm">Users</Typography>
+                    <Typography level="title-sm">{t("Users")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
@@ -238,13 +240,13 @@ export default function Sidebar({children}) {
           <ListItem>
             <ListItemButton>
               <SupportRoundedIcon />
-              Support
+              {t("Support")}
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton>
               <SettingsRoundedIcon />
-              Settings
+              {t("Settings")}
             </ListItemButton>
           </ListItem>
         </List>

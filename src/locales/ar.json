@@ -88,7 +88,30 @@
       "Copyright": "جميع الحقوق محفوظة",
       "EXPIRING": "ينتهي قريبا",
       "Employees": "الموظفين",
-      "IntensityLevel": "مستوى الكثافة"
+      "IntensityLevel": "مستوى الكثافة",
+      "Home": "الرئيسية",
+      "Fitness Classes": "فصول اللياقة",
+      "Master Data": "البيانات الرئيسية",
+      "Subscription Types": "أنواع الاشتراكات",
+      "Users": "المستخدمين",
+      "Support": "الدعم",
+      "Settings": "الإعدادات",
+      "Details": "التفاصيل",
+      "ID Number": "رقم الهوية",
+      "Total Price": "السعر الإجمالي",
+      "Tax": "الضريبة",
+      "Search for": "البحث عن",
+      "Subscription Type": "نوع الاشتراك",
+      "CANCELLED": "ملغى",
+      "All": "الكل",
+      "Filter By Status": "تصفية حسب الحالة",
+      "Filter By Subscription Type": "تصفية حسب نوع الاشتراك",
+      "Add New": "إضافة",
+      "Delete": "حذف",
+      "Subtotal": "المجموع الفرعي",
+      "Taxes": "الضرائب",
+      "Total": "المجموع",
+      "INVOICE": "فاتورة"
 
       
     }

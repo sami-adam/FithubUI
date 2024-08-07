@@ -28,6 +28,7 @@ import { DocumentSnackbar, HorozontalStepper, SnackbarCustom } from '../common/C
 import { GiSaveArrow } from "react-icons/gi";
 import SubscriptionInvoice from '../../reports/SubscriptionInvoice';
 import { MdPictureAsPdf } from "react-icons/md";
+import { useTranslation } from 'react-i18next';
 
 
 export default function SubscriptionForm() {
@@ -54,6 +55,7 @@ export default function SubscriptionForm() {
 
   const inputRef = useRef(null);
   const theme = useTheme();
+  const {t} = useTranslation();
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
@@ -169,16 +171,16 @@ export default function SubscriptionForm() {
       {/* <Divider inset="none" /> */}
       <div style={{paddingTop:16}}>
         <Button variant="soft" startDecorator={<MdPictureAsPdf fontSize={18}/>} onClick={() => setOpenDownload(true)}>
-            <Typography fontSize="small">INVOICE</Typography>
+            <Typography fontSize="small">{t("INVOICE")}</Typography>
         </Button>
       </div>
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
         <div style={{display:"flex", flexDirection:"row"}}>
           <Typography level="title-md" startDecorator={<BiNews />}>
-          {(subscription&&subscription.reference)||"New Subscription"}
+          {(subscription&&subscription.reference)|| t("New Subscription")}
           </Typography>
           {subscription && 
-          <DocumentSnackbar document={<SubscriptionInvoice subscription={subscription} />} fileName="subscription-invoice" title="Subscription Invoice" 
+          <DocumentSnackbar document={<SubscriptionInvoice subscription={subscription} />} fileName="subscription-invoice" title={t("Subscription Invoice")} 
           open={openDownload} setOpen={setOpenDownload}
           />
           }
@@ -191,11 +193,11 @@ export default function SubscriptionForm() {
             <MoreHoriz />
           </MenuButton>
           <Menu size="sm" sx={{ minWidth: 140 }}>
-            <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>Edit</MenuItem>
-            <MenuItem>Rename</MenuItem>
-            <MenuItem>Move</MenuItem>
+            <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("Edit")}</MenuItem>
+            {/* <MenuItem>{t("Rename")}</MenuItem>
+            <MenuItem>{t("Move")}</MenuItem> */}
             <Divider />
-            <MenuItem color="danger" onClick={handelDelete}>Delete</MenuItem>
+            <MenuItem color="danger" onClick={handelDelete}>{t("Delete")}</MenuItem>
           </Menu>
         </Dropdown>
       </div>
@@ -209,7 +211,7 @@ export default function SubscriptionForm() {
         }}
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>Member</FormLabel>
+          <FormLabel>{t("Member")}</FormLabel>
           <Autocomplete startDecorator={<PortraitIcon />}  
           options={members} getOptionLabel={(option) => option.firstName + " " + option.lastName}
           value={member} 
@@ -218,7 +220,7 @@ export default function SubscriptionForm() {
            />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>Subscription</FormLabel>
+          <FormLabel>{t("Subscription")}</FormLabel>
           <Autocomplete startDecorator={<BiNews fontSize={18}/>} 
           options={products} 
           getOptionLabel={(option) => option.name}
@@ -227,7 +229,7 @@ export default function SubscriptionForm() {
           />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>Quantity</FormLabel>
+          <FormLabel>{t("Quantity")}</FormLabel>
           <Input
             type="number"
             slotProps={{
@@ -244,7 +246,7 @@ export default function SubscriptionForm() {
           />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>Unit Price</FormLabel>
+          <FormLabel>{t("Unit Price")}</FormLabel>
           <NumericFormat
             value={unitPrice&&unitPrice.toLocaleString()}
             thousandSeparator
@@ -257,7 +259,7 @@ export default function SubscriptionForm() {
         </FormControl>
         <FormControl></FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>Start Date</FormLabel>
+          <FormLabel>{t("Start Date")}</FormLabel>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <ButtonDatePicker
               label={startDate == null ? null : startDate.format('MM/DD/YYYY')}
@@ -268,7 +270,7 @@ export default function SubscriptionForm() {
           </LocalizationProvider>
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>End Date</FormLabel>
+          <FormLabel>{t("End Date")}</FormLabel>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <ButtonDatePicker
               label={endDate == null ? null : endDate.format('MM/DD/YYYY')}
@@ -285,28 +287,28 @@ export default function SubscriptionForm() {
           <Table variant="outlined">
             <tbody>
             <tr>
-              <th style={{ width:80 }}>Subtotal</th>
+              <th style={{ width:80 }}>{t("Subtotal")}</th>
               <td style={{ border: "none" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
-                  <Typography variant="body2" paddingInlineEnd={1.5}>SAR</Typography>
+                  <Typography variant="body2" paddingInlineEnd={1.5}>{t("SAR")}</Typography>
                   <Typography variant="body2">{subtotal&&subtotal.toLocaleString()}</Typography>
                 </div>
               </td>
             </tr>
             <tr>
-              <th>Taxes</th>
+              <th>{t("Taxes")}</th>
               <td style={{ border: "none" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
-                    <Typography variant="body2" paddingInlineEnd={1.5}>SAR</Typography>
+                    <Typography variant="body2" paddingInlineEnd={1.5}>{t("SAR")}</Typography>
                     <Typography variant="body2">{tax}</Typography>
                 </div>
               </td>
             </tr>
             <tr>
-              <th>Discount</th>
+              <th>{t("Discount")}</th>
               <td style={{ border: "none" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
-                    <Typography variant="body2" paddingInlineEnd={1.5}>SAR</Typography>
+                    <Typography variant="body2" paddingInlineEnd={1.5}>{t("SAR")}</Typography>
                     <NumericFormat
                       value={discount}
                       thousandSeparator
@@ -319,10 +321,10 @@ export default function SubscriptionForm() {
               </td>
             </tr>
             <tr>
-              <th>Total</th>
+              <th>{t("Total")}</th>
               <td style={{ border: "none" }}>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
-                    <Typography variant="body2" paddingInlineEnd={1.5}>SAR</Typography>
+                    <Typography variant="body2" paddingInlineEnd={1.5}>{t("SAR")}</Typography>
                     <Typography variant="body2">{total&&total.toLocaleString()}</Typography>
                 </div>
               </td>

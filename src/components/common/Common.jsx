@@ -18,6 +18,7 @@ import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import Snackbar from '@mui/joy/Snackbar';
 import PDFPrint from "./ReportTools";
+import { useTranslation } from "react-i18next";
 
 export function SnackbarCustom({type, title, message, open, setOpen, duration}) {
     //const [open, setOpen] = React.useState(false);
@@ -130,6 +131,7 @@ export default function StatusChip({ status }) {
 
 export function HorozontalStepper({ stages = ["NEW", "DONE"], currentStage = 1 }) {
     const [activeStep, setActiveStep] = useState(currentStage);
+    const {t} = useTranslation();
     return (
         <Stepper sx={{ width: '100%', overflow:"clip"}}>
         {stages.map((step, index) => (
@@ -151,7 +153,7 @@ export function HorozontalStepper({ stages = ["NEW", "DONE"], currentStage = 1 }
                 }}
                 >
                 <StepButton sx={{fontSize:{xs:"0.7rem", sm:"0.8rem"}, fontWeight: activeStep === index ? "bold" : "normal", color: activeStep === index ? "primary.main" : "neutral"}}
-                onClick={() => setActiveStep(activeStep||index)}>{step}</StepButton>
+                onClick={() => setActiveStep(activeStep||index)}>{t(step)}</StepButton>
             </Step>
         ))}
         </Stepper>
