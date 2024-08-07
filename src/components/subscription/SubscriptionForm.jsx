@@ -21,7 +21,7 @@ import useSubscriptionStore from '../../state/subscriptionState';
 import { ButtonDatePicker } from '../common/Fields';
 import dayjs from 'dayjs';
 import { useTheme } from '@emotion/react';
-import { Add, ArrowBack, MoreHoriz } from '@mui/icons-material';
+import { Add, MoreHoriz } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
 import { useLocation } from 'react-router-dom';
 import { DocumentSnackbar, HorozontalStepper, SnackbarCustom } from '../common/Common';

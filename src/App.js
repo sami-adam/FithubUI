@@ -13,7 +13,7 @@ import ProductPage from './pages/ProductPage';
 import UserPage from './pages/UserPage';
 import SubscriptionForm from './components/subscription/SubscriptionForm';
 import { Experimental_CssVarsProvider as MaterialCssVarsProvider } from '@mui/material/styles';
-import { CssVarsProvider, extendTheme as extendJoyTheme, THEME_ID } from '@mui/joy/styles';
+import { CssVarsProvider } from '@mui/joy/styles';
 import ProductForm from './components/product/ProductForm';
 import EmployeeForm from './components/employee/EmployeeForm';
 import ErrorBoundary from './components/common/ErrorBoundary';
