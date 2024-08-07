@@ -28,7 +28,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { BsFillPersonVcardFill } from "react-icons/bs";
-import { ListSubheader } from '@mui/joy';
+import { Button, ListSubheader } from '@mui/joy';
 import { BiNews } from "react-icons/bi";
 //import useEmailStore from "../../state/emailState";
 import { FaUsersRectangle } from "react-icons/fa6";
@@ -36,6 +36,7 @@ import { SiFitbit } from "react-icons/si";
 import LanguageSwitch from './LanguageSwitch';
 import i18n from '../../i18n';
 import { useTranslation } from 'react-i18next';
+import { KeyboardArrowLeft } from '@mui/icons-material';
 
 
 export default function Sidebar({children}) {
@@ -278,6 +279,10 @@ export default function Sidebar({children}) {
     </Sheet>}
     <div style={{display:"flex",justifyContent:"center", alignItems:"start", width:"80%"}}>
         {children}
+    </div>
+    <div style={{paddingTop:{xs: 36, sm:14}, display: window.location.pathname.includes("form")? "block": "none"}}>
+      <Button variant='contained' onClick={() => window.history.back()}
+      ><Typography>{t("Back")}</Typography></Button>
     </div>
     </div>
   );
