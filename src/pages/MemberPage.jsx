@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import useMemberStore from "../state/memberState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
+import { useTranslation } from "react-i18next";
 
 export default function MemberPage() {
     const [members, fetchMembers] = useMemberStore((state) => [state.members, state.fetchMembers]);
+    const {t} = useTranslation();
     useEffect(() => {
         fetchMembers();
     }, [fetchMembers]);
@@ -26,7 +28,7 @@ export default function MemberPage() {
         "name": member.firstName + " " + member.lastName,
         "email": member.email,
         "phone": member.phone,
-        "gender": member.gender,
+        "gender": t(member.gender),
         "status": member.status,
         "object": member,
     }));

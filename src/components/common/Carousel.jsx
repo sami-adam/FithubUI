@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Typography } from '@mui/joy';
+import { Box, Button, Typography, useTheme } from '@mui/joy';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 
 export default function Carousel({ items }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const theme  = useTheme();
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? items.length - 1 : prevIndex - 1));
@@ -32,7 +34,7 @@ export default function Carousel({ items }) {
           <img
             src={item.image}
             alt={item.title}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            style={{ width: '100%', height: '60%', objectFit:"revert-layer" }}
           />
           <Typography
             level="h6"
@@ -42,17 +44,17 @@ export default function Carousel({ items }) {
           </Typography>
         </Box>
       ))}
-      <Button
+      <Button variant="contained"
         onClick={handlePrev}
-        sx={{ position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)' }}
+        sx={{ position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)', color: theme.palette.common.white }}
       >
-        Prev
+        <ArrowForward />
       </Button>
-      <Button
+      <Button variant="contained"
         onClick={handleNext}
-        sx={{ position: 'absolute', top: '50%', right: 10, transform: 'translateY(-50%)' }}
+        sx={{ position: 'absolute', top: '50%', right: 10, transform: 'translateY(-50%)', color: theme.palette.common.white }}
       >
-        Next
+        <ArrowBack />
       </Button>
     </Box>
   );

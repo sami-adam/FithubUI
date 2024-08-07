@@ -17,7 +17,7 @@ export default function AddNewButton({ title, formUrl }){
             startDecorator={<Add />}
             onClick={() => navogate(formUrl, {state: {viewMode: "add"}})}
             size="sm">
-            {t("Add New")} {title}
+            {t("Add New")} {t(title)}
         </Button>
     )
 }

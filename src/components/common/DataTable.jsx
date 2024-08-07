@@ -108,8 +108,8 @@ function RowMenu() {
       </MenuButton>
       <Menu size="sm" sx={{ minWidth: 140 }}>
         <MenuItem>{t("Edit")}</MenuItem>
-        <MenuItem>{t("Rename")}</MenuItem>
-        <MenuItem>{t("Move")}</MenuItem>
+        {/* <MenuItem>{t("Rename")}</MenuItem>
+        <MenuItem>{t("Move")}</MenuItem> */}
         <Divider />
         <MenuItem color="danger">{t("Delete")}</MenuItem>
       </Menu>

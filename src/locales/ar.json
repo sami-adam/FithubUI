@@ -123,7 +123,32 @@
       "Full Name": "الاسم الكامل",
       "Gender": "النوع",
       "Previous": "السابق",
-      "Next": "التالي"
+      "Next": "التالي",
+      "SAR": "ريال",
+      "Trending": "الأكثر رواجا",
+      "LOW": "منخفض",
+      "MEDIUM": "متوسط",
+      "HIGH": "عالي",
+      "Fitness Class": "فصل اللياقة",
+      "Yoga Class": "فصل اليوغا",
+      "Fitness Class Information": "معلومات فصل اللياقة",
+      "Intensity Level": "مستوى الكثافة",
+      "Low": "منخفض",
+      "Medium": "متوسط",
+      "High": "عالي",
+      "Images": "الصور",
+      "Save Fitness Class": "حفظ فصل اللياقة",
+      "Employee Information": "معلومات الموظف",
+      "Add Employee": "إضافة موظف",
+      "Save Employee": "حفظ الموظف",
+      "SUBSCRIPTIONS": "الاشتراكات",
+      "Member Information": "معلومات المشترك",
+      "Add Member": "إضافة مشترك",
+      "Save Member": "حفظ المشترك",
+      "Male": "ذكر",
+      "Female": "أنثى",
+      "MALE": "ذكر",
+      "FEMALE": "أنثى"
     }
   }
   

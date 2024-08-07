@@ -251,7 +251,7 @@ export default function SubscriptionForm() {
             value={unitPrice&&unitPrice.toLocaleString()}
             thousandSeparator
             customInput={Input} 
-            startDecorator={<Typography variant="body2">SAR</Typography>}
+            startDecorator={<Typography variant="body2">{t("SAR")}</Typography>}
             disabled 
             sx={{ border: 'none' }}
             onChange={(e) => setUnitPrice(e.target.value)}

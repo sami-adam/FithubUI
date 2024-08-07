@@ -23,6 +23,7 @@ import FitnessClassForm from './components/fitnessClass/FitnessClassForm';
 import i18n from './i18n';
 import theme, { cacheLtr, cacheRtl } from './theme';
 import { CacheProvider } from '@emotion/react';
+import SupportPage from './pages/SupportPage';
 //const joyTheme = extendJoyTheme();
 
 
@@ -53,6 +54,7 @@ function App() {
           <Route path="/users" element={<UserPage/>} />
           <Route path="/fitness-classes" element={<FitnessClassPage/>} />
           <Route path="/fitness-class-form" element={<FitnessClassForm/>} />
+          <Route path="/support" element={<SupportPage/>} />
         </Routes>
         </Sidebar>
       </BrowserRouter>

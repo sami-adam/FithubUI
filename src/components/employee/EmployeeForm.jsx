@@ -12,6 +12,7 @@ import { LiaPhoneSquareSolid } from "react-icons/lia";
 import { FaLocationDot } from "react-icons/fa6";
 import { GiSaveArrow } from 'react-icons/gi';
 import { SnackbarCustom } from '../common/Common';
+import { useTranslation } from 'react-i18next';
 
 
 export default function EmployeeForm() {
@@ -37,6 +38,7 @@ export default function EmployeeForm() {
 
     const employee = location.state.object;
     const theme = useTheme();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if(employee){
@@ -105,7 +107,7 @@ export default function EmployeeForm() {
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
         <Typography level="title-lg" startDecorator={<BiNews />}>
-            Employee Info
+            {t("Employee Information")}
         </Typography>
         <Dropdown>
           <MenuButton
@@ -115,11 +117,10 @@ export default function EmployeeForm() {
             <MoreHoriz />
           </MenuButton>
           <Menu size="sm" sx={{ minWidth: 140 }}>
-            <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>Edit</MenuItem>
-            <MenuItem>Rename</MenuItem>
-            <MenuItem>Move</MenuItem>
+            <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("Edit")}</MenuItem>
+            
             <Divider />
-            <MenuItem color="danger" onClick={handelDelete}>Delete</MenuItem>
+            <MenuItem color="danger" onClick={handelDelete}>{t("Delete")}</MenuItem>
           </Menu>
         </Dropdown>
       </div>
@@ -132,26 +133,26 @@ export default function EmployeeForm() {
         }}
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>{t("Name")}</FormLabel>
           <Input startDecorator={<BsFilePerson fontSize={18}/>} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>ID Number</FormLabel>
+          <FormLabel>{t("ID Number")}</FormLabel>
           <Input startDecorator={<HiOutlineIdentification fontSize={18} />} value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>Email</FormLabel>
+          <FormLabel>{t("Email")}</FormLabel>
           <Input type="email" startDecorator={<MdOutlineMailOutline fontSize={18}/>} value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>Phone</FormLabel>
+          <FormLabel>{t("Phone")}</FormLabel>
           <Input startDecorator={<LiaPhoneSquareSolid fontSize={22} />} value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
-          <FormLabel>Address</FormLabel>
+          <FormLabel>{t("Address")}</FormLabel>
           <Input startDecorator={<FaLocationDot fontSize={18}/>} value={address} onChange={(e) => setAddress(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
@@ -164,14 +165,14 @@ export default function EmployeeForm() {
             '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
             '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
            }} startDecorator={<Add />} onClick={handleAdd}>
-            Add Employee
+            {t("Add Employee")}
           </Button>}
           {mode === 'edit' &&
           <Button variant="solid" sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, 
             '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
             '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
            }} startDecorator={<GiSaveArrow />} onClick={handleSave} >
-            Save Employee
+            {t("Save Employee")}
           </Button>}
         </CardActions>
 

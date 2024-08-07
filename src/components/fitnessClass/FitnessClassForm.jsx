@@ -8,6 +8,7 @@ import { SnackbarCustom } from '../common/Common';
 import { BiNews } from "react-icons/bi";
 import { GiSaveArrow } from 'react-icons/gi';
 import { HtmlField } from "../common/Fields";
+import { useTranslation } from "react-i18next";
 
 
 export default function FitnessClassForm() {
@@ -21,6 +22,7 @@ export default function FitnessClassForm() {
     const deleteFitnessClass = useFitnessClassStore((state) => state.deleteFitnessClass);
 
     const [mode, setMode] = useState(location.state.viewMode||'view');
+    const {t} = useTranslation();
 
     const [name, setName] = useState('');
     const [intensityLevel, setIntensityLevel] = useState('');
@@ -97,7 +99,7 @@ export default function FitnessClassForm() {
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
         <Typography level="title-lg" startDecorator={<BiNews />}>
-            Fitness Class Info
+            {t("Fitness Class Information")}
         </Typography>
         <Dropdown>
           <MenuButton
@@ -107,11 +109,9 @@ export default function FitnessClassForm() {
             <MoreHoriz />
           </MenuButton>
           <Menu size="sm" sx={{ minWidth: 140 }}>
-            <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>Edit</MenuItem>
-            <MenuItem>Rename</MenuItem>
-            <MenuItem>Move</MenuItem>
+            <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("Edit")}</MenuItem>
             <Divider />
-            <MenuItem color="danger" onClick={handleDelete}>Delete</MenuItem>
+            <MenuItem color="danger" onClick={handleDelete}>{t("Delete")}</MenuItem>
           </Menu>
         </Dropdown>
       </div>
@@ -124,25 +124,25 @@ export default function FitnessClassForm() {
         }}
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>Name</FormLabel>
-          <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
+          <FormLabel>{t("Name")}</FormLabel>
+          <Input value={t(name)} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>Intensity Level</FormLabel>
+          <FormLabel>{t("Intensity Level")}</FormLabel>
           <Select value={intensityLevel} onChange={(e, newValue) => setIntensityLevel(newValue)} disabled={mode === 'view'}>
-            <Option value="LOW">Low</Option>
-            <Option value="MEDIUM">Medium</Option>
-            <Option value="HIGH">High</Option>
+            <Option value="LOW">{t("Low")}</Option>
+            <Option value="MEDIUM">{t("Medium")}</Option>
+            <Option value="HIGH">{t("High")}</Option>
         </Select>
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
-          <FormLabel>Description</FormLabel>
+          <FormLabel>{t("Description")}</FormLabel>
           <HtmlField value={description} setValue={setDescription} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
-          <FormLabel>Images</FormLabel>
+          <FormLabel>{t("Images")}</FormLabel>
           <Input value={images} onChange={(e) => setImages(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
@@ -155,14 +155,14 @@ export default function FitnessClassForm() {
             '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
             '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
            }} startDecorator={<Add />} onClick={handleAdd}>
-            Add Fitness Class
+            {t("Add Fitness Class")}
           </Button>}
           {mode === 'edit' &&
           <Button variant="solid" sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, 
             '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
             '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
            }} startDecorator={<GiSaveArrow />} onClick={handleSave} >
-            Save Fitness Class
+            {t("Save Fitness Class")}
           </Button>}
         </CardActions>
 

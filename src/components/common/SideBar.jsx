@@ -20,6 +20,7 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import { closeSidebar } from './../../utils';
 import DarkMode from './DarkMode';
@@ -238,9 +239,15 @@ export default function Sidebar({children}) {
           }}
         >
           <ListItem>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate("/support")} selected={"/support" === window.location.pathname}>
               <SupportRoundedIcon />
               {t("Support")}
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton>
+              <NotificationsIcon />
+              {t("Notifications")}
             </ListItemButton>
           </ListItem>
           <ListItem>

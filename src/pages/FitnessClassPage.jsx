@@ -3,9 +3,11 @@ import useFitnessClassStore from "../state/fitnessClassState";
 import FitnessClassCard from "../components/fitnessClass/FitnessClassCard";
 import { Box, Grid, Typography } from "@mui/joy";
 import AddNewButton from "../components/common/Buttons";
+import { useTranslation } from "react-i18next";
 
 export default function FitnessClassPage() {
     const [fitnessClasses, fetchFitnessClasses] = useFitnessClassStore((state) => [state.fitnessClasses, state.fetchFitnessClasses]);
+    const {t} = useTranslation();
 
     useEffect(() => {
         fetchFitnessClasses();
@@ -27,7 +29,7 @@ export default function FitnessClassPage() {
             }}
             >
             <Typography level="h2" component="h1">
-                Fitness Classes
+                {t("Fitness Classes")}
             </Typography>
             <AddNewButton title="Fitness Class" formUrl={"/fitness-class-form"} />
         </Box>

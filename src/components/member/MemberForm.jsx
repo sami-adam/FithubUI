@@ -12,6 +12,7 @@ import { LiaPhoneSquareSolid } from "react-icons/lia";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { GiSaveArrow } from 'react-icons/gi';
 import { FaCalendarAlt } from "react-icons/fa";
+import { useTranslation } from 'react-i18next';
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -25,6 +26,7 @@ export default function MemberForm() {
     const deleteMember = useMemberStore((state) => state.deleteMember);
     const [subscriptions, fetchSubscriptions] = useSubscriptionStore((state) => [state.subscriptions, state.fetchSubscriptions]);
     const [fetchData, setFetchData] = useState(true);
+    const {t} = useTranslation();
 
     const [mode, setMode] = useState(location.state.viewMode||'view');
 
@@ -124,12 +126,12 @@ export default function MemberForm() {
                 endDecorator={<Typography fontSize="small" >{memberSubscriptions.length}</Typography>}
                 onClick={() => navigate("/subscriptions", {state: {search: member.identificationNumber}})}
                 >
-                    <Typography fontSize="small">SUBSCRIPTIONS</Typography>
+                    <Typography fontSize="small">{t("SUBSCRIPTIONS")}</Typography>
             </Button>}
         </div>
         <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
             <Typography level="title-lg" startDecorator={<BiNews />}>
-                Member Info
+                {t("Member Information")}
             </Typography>
             <Dropdown>
             <MenuButton
@@ -139,11 +141,10 @@ export default function MemberForm() {
                 <MoreHoriz />
             </MenuButton>
             <Menu size="sm" sx={{ minWidth: 140 }}>
-                <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>Edit</MenuItem>
-                <MenuItem>Rename</MenuItem>
-                <MenuItem>Move</MenuItem>
+                <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("Edit")}</MenuItem>
+            
                 <Divider />
-                <MenuItem color="danger" onClick={handleDelete}>Delete</MenuItem>
+                <MenuItem color="danger" onClick={handleDelete}>{t("Delete")}</MenuItem>
             </Menu>
             </Dropdown>
         </div>
@@ -156,21 +157,21 @@ export default function MemberForm() {
             }}
         >
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-                <FormLabel>First Name</FormLabel>
+                <FormLabel>{t("First Name")}</FormLabel>
                 <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-                <FormLabel>Last Name</FormLabel>
+                <FormLabel>{t("Last Name")}</FormLabel>
                 <Input value={lastName} onChange={(e) => setLastName(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-                <FormLabel>ID Number</FormLabel>
+                <FormLabel>{t("ID Number")}</FormLabel>
                 <Input startDecorator={<HiOutlineIdentification fontSize={18}/>} value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-                <FormLabel>Gender</FormLabel>
+                <FormLabel>{t("Gender")}</FormLabel>
                 <Box sx={{ display: 'flex', gap: 2 }}>
                     <Radio 
                         checked={gender === 0}
@@ -178,7 +179,7 @@ export default function MemberForm() {
                         value={0}
                         name="radio-buttons"
                         slotProps={{ input: { 'aria-label': 'Male' } }}
-                        label="Male"
+                        label={t("Male")}
                         disabled={mode === 'view'}
                     />
                     <Radio 
@@ -187,19 +188,19 @@ export default function MemberForm() {
                         value={1}
                         name="radio-buttons"
                         slotProps={{ input: { 'aria-label': 'Female' } }}
-                        label="Female"
+                        label={t("Female")}
                         disabled={mode === 'view'}
                     />
                 </Box>
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>{t("Email")}</FormLabel>
             <Input type="email" startDecorator={<MdOutlineMailOutline fontSize={18}/>} value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-            <FormLabel>Phone</FormLabel>
+            <FormLabel>{t("Phone")}</FormLabel>
             <Input startDecorator={<LiaPhoneSquareSolid fontSize={22} />} value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
@@ -211,14 +212,14 @@ export default function MemberForm() {
                 '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
                 '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
             }} startDecorator={<Add />} onClick={handleAdd}>
-                Add Member
+                {t("Add Member")}
             </Button>}
             {mode === 'edit' &&
             <Button variant="solid" sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, 
                 '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
                 '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
             }} startDecorator={<GiSaveArrow />} onClick={handleSave} >
-                Save Member
+                {t("Save Member")}
             </Button>}
             </CardActions>
 
