@@ -161,6 +161,7 @@ export function HorozontalStepper({ stages = ["NEW", "DONE"], currentStage = 1 }
     }
 
 export function DocumentSnackbar({document, fileName, title, open, setOpen}) {
+  const {t} = useTranslation();
 
   return (
     <div>
@@ -182,7 +183,7 @@ export function DocumentSnackbar({document, fileName, title, open, setOpen}) {
       >
         <div>
           <Typography sx={{ mt: 1, mb: 2 }}>
-            Proceed To Download?
+            {t("Proceed To Download?")}
           </Typography>
           <Stack direction="row" spacing={1}>
             <PDFPrint document={document} fileName={fileName} title={title} setOpen={setOpen}/>
@@ -191,7 +192,7 @@ export function DocumentSnackbar({document, fileName, title, open, setOpen}) {
               color="primary"
               onClick={() => setOpen(false)}
             >
-              Cancel
+              {t("Cancel")}
             </Button>
           </Stack>
         </div>
