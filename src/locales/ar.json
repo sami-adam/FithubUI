@@ -115,9 +115,15 @@
       "Proceed To Download?": "المتابعة للتحميل؟",
       "Cancel": "إلغاء",
       "Subscription Invoice": "فاتورة الاشتراك",
-      "Loading document": "جاري تحميل المستند"
-
-      
+      "Loading document": "جاري تحميل المستند",
+      "Username": "اسم المستخدم",
+      "Role": "الدور",
+      "From": "من",
+      "To": "إلى",
+      "Full Name": "الاسم الكامل",
+      "Gender": "النوع",
+      "Previous": "السابق",
+      "Next": "التالي"
     }
   }
   
