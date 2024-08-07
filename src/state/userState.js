@@ -9,9 +9,9 @@ const useUserStore = create((set) => ({
     fetchUser: async (userDict) => {
         try {
             const response = await axios.post(useUserStore.getState().baseURL + "/auth/signIn", userDict);
-            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('token', response.data.data.token);
             if (! localStorage.getItem("refreshToken")) {
-                localStorage.setItem('refreshToken', response.data.refreshToken);
+                localStorage.setItem('refreshToken', response.data.data.refreshToken);
             }
             const user = await axios.get(useUserStore.getState().baseURL + "/auth/user", {
                 headers: {

@@ -32,7 +32,8 @@ import { BiNews } from "react-icons/bi";
 //import useEmailStore from "../../state/emailState";
 import { FaUsersRectangle } from "react-icons/fa6";
 import { SiFitbit } from "react-icons/si";
-import { KeyboardArrowLeft } from '@mui/icons-material';
+import LanguageSwitch from './LanguageSwitch';
+import i18n from '../../i18n';
 
 
 export default function Sidebar({children}) {
@@ -61,7 +62,7 @@ export default function Sidebar({children}) {
       sx={{
         position: { xs: 'fixed', md: 'sticky' },
         transform: {
-          xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1)))',
+          xs: i18n.language === 'en'? 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1)))' : 'translateX(calc(-100% * (var(--SideNavigation-slideIn, 0) - 1)))',
           md: 'none',
         },
         transition: 'transform 0.4s, width 0.4s',
@@ -101,7 +102,8 @@ export default function Sidebar({children}) {
           backgroundColor: 'var(--joy-palette-background-backdrop)',
           transition: 'opacity 0.4s',
           transform: {
-            xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1) + var(--SideNavigation-slideIn, 0) * var(--Sidebar-width, 0px)))',
+            xs: i18n.language === 'en'? 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1) + var(--SideNavigation-slideIn, 0) * var(--Sidebar-width, 0px)))':
+            'translateX(calc(-100% * (var(--SideNavigation-slideIn, 0) - 1) - var(--SideNavigation-slideIn, 0) * var(--Sidebar-width, 0px)))',
             lg: 'translateX(-100%)',
           },
         }}
@@ -246,6 +248,8 @@ export default function Sidebar({children}) {
             </ListItemButton>
           </ListItem>
         </List>
+
+        <LanguageSwitch />
         
       </Box>
       <Divider />

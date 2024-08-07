@@ -1,7 +1,22 @@
 // theme.js
 import { extendTheme } from '@mui/joy/styles';
+import createCache from '@emotion/cache';
+import i18n from './i18n';
+import stylisRTLPlugin from 'stylis-plugin-rtl';
+import { prefixer } from 'stylis';
+
+const cacheRtl = createCache({
+  key: 'joyrtl',
+  stylisPlugins: [prefixer, stylisRTLPlugin],
+});
+
+const cacheLtr = createCache({
+  key: 'joyltr',
+  stylisPlugins: [prefixer],
+});
 
 const theme = extendTheme({
+  direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
   colorSchemes: {
     light: {
       palette: {
@@ -35,3 +50,4 @@ const theme = extendTheme({
 });
 
 export default theme;
+export { cacheRtl, cacheLtr };

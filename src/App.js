@@ -20,14 +20,18 @@ import ErrorBoundary from './components/common/ErrorBoundary';
 import MemberForm from './components/member/MemberForm';
 import FitnessClassPage from './pages/FitnessClassPage';
 import FitnessClassForm from './components/fitnessClass/FitnessClassForm';
-const joyTheme = extendJoyTheme();
+import i18n from './i18n';
+import theme, { cacheLtr, cacheRtl } from './theme';
+import { CacheProvider } from '@emotion/react';
+//const joyTheme = extendJoyTheme();
 
 
 function App() {
   return (
+    <CacheProvider value={i18n.language === 'ar' ? cacheRtl : cacheLtr}>
     <ErrorBoundary>
     <MaterialCssVarsProvider>
-    <CssVarsProvider theme={{ [THEME_ID]: joyTheme }}>
+    <CssVarsProvider theme={theme}>
       <BrowserRouter>
         <CssBaseline />
         <Header />
@@ -55,6 +59,7 @@ function App() {
     </CssVarsProvider>
     </MaterialCssVarsProvider>
     </ErrorBoundary>
+    </CacheProvider>
   );
 }
 
