@@ -16,6 +16,13 @@ const cacheLtr = createCache({
 });
 
 const theme = extendTheme({
+  fontFamily: {
+    display: i18n.language === 'ar' ? 'IBM Sans Arabic' : 'sans-serif', // applies to `h1`–`h4`
+    body: i18n.language === 'ar' ? 'IBM Sans Arabic' : 'sans-serif', // applies to `title-*` and `body-*`
+  },
+  typography: {
+    fontFamily: i18n.language === 'ar' ? 'IBM Sans Arabic' : 'sans-serif',
+  },
   direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
   colorSchemes: {
     light: {

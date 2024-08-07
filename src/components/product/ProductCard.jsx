@@ -14,7 +14,7 @@ export default function ProductCard({ product }) {
     <Card sx={{ width: { xs: 1, sm: 1 , md: 1 }, height: { xs: 1, sm: 1, md: 1 } }}>
       <div>
         <Typography level="title-lg">{product.name}</Typography>
-        <Typography level="body-sm">{product.category && product.category.name}</Typography>
+        <Typography level="body-sm">{product.category && product.category.name + "(" + product.durationType + ")"}</Typography>
         <Chip
             variant="soft"
             size="sm"
