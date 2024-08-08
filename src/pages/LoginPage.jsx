@@ -9,6 +9,8 @@ import Link from '@mui/joy/Link';
 import { useEffect, useState } from 'react';
 import useUserStore from '../state/userState';
 import { SnackbarCustom } from '../components/common/Common';
+import { useTranslation } from 'react-i18next';
+import i18n from "../i18n";
 
 
 export default function LoginPage() {
@@ -20,6 +22,7 @@ export default function LoginPage() {
   const [open, setOpen] = useState(Boolean(error))
 
   console.log(error);
+  const {t} = useTranslation();
 
   const handleLogin = async () => {
     await fetchUser({ email, password });
@@ -38,7 +41,7 @@ export default function LoginPage() {
   return (
     <main>
       <CssBaseline />
-      <div style={{ paddingInlineStart: 80, paddingBlockStart: 30 }}>
+      <div style={{ paddingInlineStart: 80, paddingBlockStart: 30 }} dir={i18n.dir()}>
       <Sheet
         sx={{
           width: 300,
@@ -60,12 +63,12 @@ export default function LoginPage() {
         <div>
           {error && <SnackbarCustom type="error" message={error.message} open={open} setOpen={setOpen} />}
           <Typography level="h4" component="h1">
-            <b>Welcome!</b>
+            <b>{t("Welcome!")}</b>
           </Typography>
-          <Typography level="body-sm">Sign in to continue.</Typography>
+          <Typography level="body-sm">{t("Sign in to continue.")}</Typography>
         </div>
         <FormControl>
-          <FormLabel>Email</FormLabel>
+          <FormLabel>{t("Email")}</FormLabel>
           <Input
             id="email"
             name="email"
@@ -75,7 +78,7 @@ export default function LoginPage() {
           />
         </FormControl>
         <FormControl>
-          <FormLabel>Password</FormLabel>
+          <FormLabel>{t("Password")}</FormLabel>
           <Input  
             id="password"
             name="password"
@@ -84,13 +87,13 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </FormControl>
-        <Button sx={{ mt: 1 /* margin top */}} onClick={handleLogin} type='button'>Log in</Button>
+        <Button sx={{ mt: 1 /* margin top */}} onClick={handleLogin} type='button'>{t("Log in")}</Button>
         <Typography
-          endDecorator={<Link href="/sign-up">Sign up</Link>}
+          endDecorator={<Link href="/sign-up">{t("Sign up")}</Link>}
           fontSize="sm"
           sx={{ alignSelf: 'center' }}
         >
-          Don&apos;t have an account?
+          {t("Don't have an account?")}
         </Typography>
       </Sheet>
       </div>

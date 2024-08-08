@@ -1,5 +1,4 @@
 import Card from '@mui/joy/Card';
-import CardActions from '@mui/joy/CardActions';
 import CardContent from '@mui/joy/CardContent';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
@@ -9,23 +8,24 @@ import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
 import PortraitIcon from '@mui/icons-material/Portrait';
 import { AiOutlineNumber } from "react-icons/ai";
-import { Autocomplete, Box, Dropdown, IconButton, Menu, MenuButton, MenuItem, Table } from '@mui/joy';
+import { Autocomplete, Box, Table } from '@mui/joy';
 import { BiNews } from "react-icons/bi";
 import { useEffect, useRef, useState } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { BiEdit } from "react-icons/bi";
+import { IoTrashBinOutline } from "react-icons/io5";
+import { CiSaveDown2 } from "react-icons/ci";
 
 import useMemberStore from '../../state/memberState';
 import useProductStore from '../../state/productState';
 import useSubscriptionStore from '../../state/subscriptionState';
 import { ButtonDatePicker } from '../common/Fields';
 import dayjs from 'dayjs';
-import { useTheme } from '@emotion/react';
-import { Add, MoreHoriz } from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
 import { useLocation } from 'react-router-dom';
 import { DocumentSnackbar, HorozontalStepper, SnackbarCustom } from '../common/Common';
-import { GiSaveArrow } from "react-icons/gi";
 import SubscriptionInvoice from '../../reports/SubscriptionInvoice';
 import { MdPictureAsPdf } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
@@ -54,7 +54,6 @@ export default function SubscriptionForm() {
   const [openDownload, setOpenDownload] = useState(false);
 
   const inputRef = useRef(null);
-  const theme = useTheme();
   const {t} = useTranslation();
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -185,21 +184,14 @@ export default function SubscriptionForm() {
           />
           }
         </div>
-        <Dropdown>
-          <MenuButton
-            slots={{ root: IconButton }}
-            slotProps={{ root: { variant: 'plain', color: 'neutral', size: 'sm' } }}
-          >
-            <MoreHoriz />
-          </MenuButton>
-          <Menu size="sm" sx={{ minWidth: 140 }}>
-            <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("Edit")}</MenuItem>
-            {/* <MenuItem>{t("Rename")}</MenuItem>
-            <MenuItem>{t("Move")}</MenuItem> */}
-            <Divider />
-            <MenuItem color="danger" onClick={handelDelete}>{t("Delete")}</MenuItem>
-          </Menu>
-        </Dropdown>
+        <div style={{ display: "flex", flexDirection:"row"}}>
+          <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
+          <Button variant='soft' startDecorator={<CiSaveDown2 fontSize={20}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
+          <Box flexGrow={1} width={4}/>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
+          <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+        </div>
+        
       </div>
       {/* <Divider inset="none" /> */}
       <CardContent
@@ -344,22 +336,6 @@ export default function SubscriptionForm() {
         </FormControl>
       
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
-        <CardActions sx={{ gridColumn: '1/-1' }}>
-          {mode === 'add' &&
-          <Button variant="solid" sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, 
-            '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
-            '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
-           }} startDecorator={<Add />} onClick={handleAdd}>
-            Add Subscription
-          </Button>}
-          {mode === 'edit' &&
-          <Button variant="solid" sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, 
-            '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
-            '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
-           }} startDecorator={<GiSaveArrow />} onClick={handleSave} >
-            Save Subscription
-          </Button>}
-        </CardActions>
       </CardContent>
     </Card>
     </div>

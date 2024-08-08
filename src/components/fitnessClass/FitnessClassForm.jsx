@@ -1,14 +1,16 @@
 import useFitnessClassStore from "../../state/fitnessClassState";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Dropdown, Menu, MenuButton, MenuItem, Option, Select, useTheme } from '@mui/joy';
-import { Box, Button, Card, CardActions, CardContent, Divider, FormControl, FormLabel, IconButton, Input, Typography } from '@mui/joy';
-import { Add, MoreHoriz } from '@mui/icons-material';
+import {  Option, Select, useTheme } from '@mui/joy';
+import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
+import { Add } from '@mui/icons-material';
 import { SnackbarCustom } from '../common/Common';
 import { BiNews } from "react-icons/bi";
-import { GiSaveArrow } from 'react-icons/gi';
 import { HtmlField } from "../common/Fields";
 import { useTranslation } from "react-i18next";
+import { BiEdit } from "react-icons/bi";
+import { IoTrashBinOutline } from "react-icons/io5";
+import { CiSaveDown2 } from "react-icons/ci";
 
 
 export default function FitnessClassForm() {
@@ -101,19 +103,13 @@ export default function FitnessClassForm() {
         <Typography level="title-lg" startDecorator={<BiNews />}>
             {t("Fitness Class Information")}
         </Typography>
-        <Dropdown>
-          <MenuButton
-            slots={{ root: IconButton }}
-            slotProps={{ root: { variant: 'plain', color: 'neutral', size: 'sm' } }}
-          >
-            <MoreHoriz />
-          </MenuButton>
-          <Menu size="sm" sx={{ minWidth: 140 }}>
-            <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("Edit")}</MenuItem>
-            <Divider />
-            <MenuItem color="danger" onClick={handleDelete}>{t("Delete")}</MenuItem>
-          </Menu>
-        </Dropdown>
+        <div style={{ display: "flex", flexDirection:"row"}}>
+          <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
+          <Button variant='soft' startDecorator={<CiSaveDown2 fontSize={20}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
+          <Box flexGrow={1} width={4}/>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
+          <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+        </div>
       </div>
       {/* <Divider inset="none" /> */}
       <CardContent
@@ -149,22 +145,6 @@ export default function FitnessClassForm() {
         </CardContent>
 
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
-        <CardActions sx={{ gridColumn: '1/-1' }}>
-          {mode === 'add' &&
-          <Button variant="solid" sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, 
-            '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
-            '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
-           }} startDecorator={<Add />} onClick={handleAdd}>
-            {t("Add Fitness Class")}
-          </Button>}
-          {mode === 'edit' &&
-          <Button variant="solid" sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, 
-            '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
-            '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
-           }} startDecorator={<GiSaveArrow />} onClick={handleSave} >
-            {t("Save Fitness Class")}
-          </Button>}
-        </CardActions>
 
         </Card>
 

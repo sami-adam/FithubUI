@@ -161,7 +161,20 @@
       "Company": "الشركة",
       "Dismiss": "إخفاء",
       "Employee updated successfully": "تم تحديث الموظف بنجاح",
-      "Member updated successfully": "تم تحديث المشترك بنجاح"
+      "Member updated successfully": "تم تحديث المشترك بنجاح",
+      "Fitness Class updated successfully": "تم تحديث فصل اللياقة بنجاح",
+      "Subscription Type updated successfully": "تم تحديث نوع الاشتراك بنجاح",
+      "Employee created successfully": "تم إنشاء الموظف بنجاح",
+      "Discard": "تجاهل",
+      "ADD": "إضافة",
+      "SAVE": "حفظ",
+      "EDIT": "تعديل",
+      "DISCARD": "تجاهل",
+      "Welcome!": "مرحبا!",
+      "Sign in to continue.": "قم بتسجيل الدخول للمتابعة.",
+      "Sign up": "تسجيل",
+      "Don't have an account?": "ليس لديك حساب؟",
+      "Log in": "تسجيل الدخول"
     }
   }
   
