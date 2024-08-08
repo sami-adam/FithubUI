@@ -81,7 +81,7 @@ export default function SubscriptionForm() {
       setProduct(product=>product||subscription.product);
       setStartDate(startDate=>dayjs(startDate||subscription.startDate));
       setEndDate(endDate=>dayjs(endDate||subscription.endDate));
-      setUnitPrice(unitPrice=>unitPrice||subscription.subscriptionUnitPrice);
+      setUnitPrice(unitPrice=>(product && product.price)||(subscription.product && subscription.product.price));
       setQuantity(quantity=>quantity ? quantity : subscription.subscriptionQty);
       setSubtotal(unitPrice * quantity);
       setTax(subtotal * ((product&&(((product.tax&&product.tax.rate)||0) / 100)) || 0));

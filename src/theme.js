@@ -16,6 +16,17 @@ const cacheLtr = createCache({
 });
 
 const theme = extendTheme({
+  components: {
+    JoyCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'white',
+          border: "1px solid #E0E0E0",
+          width: { xs: 1, sm: 1, md: 1 },
+        }
+      }
+    },
+  },
   fontFamily: {
     display: i18n.language === 'ar' ? 'IBM Sans Arabic' : 'sans-serif', // applies to `h1`–`h4`
     body: i18n.language === 'ar' ? 'IBM Sans Arabic' : 'sans-serif', // applies to `title-*` and `body-*`
