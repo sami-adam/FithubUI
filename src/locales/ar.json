@@ -149,7 +149,15 @@
       "Female": "أنثى",
       "MALE": "ذكر",
       "FEMALE": "أنثى",
-      "Back": "رجوع"
+      "Back": "رجوع",
+      "Total price": "السعر الإجمالي",
+      "Add Subscription Type": "إضافة نوع اشتراك",
+      "Save Subscription Type": "حفظ نوع الاشتراك",
+      "Duration": "المدة",
+      "MONTH": "شهر",
+      "YEAR": "سنة",
+      "WEEK": "أسبوع",
+      "DAY": "يوم"
     }
   }
   

@@ -10,6 +10,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import { GiSaveArrow } from "react-icons/gi";
 import { NumericFormat } from 'react-number-format';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { useTranslation } from 'react-i18next';
 
 export default function ProductForm() {
     const location = useLocation();
@@ -36,6 +37,7 @@ export default function ProductForm() {
 
     const product = location.state.object;
     const theme = useTheme();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if(mode !== 'view' && fetchData){
@@ -114,7 +116,7 @@ export default function ProductForm() {
       {/* <Divider inset="none" /> */}
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
         <Typography level="title-lg" startDecorator={<BiNews />}>
-            Subscription Type
+            {t("Subscription Type")}
         </Typography>
         <Dropdown>
           <MenuButton
@@ -124,11 +126,9 @@ export default function ProductForm() {
             <MoreHoriz />
           </MenuButton>
           <Menu size="sm" sx={{ minWidth: 140 }}>
-            <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>Edit</MenuItem>
-            <MenuItem>Rename</MenuItem>
-            <MenuItem>Move</MenuItem>
+            <MenuItem onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("Edit")}</MenuItem>
             <Divider />
-            <MenuItem color="danger" onClick={handelDelete}>Delete</MenuItem>
+            <MenuItem color="danger" onClick={handelDelete}>{t("Delete")}</MenuItem>
           </Menu>
         </Dropdown>
       </div>
@@ -141,11 +141,11 @@ export default function ProductForm() {
         }}
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>{t("Name")}</FormLabel>
           <Input startDecorator={<InfoOutlinedIcon />} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>Category</FormLabel>
+          <FormLabel>{t("Category")}</FormLabel>
           <Autocomplete startDecorator={<InfoOutlinedIcon />}  
           options={productCategories} getOptionLabel={(option) => option.name}
           value={category} 
@@ -155,7 +155,7 @@ export default function ProductForm() {
         </FormControl>
         
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>Price</FormLabel>
+          <FormLabel>{t("Price")}</FormLabel>
           <NumericFormat
             value={price}
             thousandSeparator
@@ -167,7 +167,7 @@ export default function ProductForm() {
           />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>Tax</FormLabel>
+          <FormLabel>{t("Tax")}</FormLabel>
           <Autocomplete startDecorator={<BiNews />} 
           options={taxes} 
           getOptionLabel={(option) => option.name}
@@ -178,21 +178,21 @@ export default function ProductForm() {
         
         <FormControl></FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-            <FormLabel>Description</FormLabel>
+            <FormLabel>{t("Description")}</FormLabel>
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-            <FormLabel>Duration</FormLabel>
+            <FormLabel>{t("Duration")}</FormLabel>
             <Select value={durationType} onChange={(event, newValue) => setDurationType(newValue)} disabled={mode === 'view'} >
-                <Option value="DAY">Day</Option>
-                <Option value="WEEK">Week</Option>
-                <Option value="MONTH">Month</Option>
-                <Option value="YEAR">Year</Option>
+                <Option value="DAY">{t("Day")}</Option>
+                <Option value="WEEK">{t("Week")}</Option>
+                <Option value="MONTH">{t("Month")}</Option>
+                <Option value="YEAR">{t("Year")}</Option>
             </Select>
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-            <FormLabel>Image</FormLabel>
+            <FormLabel>{t("Image")}</FormLabel>
             <Input startDecorator={<ImageIcon />} value={image} onChange={(e) => setImage(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
@@ -204,14 +204,14 @@ export default function ProductForm() {
             '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
             '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
            }} startDecorator={<Add />} onClick={handleAdd}>
-            Add Subscription Type
+            {t("Add Subscription Type")}
           </Button>}
           {mode === 'edit' &&
           <Button variant="solid" sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, 
             '&:hover': { backgroundColor: theme.colorSchemes.dark.palette.common.black },
             '&:active': { backgroundColor: theme.colorSchemes.dark.palette.common.black, opacity: 0.8 },
            }} startDecorator={<GiSaveArrow />} onClick={handleSave} >
-            Save Subscription type
+            {t("Save Subscription type")}
           </Button>}
         </CardActions>
       </CardContent>

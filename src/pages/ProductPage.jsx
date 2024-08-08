@@ -3,9 +3,11 @@ import useProductStore from "../state/productState";
 import ProductCard from "../components/product/ProductCard";
 import { Box, Grid, Typography } from "@mui/joy";
 import AddNewButton from "../components/common/Buttons";
+import { useTranslation } from "react-i18next";
 
 export default function ProductPage() {
     const [products, fetchProducts] = useProductStore((state) => [state.products, state.fetchProducts]);
+    const {t} = useTranslation();
 
     useEffect(() => {
         fetchProducts();
@@ -28,7 +30,7 @@ export default function ProductPage() {
             }}
             >
             <Typography level="h2" component="h1">
-                Subscription Types
+                {t("Subscription Types")}
             </Typography>
             <AddNewButton title="Product" formUrl={"/product-form"} />
         </Box>
