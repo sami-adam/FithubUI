@@ -41,6 +41,9 @@ export function SnackbarCustom({type, title, message, open, setOpen, duration}) 
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           sx={{
             zIndex: 9999,
+            position: "fixed",
+            top: {xs: 12, sm: 16},
+            left: {xs: "-30%", sm:"40%"},
           }}
           startDecorator={icon}
           endDecorator={
@@ -178,6 +181,9 @@ export function DocumentSnackbar({document, fileName, title, open, setOpen}) {
           background: `linear-gradient(45deg, ${theme.palette.primary[600]} 30%, ${theme.palette.primary[500]} 90%})`,
           maxWidth: 360,
           zIndex: 9999,
+          position: "fixed",
+          top: {xs: 12, sm: 16},
+          left: {xs: "-30%", sm:"40%"},
           //paddingTop: { xs: 14, sm: 3 },
         })}
       >
