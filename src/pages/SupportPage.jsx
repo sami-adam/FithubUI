@@ -27,7 +27,6 @@ const SupportPage = () => {
         variant="outlined"
         sx={{
           width: '100%',
-          maxWidth: 600,
           boxShadow: 'md',
         }}
       >

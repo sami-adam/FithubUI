@@ -101,7 +101,7 @@ export default function MemberForm() {
     }
 
     return (
-        <div>
+        <div style={{ width: "100%" }}>
         <Card
         variant="outlined"
         sx={{
@@ -111,7 +111,7 @@ export default function MemberForm() {
             // to make the demo resizable
             overflow: 'auto',
             resize: 'vertical',
-            width: { xs: '100%', md: '100%' },
+            width: { xs: '100%', md: '80%' },
             mt: { xs: 10, md: 4 },
             ml: { xs: 5, md: "auto" },
         }}

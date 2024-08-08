@@ -20,7 +20,7 @@ const theme = extendTheme({
     JoyCard: {
       styleOverrides: {
         root: {
-          backgroundColor: 'white',
+          backgroundColor: 'paper',
           border: "1px solid #E0E0E0",
           width: { xs: 1, sm: 1, md: 1 },
         }

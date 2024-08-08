@@ -85,7 +85,7 @@ export default function FitnessClassForm() {
       variant="outlined"
       sx={{
         maxHeight: 'max-content',
-        maxWidth: { xs: '100%', md: '80%' },
+        maxWidth: { xs: '100%', md: '90%' },
         mx: 'auto',
         // to make the demo resizable
         overflow: 'auto',

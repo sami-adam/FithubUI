@@ -261,9 +261,9 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           aria-labelledby="tableTitle"
           stickyHeader
           hoverRow 
-          variant="outlined"
+          //variant="outlined"
           sx={{
-            '--TableCell-headBackground': 'var(--joy-palette-background-level1)',
+            '--TableCell-headBackground': "paper",//'var(--joy-palette-background-level1)',
             '--Table-headerUnderlineThickness': '1px',
             '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)',
             '--TableCell-paddingY': '4px',
@@ -358,12 +358,12 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                 <td>
                     {column.special === "status" ? <StatusChip status={row[column.name]} /> :
                     column.special === "person"? <PersonBox person={{"name": row.name, "email": row.email}}/>: 
-                    <Typography level="body-xs">{row[column.name]}</Typography>}
+                    <Typography level="body-sm">{row[column.name]}</Typography>}
                 </td>))}
                 
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Link level="body-xs" component="button" onClick={() => navigate(formUrl, { state: {object: row.object}})}>
+                    <Link level="body-sm" component="button" onClick={() => navigate(formUrl, { state: {object: row.object}})}>
                       {t("Details")}
                     </Link>
                     <RowMenu />

@@ -88,19 +88,19 @@ export default function EmployeeForm() {
     }
 
     return (
-        <div>
+        <div style={{ width:"100%"}}>
             <Card
       variant="outlined"
       sx={{
         maxHeight: 'max-content',
-        //maxWidth: '100%',
+        maxWidth: '100%',
         mx: 'auto',
         // to make the demo resizable
         overflow: 'auto',
         resize: 'vertical',
-        width: { xs: '100%', md: '100%' },
+        width: { xs: '100%', md: '80%' },
         mt: { xs: 10, md: 4 },
-        ml: { xs: 5, md: "auto" },
+        ml: { xs: 4, md: "auto" },
       }}
     >
       {/* <Divider inset="none" /> */}
@@ -153,7 +153,7 @@ export default function EmployeeForm() {
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
           <FormLabel>{t("Address")}</FormLabel>
-          <Input startDecorator={<FaLocationDot fontSize={18}/>} value={address} onChange={(e) => setAddress(e.target.value)} disabled={mode === 'view'} />
+          <Input type="search" startDecorator={<FaLocationDot fontSize={18}/>} value={address} onChange={(e) => setAddress(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
 
