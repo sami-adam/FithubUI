@@ -332,6 +332,16 @@ export default function SubscriptionForm() {
             </tbody>
           </Table>
         </FormControl>
+
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
+            <Table>
+              <tbody>
+                <tr>
+                  <th>{subscription && subscription.company && subscription.company.company_name}</th>
+                </tr>
+              </tbody>
+            </Table>
+        </FormControl>
       
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
         <CardActions sx={{ gridColumn: '1/-1' }}>

@@ -42,7 +42,7 @@ import { useNavigate } from 'react-router-dom';
 //import { IoInformationCircle } from "react-icons/io5";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { MdOutlineDeleteForever } from "react-icons/md";
-import { CardActions } from '@mui/joy';
+import { CardActions, useTheme } from '@mui/joy';
 import { SnackbarCustom } from './Common';
 import SyncProblemIcon from '@mui/icons-material/SyncProblem';
 import { useTranslation } from 'react-i18next';
@@ -125,6 +125,9 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
   const [error, setError] = React.useState(null);
 
   const {t} = useTranslation();
+  const theme = useTheme();
+
+  const primaryColor = theme.palette.primary.main;
 
   const navigate = useNavigate();
   const renderFilters = () => (
@@ -271,13 +274,13 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
             <tr>
               <CardActions>
                 <Button onClick={handleExport} size="sm" variant="contained" color="primary" 
-                  startDecorator={<SiMicrosoftexcel />} sx={{
-                    ':hover': {backgroundColor: "primary", opacity: 0.5},
+                  startDecorator={<SiMicrosoftexcel fontSize={18} color={primaryColor}/>} sx={{
+                    ':hover': {backgroundColor: "primary", opacity: 0.8},
                     }}>
-                    {t("Export")}
+                    <Typography level="body-sm">{t("Export")}</Typography>
                 </Button>
-                <Button size="sm" variant="contained" sx={{ color: "red", display: selected.length > 0? "flex": "none",
-                    ':hover': {backgroundColor: "danger", opacity: 0.5}
+                <Button size="sm" variant="contained" sx={{ color: "#921A40", display: selected.length > 0? "flex": "none",
+                    ':hover': {backgroundColor: "danger", opacity: 0.8}
                     }} startDecorator={<MdOutlineDeleteForever fontSize={18}/>}>
                     {t("Delete")}
                 </Button>

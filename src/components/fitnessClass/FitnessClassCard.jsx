@@ -14,7 +14,7 @@ export default function FitnessClassCard({ fitnessClass }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   return (
-    <Card sx={{ width: { xs: 1, sm: 1 , md: 1 }, height: { xs: 1, sm: 1, md: 1 }, maxWidth: {xs: 1, sm: 1, md:"25%"} }}>
+    <Card sx={{ width: { xs: 1, sm: 1 , md: 1 }, height: { xs: 1, sm: 1, md: 1 }, maxWidth: {xs: 1, sm: 1, md:1} }}>
       <div>
         <Typography level="title-lg">{t(fitnessClass.name)}</Typography>
         <Typography level="body-sm">{t(fitnessClass.intensityLevel)}</Typography>
@@ -26,7 +26,7 @@ export default function FitnessClassCard({ fitnessClass }) {
             {t("Trending")}
         </Chip>
       </div>
-        <AspectRatio ratio={9 / 9}>
+        <AspectRatio ratio={16 / 9}>
             {(fitnessClass.images && 
             <Carousel items={fitnessClass.images.split(",").map((image) => ({image: image, title: fitnessClass.name}))} />
         ) 

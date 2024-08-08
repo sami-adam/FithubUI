@@ -34,15 +34,13 @@ export default function FitnessClassPage() {
             <AddNewButton title="Fitness Class" formUrl={"/fitness-class-form"} />
         </Box>
         <div style={{marginTop:"20px"}}>
-            
-
             <Grid
                 container
                 spacing={{ xs: 1, md: 1 }}
                 columns={{ xs: 2, sm: 8, md: 16 }}
                 sx={{ flexGrow: 1 , pl:{xs:8, md:"auto"}}}>
                 {fitnessClasses.map((fitnessClass, index) => (
-                    <Grid xs={2} sm={4} md={4} key={index} width={{ xs: 1, sm: 1 , md: 1 }}>
+                    <Grid xs={2} sm={4} md={4} key={index}>
                         <FitnessClassCard fitnessClass={fitnessClass} />
                     </Grid>
                 ))}

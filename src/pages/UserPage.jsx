@@ -13,6 +13,7 @@ export default function UserPage() {
     const columns = [
         {"name": "id", "label": "ID", "width": 120},
         {"name": "username", "label": "Username", "sort": true},
+        {"name": "company", "label": "Company"},
         {"name": "email", "label": "Email"},
         {"name": "role", "label": "Role"}
     ]
@@ -20,6 +21,7 @@ export default function UserPage() {
     const rows = users.map((user) => ({
         "id": user.id,
         "username": user.username,
+        "company": user.company && user.company.name,
         "email": user.email,
         "role": user.role
     }));
