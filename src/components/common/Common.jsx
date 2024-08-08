@@ -22,6 +22,7 @@ import { useTranslation } from "react-i18next";
 
 export function SnackbarCustom({type, title, message, open, setOpen, duration}) {
     //const [open, setOpen] = React.useState(false);
+    const {t} = useTranslation();
 
     const types = {
         "success": {color: 'success', icon: <CheckCircleIcon /> },
@@ -53,11 +54,11 @@ export function SnackbarCustom({type, title, message, open, setOpen, duration}) 
               variant="soft"
               color={color}
             >
-              Dismiss
+              {t("Dismiss")}
             </Button>
           }
         >
-          {message}
+          {t(message)}
         </Snackbar>
       </>
     );

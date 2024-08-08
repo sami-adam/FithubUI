@@ -158,7 +158,9 @@
       "YEAR": "سنة",
       "WEEK": "أسبوع",
       "DAY": "يوم",
-      "Company": "الشركة"
+      "Company": "الشركة",
+      "Dismiss": "إخفاء",
+      "Employee updated successfully": "تم تحديث الموظف بنجاح"
     }
   }
   
