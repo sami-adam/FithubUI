@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import useMemberStore from '../../state/memberState';
 import useSubscriptionStore from '../../state/subscriptionState';
-import { useTheme } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Radio, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
@@ -12,7 +11,7 @@ import { LiaPhoneSquareSolid } from "react-icons/lia";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
-import { CiSaveDown2 } from "react-icons/ci";
+import { BsSave } from "react-icons/bs";
 import { FaCalendarAlt } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
 
@@ -43,7 +42,6 @@ export default function MemberForm() {
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
     const member = location.state.object;
-    const theme = useTheme();
     const navigate = useNavigate();
 
     const memberSubscriptions = member&&subscriptions.filter(subscription => subscription.member.id === member.id);
@@ -137,7 +135,7 @@ export default function MemberForm() {
             </Typography>
             <div style={{ display: "flex", flexDirection:"row"}}>
                 <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-                <Button variant='soft' startDecorator={<CiSaveDown2 fontSize={20}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
+                <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
                 <Box flexGrow={1} width={4}/>
                 <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
                 <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>

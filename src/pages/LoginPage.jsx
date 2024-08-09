@@ -83,7 +83,7 @@ export default function LoginPage() {
             id="password"
             name="password"
             type="password"
-            placeholder="password" 
+            placeholder="********" 
             onChange={(e) => setPassword(e.target.value)}
           />
         </FormControl>
