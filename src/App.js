@@ -24,6 +24,10 @@ import i18n from './i18n';
 import theme, { cacheLtr, cacheRtl } from './theme';
 import { CacheProvider } from '@emotion/react';
 import SupportPage from './pages/SupportPage';
+import AccountPage from './pages/AccountPage';
+import EntryPage from './pages/EntryPage';
+import TransactionPage from './pages/TransactionPage';
+import AccountForm from './components/accounting/AccountForm';
 //const joyTheme = extendJoyTheme();
 
 
@@ -55,6 +59,10 @@ function App() {
           <Route path="/fitness-classes" element={<FitnessClassPage/>} />
           <Route path="/fitness-class-form" element={<FitnessClassForm/>} />
           <Route path="/support" element={<SupportPage/>} />
+          <Route path="/accounts" element={<AccountPage/>} />
+          <Route path="/account-form" element={<AccountForm/>} />
+          <Route path="/entries" element={<EntryPage/>} />
+          <Route path="/transactions" element={<TransactionPage/>} />
         </Routes>
         </Sidebar>
       </BrowserRouter>

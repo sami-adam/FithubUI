@@ -21,6 +21,10 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { MdOutlineMoney } from "react-icons/md";
+import { FaMoneyCheckDollar } from "react-icons/fa6";
+import { FaMoneyBills } from "react-icons/fa6";
+import { GrTransaction } from "react-icons/gr";
 
 import { closeSidebar } from './../../utils';
 import DarkMode from './DarkMode';
@@ -158,7 +162,7 @@ export default function Sidebar({children}) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton role="menuitem" onClick={() => navigate("/subscriptions")} selected={"/subscriptions" === window.location.pathname}>
+            <ListItemButton role="menuitem" onClick={() => navigate("/subscriptions")} selected={window.location.pathname.includes("subscription")}>
               <CalendarMonthIcon />
               <ListItemContent>
                 <Typography level="title-sm">{t("Subscriptions")}</Typography>
@@ -166,7 +170,7 @@ export default function Sidebar({children}) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton role="menuitem" onClick={() => navigate("/fitness-classes")} selected={"/fitness-classes" === window.location.pathname}>
+            <ListItemButton role="menuitem" onClick={() => navigate("/fitness-classes")} selected={window.location.pathname.includes("fitness-class")}>
               <SiFitbit fontSize={18}/>
               <ListItemContent>
                 <Typography level="title-sm">{t("Fitness Classes")}</Typography>
@@ -174,7 +178,7 @@ export default function Sidebar({children}) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton role="menuitem" onClick={() => navigate("/employees")} selected={"/employees" === window.location.pathname}>
+            <ListItemButton role="menuitem" onClick={() => navigate("/employees")} selected={window.location.pathname.includes("employee")}>
               <BsFillPersonVcardFill fontSize={18}/>
               <ListItemContent>
                 <Typography level="title-sm">{t("Employees")}</Typography>
@@ -182,7 +186,7 @@ export default function Sidebar({children}) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton role="menuitem" onClick={() => navigate("/members")} selected={"/members" === window.location.pathname}>
+            <ListItemButton role="menuitem" onClick={() => navigate("/members")} selected={window.location.pathname.includes("member")}>
               <GroupsIcon />
               <ListItemContent>
                 <Typography level="title-sm">{t("Members")}</Typography>
@@ -190,9 +194,40 @@ export default function Sidebar({children}) {
             </ListItemButton>
           </ListItem>
           <ListItem nested>
+            <ListSubheader>{t("Accounting")}</ListSubheader>
+            <MenuToggler mainMenu={t("Accounting")} icon={<FaMoneyCheckDollar fontSize={18}/>}>
+            <List>
+              <ListItem>
+                <ListItemButton role="menuitem" onClick={() => navigate("/transactions")} selected={window.location.pathname.includes("transaction")}>
+                  <GrTransaction />
+                  <ListItemContent>
+                    <Typography level="title-sm">{t("Transactions")}</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton role="menuitem" onClick={() => navigate("/entries")} selected={window.location.pathname.includes("entr")}>
+                  <FaMoneyBills />
+                  <ListItemContent>
+                    <Typography level="title-sm">{t("Entries")}</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton role="menuitem" onClick={() => navigate("/accounts")} selected={window.location.pathname.includes("account")}>
+                  <MdOutlineMoney />
+                  <ListItemContent>
+                    <Typography level="title-sm">{t("Accounts")}</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+            </List>
+            </MenuToggler>
+          </ListItem>
+          <ListItem nested>
           </ListItem>
           <ListItem>
-            <ListItemButton  onClick={() => navigate("/emails")} selected={"/emails" === window.location.pathname}>
+            <ListItemButton  onClick={() => navigate("/emails")} selected={window.location.pathname.includes("email")}>
               <QuestionAnswerRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm">{t("Emails")}</Typography>
@@ -207,7 +242,7 @@ export default function Sidebar({children}) {
             <MenuToggler mainMenu={"Master Data"} icon={<DatasetIcon/>}>
             <List>
               <ListItem>
-                <ListItemButton role="menuitem" onClick={() => navigate("/products")} selected={"/products" === window.location.pathname}>
+                <ListItemButton role="menuitem" onClick={() => navigate("/products")} selected={window.location.pathname.includes("product")}>
                   <BiNews />
                   <ListItemContent>
                     <Typography level="title-sm">{t("Subscription Types")}</Typography>
@@ -216,7 +251,7 @@ export default function Sidebar({children}) {
               </ListItem>
 
               <ListItem>
-                <ListItemButton role="menuitem" onClick={() => navigate("/users")} selected={"/users" === window.location.pathname}>
+                <ListItemButton role="menuitem" onClick={() => navigate("/users")} selected={window.location.pathname.includes("user")}>
                   <FaUsersRectangle />
                   <ListItemContent>
                     <Typography level="title-sm">{t("Users")}</Typography>

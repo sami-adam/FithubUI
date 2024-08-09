@@ -358,6 +358,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                 <td>
                     {column.special === "status" ? <StatusChip status={row[column.name]} /> :
                     column.special === "person"? <PersonBox person={{"name": row.name, "email": row.email}}/>: 
+                    column.special === "amount"? <Typography level="body-sm">{row[column.name].toLocaleString()} {t("SAR")}</Typography>:
                     <Typography level="body-sm">{row[column.name]}</Typography>}
                 </td>))}
                 

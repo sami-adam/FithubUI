@@ -36,10 +36,10 @@ export default function SubscriptionPage({ defaultSearch="" }) {
         {"name": "member", "label": "Member", "special": "person", "width": 150},
         {"name": "startDate", "label": "Start Date"},
         {"name": "endDate", "label": "End Date"},
-        {"name": "totalPrice", "label": "Total Price", "width": 80},
-        {"name": "tax", "label": "Tax", "width": 50},
-        {"name": "discount", "label": "Discount", "width": 80},
-        {"name": "netAmount", "label": "Net Amount", "width": 80},
+        {"name": "totalPrice", "label": "Total Price", "width": 80, "special": "amount"},
+        {"name": "tax", "label": "Tax", "width": 50, "special": "amount"},
+        {"name": "discount", "label": "Discount", "width": 80, "special": "amount"},
+        {"name": "netAmount", "label": "Net Amount", "width": 80, "special": "amount"},
         {"name": "status", "label": "Status", "special": "status"},
     ]
     
