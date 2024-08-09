@@ -36,8 +36,8 @@ import { SiFitbit } from "react-icons/si";
 import LanguageSwitch from './LanguageSwitch';
 import i18n from '../../i18n';
 import { useTranslation } from 'react-i18next';
-import { KeyboardArrowLeft } from '@mui/icons-material';
-
+import { MenuToggler } from './Menus';
+import DatasetIcon from '@mui/icons-material/Dataset';
 
 export default function Sidebar({children}) {
   //const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
@@ -204,6 +204,7 @@ export default function Sidebar({children}) {
           </ListItem>
           <ListItem nested>
             <ListSubheader>{t("Master Data")}</ListSubheader>
+            <MenuToggler mainMenu={"Master Data"} icon={<DatasetIcon/>}>
             <List>
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/products")} selected={"/products" === window.location.pathname}>
@@ -223,6 +224,7 @@ export default function Sidebar({children}) {
                 </ListItemButton>
               </ListItem>
             </List>
+            </MenuToggler>
           </ListItem>
           
           <ListItem nested>
