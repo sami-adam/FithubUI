@@ -68,6 +68,7 @@ export default function AccountForm() {
             code: code,
             type: type
         });
+        setMode('view');
         setOpenSnackbar(true);
         setSnack({type: 'success', title: 'Success', message: 'Account added successfully'});
     }

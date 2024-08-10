@@ -83,6 +83,7 @@ export default function JournalForm() {
             type: type,
             account: account
         });
+        setMode('view');
         setOpenSnackbar(true);
         setSnack({type: 'success', title: 'Success', message: 'Journal added successfully'});
     }

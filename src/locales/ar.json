@@ -188,7 +188,12 @@
       "Credit": "دائن",
       "Balance": "الرصيد",
       "Timestamp": "التاريخ",
-      "Type": "النوع"
+      "Type": "النوع",
+      "SUB Categories": "فئات الاشتراك",
+      "Product Categories": "فئات الاشتراك",
+      "Journals": "اليوميات",
+      "Journal Information": "معلومات اليومية",
+      "Notifications": "الإشعارات"
     }
   }
   

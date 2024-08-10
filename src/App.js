@@ -30,6 +30,8 @@ import TransactionPage from './pages/TransactionPage';
 import AccountForm from './components/accounting/AccountForm';
 import JournalPage from './pages/JournalPage';
 import JournalForm from './components/accounting/JournalForm';
+import ProductCategoryPage from './pages/ProductCategoryPage';
+import ProductCategoryForm from './components/product/ProductCayegoryForm';
 //const joyTheme = extendJoyTheme();
 
 
@@ -57,6 +59,8 @@ function App() {
           <Route path="/emails" element={<EmailPage/>} />
           <Route path="/products" element={<ProductPage/>} />
           <Route path="/product-form" element={<ProductForm/>} />
+          <Route path="/product-categories" element={<ProductCategoryPage/>} />
+          <Route path="/product-category-form" element={<ProductCategoryForm/>} />
           <Route path="/users" element={<UserPage/>} />
           <Route path="/fitness-classes" element={<FitnessClassPage/>} />
           <Route path="/fitness-class-form" element={<FitnessClassForm/>} />

@@ -250,10 +250,18 @@ export default function Sidebar({children}) {
             <MenuToggler mainMenu={"Master Data"} icon={<DatasetIcon/>}>
             <List>
               <ListItem>
-                <ListItemButton role="menuitem" onClick={() => navigate("/products")} selected={window.location.pathname.includes("product")}>
+                <ListItemButton role="menuitem" onClick={() => navigate("/products")} selected={window.location.pathname.includes("products") || window.location.pathname.includes("product-form")}>
                   <BiNews />
                   <ListItemContent>
                     <Typography level="title-sm">{t("Subscription Types")}</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton role="menuitem" onClick={() => navigate("/product-categories")} selected={window.location.pathname.includes("categ")}>
+                  <BiNews />
+                  <ListItemContent>
+                    <Typography level="title-sm">{t("SUB Categories")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
