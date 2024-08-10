@@ -1,23 +1,23 @@
 import {create} from "zustand";
 import axios from "axios";
 
-const usAccountStore = create((set) => ({
+const useAccountStore = create((set) => ({
     accounts: [],
     token: localStorage.getItem("token"),
     baseURL: process.env.REACT_APP_BASE_URL,
     signInUrl: process.env.REACT_APP_SIGN_IN_URL,
     fetchAccounts: async () => {
         try {
-            const response = await axios.get(usAccountStore.getState().baseURL + "/accounts", {
+            const response = await axios.get(useAccountStore.getState().baseURL + "/accounts", {
                 headers: {
-                    "Authorization": "Bearer " + usAccountStore.getState().token,
+                    "Authorization": "Bearer " + useAccountStore.getState().token,
                 },
             });
             set({ accounts: response.data });
         } catch (error) {
             if (error.response.status === 403) {
                 localStorage.removeItem("token");
-                window.location.href = usAccountStore.getState().signInUrl;
+                window.location.href = useAccountStore.getState().signInUrl;
             } else {
                 console.error("Error fetching products", error);
             }
@@ -25,9 +25,9 @@ const usAccountStore = create((set) => ({
     },
     addAccount: async (account) => {
         try {
-            const response = await axios.post(`${usAccountStore.getState().baseURL}/account`, account, {
+            const response = await axios.post(`${useAccountStore.getState().baseURL}/account`, account, {
                 headers: {
-                    "Authorization": "Bearer " + usAccountStore.getState().token,
+                    "Authorization": "Bearer " + useAccountStore.getState().token,
                 },
             });
             set((state) => ({ accounts: [...state.accounts, response.data] }));
@@ -37,9 +37,9 @@ const usAccountStore = create((set) => ({
     },
     updateAccount: async (account) => {
         try {
-            const response = await axios.put(`${usAccountStore.getState().baseURL}/account/${account.id}`, account, {
+            const response = await axios.put(`${useAccountStore.getState().baseURL}/account/${account.id}`, account, {
                 headers: {
-                    "Authorization": "Bearer " + usAccountStore.getState().token,
+                    "Authorization": "Bearer " + useAccountStore.getState().token,
                 },
             });
             set((state) => ({
@@ -51,9 +51,9 @@ const usAccountStore = create((set) => ({
     },
     deleteAccount: async (id) => {
         try {
-            await axios.delete(`${usAccountStore.getState().baseURL}/account/${id}`, {
+            await axios.delete(`${useAccountStore.getState().baseURL}/account/${id}`, {
                 headers: {
-                    "Authorization": "Bearer " + usAccountStore.getState().token,
+                    "Authorization": "Bearer " + useAccountStore.getState().token,
                 },
             });
             set((state) => ({ accounts: state.accounts.filter((m) => m.id !== id) }));
@@ -63,9 +63,9 @@ const usAccountStore = create((set) => ({
     },
     searchAccounts: async (searchTerm) => {
         try {
-            const response = await axios.get(`${usAccountStore.getState().baseURL}/accounts/search/${searchTerm}`, {
+            const response = await axios.get(`${useAccountStore.getState().baseURL}/accounts/search/${searchTerm}`, {
                 headers: {
-                    "Authorization": "Bearer " + usAccountStore.getState().token,
+                    "Authorization": "Bearer " + useAccountStore.getState().token,
                 },
             });
             set({ accounts: response.data });
@@ -76,4 +76,4 @@ const usAccountStore = create((set) => ({
 
 }));
 
-export default usAccountStore;
+export default useAccountStore;

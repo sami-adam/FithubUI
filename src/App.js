@@ -28,6 +28,8 @@ import AccountPage from './pages/AccountPage';
 import EntryPage from './pages/EntryPage';
 import TransactionPage from './pages/TransactionPage';
 import AccountForm from './components/accounting/AccountForm';
+import JournalPage from './pages/JournalPage';
+import JournalForm from './components/accounting/JournalForm';
 //const joyTheme = extendJoyTheme();
 
 
@@ -63,6 +65,8 @@ function App() {
           <Route path="/account-form" element={<AccountForm/>} />
           <Route path="/entries" element={<EntryPage/>} />
           <Route path="/transactions" element={<TransactionPage/>} />
+          <Route path="/journals" element={<JournalPage/>} />
+          <Route path="/journal-form" element={<JournalForm/>} />
         </Routes>
         </Sidebar>
       </BrowserRouter>

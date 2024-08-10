@@ -1,7 +1,8 @@
 import { useLocation } from "react-router-dom";
+import useJournalStore from "../../state/journalState";
 import useAccountStore from "../../state/accountState";
 import { useEffect, useState } from 'react';
-import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
+import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
 import { BiNews } from "react-icons/bi";
 import { BiEdit } from "react-icons/bi";
@@ -11,75 +12,89 @@ import { HiOutlineIdentification } from "react-icons/hi2";
 import { BsFilePerson } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-export default function AccountForm() {
+
+export default function JournalForm() {
     const location = useLocation();
     if (!location.state) {
-        window.location.href = '/accounts';
+        window.location.href = '/journals';
     }
 
-    const updateAccount = useAccountStore((state) => state.updateAccount);
-    const addAccount = useAccountStore((state) => state.addAccount);
-    const deleteAccount = useAccountStore((state) => state.deleteAccount);
+    const updateJournal = useJournalStore((state) => state.updateJournal);
+    const addJournal = useJournalStore((state) => state.addJournal);
+    const deleteJournal = useJournalStore((state) => state.deleteJournal);
+
+    const [accounts, fetchAccounts] = useAccountStore((state) => [state.accounts, state.fetchAccounts]);
+    const [fetchData, setFetchData] = useState(true);
 
     const [mode, setMode] = useState(location.state.viewMode||'view');
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
+    const [description, setDescription] = useState('');
     const [type, setType] = useState('');
+    const [account, setAccount] = useState('');
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
-    const account = location.state.object;
+    const journal = location.state.object;
+
     const {t} = useTranslation();
 
-    const accountTypes = [
-      'RECEIVABLE', 'BANk', 'CASH', 'PREPAYMENT', // Assets
-      'PAYABLE', 'CREDIT_CARD', 'CURRENT_LIABILITIES', 'NON_CURRENT_LIABILITIES', // Liabilities
-      'EQUITY', 'CURRENT_YEAR_EARNINGS', // Equity
-      'INCOME', 'OTHER_INCOME', // Income
-      'EXPENSE', 'COST_OF_REVENUE' // Expense
+    const journalTypes = [
+      'SALES', 'PURCHASE', 'PAYMENT', 'RECEIPT', 'JOURNAL'
     ]
 
     useEffect(() => {
-        if(account){
-            setName(name=>name||account.name);
-            setCode(code=>code||account.code);
-            setType(type=>type||account.type);
+        if(fetchData){
+            fetchAccounts();
+            setFetchData(false);
         }
-      }, [mode, account]);
+        if(journal){
+            setName(name=>name||journal.name);
+            setCode(code=>code||journal.code);
+            setDescription(description=>description||journal.description);
+            setType(type=>type||journal.type);
+            setAccount(account=>account||journal.account);
+        }
+      }, [mode, journal, fetchData]);
 
     const handleSave = () => {
-        updateAccount({
-            id: account.id,
+        updateJournal({
+            id: journal.id,
             name: name,
             code: code,
-            type: type
+            description: description,
+            type: type,
+            account: account
         });
         setMode('view');
         setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Account updated successfully'});
+        setSnack({type: 'success', title: 'Success', message: 'Journal updated successfully'});
     }
 
     const handleAdd = () => {
-        addAccount({
+        addJournal({
             name: name,
             code: code,
-            type: type
+            description: description,
+            type: type,
+            account: account
         });
         setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Account added successfully'});
+        setSnack({type: 'success', title: 'Success', message: 'Journal added successfully'});
     }
 
     const handleDelete = () => {
-        const confirm = window.confirm('Are you sure you want to delete this account?');
+        const confirm = window.confirm('Are you sure you want to delete this journal?');
         if(confirm){
-            deleteAccount(account.id);
-            window.location.href = '/accounts';
+            deleteJournal(journal.id);
+            window.location.href = '/journals';
         }
         setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Account deleted successfully'});
+        setSnack({type: 'success', title: 'Success', message: 'Journal deleted successfully'});
     }
 
     return (
@@ -102,7 +117,7 @@ export default function AccountForm() {
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
         <Typography level="title-lg" startDecorator={<BiNews />}>
-            {t("Account Information")}
+            {t("Journal Information")}
         </Typography>
         <div style={{ display: "flex", flexDirection:"row"}}>
           <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
@@ -138,13 +153,28 @@ export default function AccountForm() {
             disabled={mode === 'view'}
             value={type}
             slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}>
-            {accountTypes.map((type) => <Option value={type}>{t(type)}</Option>)}
+            {journalTypes.map((type) => <Option value={type}>{t(type)}</Option>)}
           </Select>
+        </FormControl>
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
+          <FormLabel>{t("Account")}</FormLabel>
+          <Autocomplete startDecorator={<InfoOutlinedIcon />}  
+            options={accounts} getOptionLabel={(option) => `${option.code} - ${option.name}`}
+            value={account} 
+            onChange={(event, newValue) => setAccount(newValue)}
+            disabled={mode === 'view'}
+           />
+        </FormControl>
+
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
+          <FormLabel>{t("Description")}</FormLabel>
+          <Input startDecorator={<InfoOutlinedIcon />} value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         </CardContent>
-        <Box height={8} sx={{ gridColumn: '1/-1' }} />
+
         </Card>
+
         </div>
     )
 }

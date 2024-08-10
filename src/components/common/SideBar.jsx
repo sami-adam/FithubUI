@@ -221,6 +221,14 @@ export default function Sidebar({children}) {
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
+              <ListItem>
+                <ListItemButton role="menuitem" onClick={() => navigate("/journals")} selected={window.location.pathname.includes("journal")}>
+                  <MdOutlineMoney />
+                  <ListItemContent>
+                    <Typography level="title-sm">{t("Journals")}</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
             </List>
             </MenuToggler>
           </ListItem>
