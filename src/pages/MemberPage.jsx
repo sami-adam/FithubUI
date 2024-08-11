@@ -13,9 +13,9 @@ export default function MemberPage() {
 
     const columns = [
         {"name": "id", "label": "ID Number", "width": 120},
-        {"name": "name", "label": "Full Name", "sort": true},
-        {"name": "email", "label": "Email"},
-        {"name": "phone", "label": "Phone"},
+        {"name": "name", "label": "Full Name", "sort": true, "width": 180},
+        {"name": "email", "label": "Email", "width": 220},
+        {"name": "phone", "label": "Phone", "width": 120},
         {"name": "gender", "label": "Gender", "width": 80},
         {"name": "status", "label": "Status", "special": "status"},
     ]

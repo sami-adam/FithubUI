@@ -270,6 +270,12 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
             '--TableCell-paddingX': '8px',
           }}
         >
+          <colgroup>
+            <col style={{ width: 48 }} />
+            {columns.map((column) => (
+              <col style={{ width: column.width|| 180 }} />
+            ))}
+          </colgroup>
           <thead>
             <tr>
               <CardActions>

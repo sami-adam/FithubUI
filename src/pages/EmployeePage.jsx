@@ -12,10 +12,10 @@ export default function EmployeePage() {
 
     const columns = [
         {"name": "id", "label": "Identification Number", "width": 120},
-        {"name": "name", "label": "Full Name", "sort": true},
-        {"name": "email", "label": "Email"},
+        {"name": "name", "label": "Full Name", "sort": true, "width": 120},
+        {"name": "email", "label": "Email", "width": 180},
         {"name": "phone", "label": "Phone"},
-        {"name": "address", "label": "Address"}
+        {"name": "address", "label": "Address", "width": 200},
     ]
 
     const rows = employees.map((employee) => ({
