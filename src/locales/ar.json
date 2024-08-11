@@ -195,7 +195,10 @@
       "Journal Information": "معلومات اليومية",
       "Notifications": "الإشعارات",
       "Journal added successfully": "تمت إضافة اليومية بنجاح",
-      "Benefits": "المزايا"
+      "Benefits": "المزايا",
+      "Product Category Updated": "تم تحديث فئة الاشتراك بنجاح",
+      "Income Account": "حساب الإيرادات",
+      "Expense Account": "حساب المصروفات"
     }
   }
   

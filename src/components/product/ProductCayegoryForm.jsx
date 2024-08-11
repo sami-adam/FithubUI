@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import useProductCategoryStore from '../../state/productCategoryState';
 import useBenefitStore from '../../state/benefitState';
+import useAccountStore from '../../state/accountState';
 import { useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Card, CardContent, Chip, FormControl, FormLabel, Input, Typography, useTheme } from '@mui/joy';
 import { Add, Close } from '@mui/icons-material';
@@ -10,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
+import { SnackbarCustom } from '../common/Common';
 
 export default function ProductCategoryForm() {
     const location = useLocation();
@@ -23,12 +25,15 @@ export default function ProductCategoryForm() {
     const deleteProductCategory = useProductCategoryStore((state) => state.deleteProductCategory);
 
     const [benefits, fetchBenefits] = useBenefitStore((state) => [state.benefits, state.fetchBenefits]);
+    const [accounts, fetchAccounts] = useAccountStore((state) => [state.accounts, state.fetchAccounts]);
 
     const [mode, setMode] = useState(location.state.viewMode||'view');
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [benefs, setBenefs] = useState([]);
+    const [incomeAccount, setIncomeAccount] = useState(null);
+    const [expenseAccount, setExpenseAccount] = useState(null);
 
     const productCategory = location.state.object;
     console.log(productCategory);
@@ -40,20 +45,25 @@ export default function ProductCategoryForm() {
     useEffect(() => {
         if(fetchData){
             fetchBenefits();
+            fetchAccounts();
             setFetchData(false);
         }
         if(productCategory){
             setName(name=>name||productCategory.name);
             setDescription(description=>description||productCategory.description);
             setBenefs(benefs=>benefs.length !== 0 ? benefs : productCategory.benefits);
+            setIncomeAccount(incomeAccount=>incomeAccount||productCategory.incomeAccount);
+            setExpenseAccount(expenseAccount=>expenseAccount||productCategory.expenseAccount);
         }
-    }, [productCategory, fetchData]);
+    }, [productCategory, fetchData, fetchBenefits, fetchAccounts]);
 
     const handleSave = () => {
         updateProductCategory({id: productCategory.id,
             name: name,
             description: description,
-            benefits: benefs.map(benefit => {return {id: benefit.id}})
+            benefits: benefs.map(benefit => {return {id: benefit.id}}),
+            incomeAccount: {id: incomeAccount.id},
+            expenseAccount: {id: expenseAccount.id}
         });
         setMode('view');
         setOpenSnackbar(true);
@@ -64,7 +74,9 @@ export default function ProductCategoryForm() {
         addProductCategory({
             name: name,
             description: description,
-            benefits: benefs.map(benefit => {return {id: benefit.id}})
+            benefits: benefs.map(benefit => {return {id: benefit.id}}),
+            incomeAccount: {id: incomeAccount.id},
+            expenseAccount: {id: expenseAccount.id}
         });
         setMode('view');
         setOpenSnackbar(true);
@@ -98,6 +110,7 @@ export default function ProductCategoryForm() {
       }}
     >
       {/* <Divider inset="none" /> */}
+      <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
         <Typography level="title-lg" startDecorator={<BiNews />}>
             {t("Subscription Type")}
@@ -123,10 +136,31 @@ export default function ProductCategoryForm() {
           <Input startDecorator={<InfoOutlinedIcon />} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
+          <FormLabel>{t("Income Account")}</FormLabel>
+          <Autocomplete startDecorator={<BiNews />} 
+          options={accounts} 
+          getOptionLabel={(account) => account.code + ' - ' + account.name}
+          value={incomeAccount} onChange={(event, newValue) => setIncomeAccount(newValue)}
+          disabled={mode === 'view'}
+          />
+        </FormControl>
+
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Description")}</FormLabel>
           <Input startDecorator={<InfoOutlinedIcon />} value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
+
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
+          <FormLabel>{t("Expense Account")}</FormLabel>
+          <Autocomplete startDecorator={<BiNews />} 
+          options={accounts} 
+          getOptionLabel={(account) => account.code + ' - ' + account.name}
+          value={expenseAccount} onChange={(event, newValue) => setExpenseAccount(newValue)}
+          disabled={mode === 'view'}
+          />
+        </FormControl>
+
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
           <FormLabel>{t("Benefits")}</FormLabel>
