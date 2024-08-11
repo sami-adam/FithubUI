@@ -83,10 +83,9 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
           <FormLabel sx={{fontSize:18}} htmlFor={productCategory.name}>{productCategory.name}</FormLabel>
             <Stack direction="column" spacing={0.5} sx={{ display: 'flex', alignItems: "center", justifyContent: "flex-start" }}>
                 <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"flex-start"}}>
-                <Typography startDecorator={<Check/>} variant="contained" color="text.primary" >Gym Access</Typography>
-                <Typography startDecorator={<Check/>} variant="contained" color="text.primary" >Group Classes</Typography>
-                <Typography startDecorator={<Check/>} variant="contained" color="text.primary" >Personal Training</Typography>
-                <Typography startDecorator={<Check/>} variant="contained" color="text.primary" >Nutrition</Typography>
+                  {productCategory.benefits.map((benefit) => 
+                <Typography startDecorator={<Check/>} variant="contained" color="text.primary" >{benefit.name}</Typography>
+                )}
                 </div>
             </Stack>
         </Card>

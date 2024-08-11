@@ -62,8 +62,8 @@ export default function ProductCategoryForm() {
             name: name,
             description: description,
             benefits: benefs.map(benefit => {return {id: benefit.id}}),
-            incomeAccount: {id: incomeAccount.id},
-            expenseAccount: {id: expenseAccount.id}
+            incomeAccount: {id: incomeAccount&&incomeAccount.id},
+            expenseAccount: {id: expenseAccount&&expenseAccount.id}
         });
         setMode('view');
         setOpenSnackbar(true);
@@ -75,8 +75,8 @@ export default function ProductCategoryForm() {
             name: name,
             description: description,
             benefits: benefs.map(benefit => {return {id: benefit.id}}),
-            incomeAccount: {id: incomeAccount.id},
-            expenseAccount: {id: expenseAccount.id}
+            incomeAccount: {id: incomeAccount&&incomeAccount.id},
+            expenseAccount: {id: expenseAccount&&expenseAccount.id}
         });
         setMode('view');
         setOpenSnackbar(true);
