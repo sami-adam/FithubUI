@@ -143,6 +143,11 @@ export default function AccountForm() {
           </Select>
         </FormControl>
 
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
+          <FormLabel>{t("Balance")}</FormLabel>
+          <Input startDecorator={<BsFilePerson fontSize={18}/>} value={((account && account.balance) || 0).toLocaleString() + " " + t("SAR")} disabled />
+        </FormControl>
+
         </CardContent>
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
         </Card>

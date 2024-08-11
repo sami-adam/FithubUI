@@ -13,13 +13,13 @@ export default function ProductCategoryPage() {
     const columns = [
         {"name": "id", "label": "ID", "width": 120},
         {"name": "name", "label": "Name", "sort": true},
-        {"name": "description", "label": "Description"}
+        {"name": "benefits", "label": "Benefits"}
     ]
 
     const rows = productCategories.map((productCategory) => ({
         "id": productCategory.id,
         "name": productCategory.name,
-        "description": productCategory.description,
+        "benefits": productCategory.benefits.map(benefit => benefit.name).join(", "),
         "object": productCategory
     }));
 

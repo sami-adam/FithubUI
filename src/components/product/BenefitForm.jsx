@@ -1,84 +1,75 @@
 import { useLocation } from 'react-router-dom';
-import useProductCategoryStore from '../../state/productCategoryState';
 import useBenefitStore from '../../state/benefitState';
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, Card, CardContent, Chip, FormControl, FormLabel, Input, Typography, useTheme } from '@mui/joy';
-import { Add, Close } from '@mui/icons-material';
+import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography, useTheme } from '@mui/joy';
+import { Add } from '@mui/icons-material';
 import { BiNews } from "react-icons/bi";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTranslation } from 'react-i18next';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
+import { SnackbarCustom } from '../common/Common';
 
-export default function ProductCategoryForm() {
+export default function BenefitForm() {
     const location = useLocation();
     if (!location.state) {
-        window.location.href = '/product-categories';
+        window.location.href = '/benefits';
     }
-    const [fetchData, setFetchData] = useState(true);
 
-    const updateProductCategory = useProductCategoryStore((state) => state.updateProductCategory);
-    const addProductCategory = useProductCategoryStore((state) => state.addProductCategory);
-    const deleteProductCategory = useProductCategoryStore((state) => state.deleteProductCategory);
-
-    const [benefits, fetchBenefits] = useBenefitStore((state) => [state.benefits, state.fetchBenefits]);
+    const updateBenefit = useBenefitStore((state) => state.updateBenefit);
+    const addBenefit = useBenefitStore((state) => state.addBenefit);
+    const deleteBenefit = useBenefitStore((state) => state.deleteBenefit);
 
     const [mode, setMode] = useState(location.state.viewMode||'view');
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [benefs, setBenefs] = useState([]);
 
-    const productCategory = location.state.object;
-    console.log(productCategory);
+    const benefit = location.state.object;
     const theme = useTheme();
     const {t} = useTranslation();
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
     useEffect(() => {
-        if(fetchData){
-            fetchBenefits();
-            setFetchData(false);
+        if(benefit){
+            setName(name=>name||benefit.name);
+            setDescription(description=>description||benefit.description);
         }
-        if(productCategory){
-            setName(name=>name||productCategory.name);
-            setDescription(description=>description||productCategory.description);
-            setBenefs(benefs=>benefs.length !== 0 ? benefs : productCategory.benefits);
-        }
-    }, [productCategory, fetchData]);
+    }, [benefit]);
 
     const handleSave = () => {
-        updateProductCategory({id: productCategory.id,
+        updateBenefit({id: benefit.id,
             name: name,
-            description: description,
-            benefits: benefs.map(benefit => {return {id: benefit.id}})
+            description: description
         });
         setMode('view');
+
         setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('Product Category Updated'), message: 'Product Category Updated'});
+        setSnack({type: 'success', title: t('Benefit Updated'), message: 'Benefit Updated'});
     }
 
     const handleAdd = () => {
-        addProductCategory({
+        addBenefit({
             name: name,
-            description: description,
-            benefits: benefs.map(benefit => {return {id: benefit.id}})
+            description: description
         });
         setMode('view');
+
         setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('Product Category Added'), message: 'Product Category Added'});
+        setSnack({type: 'success', title: t('Benefit Added'), message: 'Benefit Added'});
     }
 
     const handleDelete = () => {
-        const confirmDelete = window.confirm(t('Are you sure you want to delete this product category?'));
-        if(confirmDelete){
-            deleteProductCategory(productCategory.id);
-            window.location.href = '/product-categories';
+        const result = window.confirm(t('Delete this benefit?'));
+        if(result){
+            deleteBenefit(benefit.id);
+            window.location.href = '/benefits';
         }
+
         setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('Product Category Deleted'), message: 'Product Category Deleted'});
+        setSnack({type: 'success', title: t('Benefit Deleted'), message: 'Benefit Deleted'});
     }
 
     return (
@@ -98,9 +89,10 @@ export default function ProductCategoryForm() {
       }}
     >
       {/* <Divider inset="none" /> */}
+      <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
         <Typography level="title-lg" startDecorator={<BiNews />}>
-            {t("Subscription Type")}
+            {t("Benefit")}
         </Typography>
         <div style={{ display: "flex", flexDirection:"row"}}>
           <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
@@ -128,38 +120,10 @@ export default function ProductCategoryForm() {
           <Input startDecorator={<InfoOutlinedIcon />} value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
-        <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
-          <FormLabel>{t("Benefits")}</FormLabel>
-          <Autocomplete
-            multiple
-            placeholder=""
-            limitTags={4}
-            options={benefits}
-            getOptionLabel={(benefit) => benefit.name}
-            //defaultValue={[]}
-            disabled={mode === 'view'}
-            onChange={(event, newValue) => setBenefs(newValue)}
-            value={benefs}
-            //sx={{ width: '500px' }}
-            renderTags={(tags, getTagProps) =>
-              tags.map((item, index) => (
-                <Chip
-                  variant="soft"
-                  color="primary"
-                  endDecorator={<Close fontSize="sm" />}
-                  sx={{ minWidth: 0 }}
-                  {...getTagProps({ index })}
-                >
-                  {item.name}
-                </Chip>
-              ))
-            }
-          />
-        </FormControl>
-
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
         </CardContent>
         </Card>
         </div>
-    );
+    )
+
 }

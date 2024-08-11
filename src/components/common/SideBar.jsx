@@ -267,6 +267,15 @@ export default function Sidebar({children}) {
               </ListItem>
 
               <ListItem>
+                <ListItemButton role="menuitem" onClick={() => navigate("/benefits")} selected={window.location.pathname.includes("benefit")}>
+                  <BiNews />
+                  <ListItemContent>
+                    <Typography level="title-sm">{t("Benefits")}</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/users")} selected={window.location.pathname.includes("user")}>
                   <FaUsersRectangle />
                   <ListItemContent>
