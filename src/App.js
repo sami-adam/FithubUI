@@ -34,6 +34,7 @@ import ProductCategoryPage from './pages/ProductCategoryPage';
 import ProductCategoryForm from './components/product/ProductCayegoryForm';
 import BenefitPage from './pages/BenefitPage';
 import BenefitForm from './components/product/BenefitForm';
+import TransactionForm from './components/accounting/TransactionForm';
 //const joyTheme = extendJoyTheme();
 
 
@@ -73,6 +74,7 @@ function App() {
           <Route path="/account-form" element={<AccountForm/>} />
           <Route path="/entries" element={<EntryPage/>} />
           <Route path="/transactions" element={<TransactionPage/>} />
+          <Route path="/transaction-form" element={<TransactionForm/>} />
           <Route path="/journals" element={<JournalPage/>} />
           <Route path="/journal-form" element={<JournalForm/>} />
         </Routes>

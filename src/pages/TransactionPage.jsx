@@ -12,6 +12,7 @@ export default function TransactionPage() {
 
     const columns = [
         {"name": "id", "label": "ID", "width": 120, "sort": true},
+        {"name": "journal", "label": "Journal"},
         {"name": "timestamp", "label": "Timestamp"},
         {"name": "description", "label": "Description"},
         {"name": "status", "label": "Status"},
@@ -19,6 +20,7 @@ export default function TransactionPage() {
 
     const rows = transactions.map((transaction) => ({
         "id": transaction.id,
+        "journal": transaction.journal && transaction.journal.name,
         "timestamp": transaction.timestamp,
         "description": transaction.description,
         "status": transaction.status,
@@ -31,7 +33,7 @@ export default function TransactionPage() {
         "title": transaction.description,
         "subtitle": transaction.timestamp,
         "firstRow": [transaction.status],
-        "secondRow": [transaction.id],
+        "secondRow": [transaction.journal && transaction.journal.name],
         "status": "NEW",
         "object": transaction
     }));

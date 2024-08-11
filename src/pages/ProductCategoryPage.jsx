@@ -13,7 +13,7 @@ export default function ProductCategoryPage() {
     const columns = [
         {"name": "id", "label": "ID", "width": 120},
         {"name": "name", "label": "Name", "sort": true},
-        {"name": "benefits", "label": "Benefits"}
+        {"name": "benefits", "label": "Benefits", "width": 350},
     ]
 
     const rows = productCategories.map((productCategory) => ({

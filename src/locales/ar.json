@@ -198,7 +198,10 @@
       "Benefits": "المزايا",
       "Product Category Updated": "تم تحديث فئة الاشتراك بنجاح",
       "Income Account": "حساب الإيرادات",
-      "Expense Account": "حساب المصروفات"
+      "Expense Account": "حساب المصروفات",
+      "Journal": "يومية",
+      "Transaction Information": "معلومات المعاملة",
+      "Add Entry": "إضافة قيد"
     }
   }
   

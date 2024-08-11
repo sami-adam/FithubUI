@@ -1,11 +1,13 @@
 import * as React from 'react';
 
-import { Button } from '@mui/joy';
+import { Input } from '@mui/joy';
 import { DatePicker } from '@mui/x-date-pickers';
 import { FaRegCalendarAlt } from "react-icons/fa";
-import Box from '@mui/joy/Box';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import ReactQuill from 'react-quill';
+import { Box, Button, Typography, IconButton } from '@mui/joy';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 function ButtonField(props) {
   const {
@@ -79,3 +81,49 @@ export function HtmlField({ value, setValue, disabled }) {
   );
 };
 
+
+
+export function OneToManyField({ defaultItems = [{ id: Date.now(), name: '' }] }) {
+  const [items, setItems] = React.useState(defaultItems);
+
+  const handleAddItem = () => {
+    setItems([...items, { id: Date.now(), name: '' }]);
+  };
+
+  const handleRemoveItem = (id) => {
+    setItems(items.filter(item => item.id !== id));
+  };
+
+  const handleChange = (id, event) => {
+    const updatedItems = items.map(item => 
+      item.id === id ? { ...item, name: event.target.value } : item
+    );
+    setItems(updatedItems);
+  };
+
+  return (
+    <Box sx={{ p: 2 }}>
+      {items.map(item => (
+        <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <Input
+            label={`Item ${item.id}`}
+            value={item.name}
+            onChange={(event) => handleChange(item.id, event)}
+            sx={{ flexGrow: 1, mr: 1 }}
+          />
+          <IconButton onClick={() => handleRemoveItem(item.id)} color="danger">
+            <RemoveIcon />
+          </IconButton>
+        </Box>
+      ))}
+      <Button
+        startDecorator={<AddIcon />}
+        onClick={handleAddItem}
+        variant="outlined"
+        color="primary"
+      >
+        Add Item
+      </Button>
+    </Box>
+  );
+};
