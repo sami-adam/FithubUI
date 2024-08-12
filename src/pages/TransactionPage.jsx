@@ -15,6 +15,7 @@ export default function TransactionPage() {
         {"name": "journal", "label": "Journal"},
         {"name": "timestamp", "label": "Timestamp", "width": 200},
         {"name": "description", "label": "Description", "width": 300},
+        {"name": "amount", "label": "Amount", "special": "amount"},
         {"name": "status", "label": "Status", "special": "status"}
     ]
 
@@ -23,6 +24,7 @@ export default function TransactionPage() {
         "journal": transaction.journal && transaction.journal.name,
         "timestamp": transaction.timestamp,
         "description": transaction.description,
+        "amount": transaction.entries && transaction.entries.filter((entry) => entry.type === "DEBIT").map((entry) => entry.debit).reduce((a, b) => a + b, 0),
         "status": transaction.status,
         "object": transaction
     }));

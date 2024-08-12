@@ -204,7 +204,9 @@
       "Add Entry": "إضافة قيد",
       "Transaction added successfully!": "تمت إضافة المعاملة بنجاح!",
       "DRAFT": "مسودة",
-      "POSTED": "مرحل"
+      "POSTED": "مرحل",
+      "Amount": "المبلغ",
+      "POST": "ترحيل"
     }
   }
   

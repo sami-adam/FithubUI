@@ -14,6 +14,8 @@ import { useTranslation } from 'react-i18next';
 import { MdOutlineMoney } from "react-icons/md";
 import { FaMoneyBill } from "react-icons/fa6";
 import { LuListTree } from "react-icons/lu";
+import { FaMoneyBillTransfer } from "react-icons/fa6";
+
 
 export default function TransactionForm() {
     const location = useLocation();
@@ -156,7 +158,7 @@ export default function TransactionForm() {
       >
         <div>
         <Button variant="soft" onClick={handleTransactionPost} 
-          startDecorator={<MdOutlineMoney />} 
+          startDecorator={<FaMoneyBillTransfer fontSize={18}/>} 
           sx={{display: (mode === 'view'&& transaction && transaction.status === "DRAFT")? 'flex': 'none'}}>{t("POST")}</Button>
         </div>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
@@ -178,38 +180,45 @@ export default function TransactionForm() {
           <Box sx={{ p: 2 }}>
             {entries.length > 0 && entries.map(entry => (
                 <Box key={entry.id} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <FormControl sx={{ width: "45%"}}>
                 <Autocomplete startDecorator={<MdOutlineMoney />} 
                     options={accounts} 
                     getOptionLabel={(account) => account.code + ' - ' + account.name}
                     value={entry.account} onChange={(event, newValue) => handleChangeEntry(entry.id, newValue, null, null, null)}
                     disabled={mode === 'view'}
-                    sx={{ flexGrow: 1, mr: 1 , width: "50%"}}
+                    sx={{ mr: 1}}
                     />
+                </FormControl>
+                <FormControl sx={{ width: "15%"}}>
                 <Select 
                     startDecorator={<FaMoneyBill />} 
                     value={entry.type} 
                     onChange={(e, newValue) => handleChangeEntry(entry.id, null, newValue, null, null)}
                     disabled={mode === 'view'}
-                    sx={{ flexGrow: 1, mr: 1, width: "20%"}}
+                    sx={{ flexGrow: 1, mr: 1}}
                     >
                     <Option value="DEBIT">{t("Debit")}</Option>
                     <Option value="CREDIT">{t("Credit")}</Option>
                 </Select>
+                </FormControl>
+                <FormControl sx={{ width: "15%"}}>
                 <Input
                     label={`Debit ${entry.id}`}
                     value={entry.debit}
                     onChange={(event) => handleChangeEntry(entry.id, null, null, event.target.value, null)}
-                    sx={{ flexGrow: 1, mr: 1, width: "20%"}}
+                    sx={{ flexGrow: 1, mr: 1}}
                     disabled={mode === 'view'}
                 />
-
+                </FormControl>
+                <FormControl sx={{ width: "15%"}}>
                 <Input
                     label={`Credit ${entry.id}`}
                     value={entry.credit}
                     onChange={(event) => handleChangeEntry(entry.id, null, null, null, event.target.value)}
-                    sx={{ flexGrow: 1, mr: 1 , width: "20%"}}
+                    sx={{ flexGrow: 1, mr: 1}}
                     disabled={mode === 'view'}
                     />
+                </FormControl>
                 <IconButton onClick={() => handleRemoveEntry(entry.id)} color="danger" disabled={mode === 'view'}>
                     <RemoveCircle />
                 </IconButton>
