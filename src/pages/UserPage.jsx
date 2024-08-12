@@ -12,9 +12,9 @@ export default function UserPage() {
 
     const columns = [
         {"name": "id", "label": "ID", "width": 120},
-        {"name": "username", "label": "Username", "sort": true},
+        {"name": "username", "label": "Username", "sort": true, "width": 200},
         {"name": "company", "label": "Company"},
-        {"name": "email", "label": "Email"},
+        {"name": "email", "label": "Email", "width": 300},
         {"name": "role", "label": "Role"}
     ]
 

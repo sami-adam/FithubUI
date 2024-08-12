@@ -12,8 +12,8 @@ export default function BenefitPage() {
 
     const columns = [
         {"name": "id", "label": "ID", "width": 120},
-        {"name": "name", "label": "Name", "sort": true},
-        {"name": "description", "label": "Description"},
+        {"name": "name", "label": "Name", "sort": true, "width": 180},
+        {"name": "description", "label": "Description", "width": 300},
     ]
 
     const rows = benefits.map((benefit) => ({
