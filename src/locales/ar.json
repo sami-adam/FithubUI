@@ -206,7 +206,8 @@
       "DRAFT": "مسودة",
       "POSTED": "مرحل",
       "Amount": "المبلغ",
-      "POST": "ترحيل"
+      "POST": "ترحيل",
+      "Transaction updated successfully!": "تم تحديث المعاملة بنجاح!"
     }
   }
   

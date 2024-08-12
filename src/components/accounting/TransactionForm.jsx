@@ -62,7 +62,7 @@ export default function TransactionForm() {
             id: transaction.id,
             journal: journal,
             description: description,
-            entries: entries.map(entry => { return {"account": {"id": entry.account.id}, "transaction": {"id": transaction.id}, "type": entry.type, "debit": entry.debit, "credit": entry.credit}}),
+            entries: entries.map(entry => { return {"id": entry.id,"account": {"id": entry.account.id}, "transaction": {"id": transaction.id}, "type": entry.type, "debit": entry.debit, "credit": entry.credit}}),
             status: 'DRAFT'
         });
         setSnack({type: 'success', title: 'Success', message: 'Transaction updated successfully!'});
@@ -107,16 +107,16 @@ export default function TransactionForm() {
         setEntries([...entries, { id: Date.now(), name: '' }]);
       };
     
-      const handleRemoveEntry = (id) => {
-        setEntries(entries.filter(entry => entry.id !== id));
-      };
-    
-      const handleChangeEntry = (id, account, type, debit, credit) => {
-        const updatedEntries = entries.map(entry => 
-            entry.id === id ? { ...entry, account: account||entry.account, type: type||entry.type, debit: debit||entry.debit, credit: credit||entry.credit } : entry
-        );
-        setEntries(updatedEntries);
-      };
+    const handleRemoveEntry = (id) => {
+      setEntries(entries.filter(entry => entry.id !== id));
+    };
+  
+    const handleChangeEntry = (id, account, type, debit, credit) => {
+      const updatedEntries = entries.map(entry => 
+          entry.id === id ? { ...entry, account: account||entry.account, type: type||entry.type, debit: debit||entry.debit, credit: credit||entry.credit } : entry
+      );
+      setEntries(updatedEntries);
+    };
 
     return (
         <div style={{ width:"100%"}}>
