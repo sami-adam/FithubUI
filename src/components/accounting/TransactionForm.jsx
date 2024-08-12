@@ -25,6 +25,7 @@ export default function TransactionForm() {
     const updateTransaction = useTransactionStore((state) => state.updateTransaction);
     const addTransaction = useTransactionStore((state) => state.addTransaction);
     const deleteTransaction = useTransactionStore((state) => state.deleteTransaction);
+    const postTransaction = useTransactionStore((state) => state.postTransaction);
 
     const [journals, fetchJournals] = useJournalStore((state) => [state.journals, state.fetchJournals]);
     const [accounts, fetchAccounts] = useAccountStore((state) => [state.accounts, state.fetchAccounts]);
@@ -38,7 +39,7 @@ export default function TransactionForm() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
-    const transaction = location.state.object;
+    const [transaction, setTransaction] = useState(location.state.object);
     const {t} = useTranslation();
 
     useEffect(() => {
@@ -67,14 +68,15 @@ export default function TransactionForm() {
         setMode('view');
     }
 
-    const handleAdd = () => {
-        addTransaction({
+    const handleAdd = async () => {
+        const addedTransaction = addTransaction({
             journal: journal,
             description: description,
             timestamp: new Date(),
-            entries: entries.map(entry => { return {"account": {"id": entry.account.id},"transaction": {"id": transaction.id},  "type": entry.type, "debit": entry.debit, "credit": entry.credit}}),
+            entries: entries.map(entry => { return {"account": {"id": entry.account&&entry.account.id},"transaction": {"id": transaction&&transaction.id},  "type": entry.type, "debit": entry.debit, "credit": entry.credit}}),
             status: 'DRAFT'
         });
+        setTransaction(await addedTransaction);
         setSnack({type: 'success', title: 'Success', message: 'Transaction added successfully!'});
         setOpenSnackbar(true);
         setMode('view');
@@ -83,6 +85,18 @@ export default function TransactionForm() {
     const handleDelete = () => {
         deleteTransaction(transaction.id);
         setSnack({type: 'success', title: 'Success', message: 'Transaction deleted successfully!'});
+        setOpenSnackbar(true);
+        setMode('view');
+    }
+
+    const handleTransactionPost = () => {
+        if(!transaction.id){
+            setSnack({type: 'error', title: 'Error', message: 'Transaction not found!'});
+            setOpenSnackbar(true);
+            return;
+        }
+        postTransaction({"id": transaction.id});
+        setSnack({type: 'success', title: 'Success', message: 'Transaction posted successfully!'});
         setOpenSnackbar(true);
         setMode('view');
     }
@@ -140,6 +154,11 @@ export default function TransactionForm() {
           gap: 1.5,
         }}
       >
+        <div>
+        <Button variant="soft" onClick={handleTransactionPost} 
+          startDecorator={<MdOutlineMoney />} 
+          sx={{display: (mode === 'view'&& transaction && transaction.status === "DRAFT")? 'flex': 'none'}}>{t("POST")}</Button>
+        </div>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Journal")}</FormLabel>
           <Autocomplete startDecorator={<MdOutlineMoney />} 

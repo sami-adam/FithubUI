@@ -437,7 +437,9 @@ function StatusChip({ status }) {
             startDecorator={
                 {
                     NEW: <AutoAwesomeIcon />,
+                    DRAFT: <AutoAwesomeIcon />,
                     PAID: <CheckRoundedIcon />,
+                    POSTED: <CheckRoundedIcon />,
                     SENT: <CheckRoundedIcon />,
                     ACTIVE: <PublishedWithChangesIcon />,
                     EXPIRED: <SyncDisabledIcon />,
@@ -449,7 +451,9 @@ function StatusChip({ status }) {
             color={
                 {
                     NEW: 'neutral',
+                    DRAFT: 'neutral',
                     PAID: 'primary',
+                    POSTED: 'primary',
                     ACTIVE: 'success',
                     SENT: 'success',
                     EXPIRED: 'danger',

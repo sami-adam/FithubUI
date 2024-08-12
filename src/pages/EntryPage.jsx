@@ -11,14 +11,16 @@ export default function EntryPage() {
     }, [fetchEntries]);
 
     const columns = [
-        {"name": "account", "label": "Account", "width": 120, "sort": true},
+        {"name": "transaction", "label": "Transaction", "width": 200, "sort": true},
+        {"name": "account", "label": "Account", "width": 180, "sort": true},
         {"name": "type", "label": "Type"},
-        {"debit": "debit", "label": "Debit", "special": "amount"},
-        {"credit": "credit", "label": "Credit", "special": "amount"},
+        {"name": "debit", "label": "Debit", "special": "amount"},
+        {"name": "credit", "label": "Credit", "special": "amount"},
     ]
 
     const rows = entries.map((entry) => ({
         "id": entry.id,
+        "transaction": entry.transaction && entry.transaction.description,
         "account": entry.account.name,
         "type": entry.type,
         "debit": entry.debit,

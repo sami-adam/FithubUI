@@ -31,6 +31,7 @@ const useTransactionStore = create((set) => ({
                 },
             });
             set((state) => ({ transactions: [...state.transactions, response.data] }));
+            return response.data;
         } catch (error) {
             console.error("Error adding transaction", error);
         }
@@ -71,6 +72,20 @@ const useTransactionStore = create((set) => ({
             set({ transactions: response.data });
         } catch (error) {
             console.error("Error fetching transactions", error);
+        }
+    },
+    postTransaction: async (transaction) => {
+        try {
+            await axios.get(`${useTransactionStore.getState().baseURL}/transaction/post/${transaction.id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useTransactionStore.getState().token,
+                },
+            });
+            set((state) => ({
+                transactions: state.transactions.map((m) => (m.id === transaction.id ? { ...m, status: "POSTED" } : m)),
+            }));
+        } catch (error) {
+            console.error("Error posting transaction", error);
         }
     }
 }));

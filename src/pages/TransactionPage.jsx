@@ -13,9 +13,9 @@ export default function TransactionPage() {
     const columns = [
         {"name": "id", "label": "ID", "width": 120, "sort": true},
         {"name": "journal", "label": "Journal"},
-        {"name": "timestamp", "label": "Timestamp"},
-        {"name": "description", "label": "Description"},
-        {"name": "status", "label": "Status"},
+        {"name": "timestamp", "label": "Timestamp", "width": 200},
+        {"name": "description", "label": "Description", "width": 300},
+        {"name": "status", "label": "Status", "special": "status"}
     ]
 
     const rows = transactions.map((transaction) => ({

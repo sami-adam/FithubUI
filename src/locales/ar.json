@@ -201,7 +201,10 @@
       "Expense Account": "حساب المصروفات",
       "Journal": "يومية",
       "Transaction Information": "معلومات المعاملة",
-      "Add Entry": "إضافة قيد"
+      "Add Entry": "إضافة قيد",
+      "Transaction added successfully!": "تمت إضافة المعاملة بنجاح!",
+      "DRAFT": "مسودة",
+      "POSTED": "مرحل"
     }
   }
   
