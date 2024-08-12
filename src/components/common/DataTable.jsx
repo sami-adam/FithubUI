@@ -123,6 +123,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
   const [open, setOpen] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
   const [error, setError] = React.useState(null);
+  const [sortField, setSortField] = React.useState("id");
 
   const {t} = useTranslation();
   const theme = useTheme();
@@ -159,6 +160,11 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
     } else {
       excelExport(rows.map((row) => row.id));
     }
+  }
+
+  const handleSort = (field) => {
+    setSortField(field);
+    setOrder(order === 'asc' ? 'desc' : 'asc');
   }
   return (
     <React.Fragment>
@@ -319,7 +325,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                   underline="none"
                   color="primary"
                   component="button"
-                  onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}
+                  onClick={() => handleSort(column.name)}
                   fontWeight="lg"
                   endDecorator={<ArrowDropDownIcon />}
                   sx={{
@@ -341,7 +347,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
             </tr>
           </thead>
           <tbody>
-            {stableSort(rows, getComparator(order, 'id')).map((row) => (
+            {stableSort(rows, getComparator(order, sortField)).map((row) => (
               <tr key={row.id}>
                 <td style={{ textAlign: 'center', width: 120 }}>
                   <Checkbox
