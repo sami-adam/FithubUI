@@ -67,15 +67,15 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
       {productCategories.map((productCategory) => (
         <Card
           key={productCategory.id}
-          variant="soft"
+          variant="outlined"
           sx={{
             borderRadius: 'md',
             boxShadow: 'sm',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 1.5,
-            p: 2,
+            //gap: 1.5,
+            //p: 2,
             minWidth: 120,
           }}
         >
@@ -127,7 +127,7 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
       {products.map((product) => (
         <Card
           key={product.id}
-          variant="soft"
+          variant="outlined"
           sx={{
             borderRadius: 'md',
             boxShadow: 'sm',
