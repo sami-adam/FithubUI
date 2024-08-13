@@ -7,8 +7,10 @@ import { Check } from '@mui/icons-material';
 import useProductCategoryStore from '../../state/productCategoryState';
 import useProductStore from '../../state/productState';
 import useMembershipStore from '../../state/membershipState';
+import useBenefitStore from '../../state/benefitState';
 import { useEffect, useState } from 'react';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 export default function MembershipRegistration({ setProduct, setAmount}) {
   const [fetchData, setFetchData] = useState(true);
@@ -16,6 +18,7 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
   const products = useProductStore((state) => state.products);
   const [productCategory, setProductCategory] = useState('');
   //const [product, setProduct] = useState('');
+  const [benefits, fetchBenefits] = useBenefitStore((state) => [state.benefits, state.fetchBenefits]);
 
   const searchProducts = useProductStore((state) => state.searchProducts);
 
@@ -23,9 +26,10 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
     if (fetchData) {
       fetchProductCategories();
       searchProducts("XZ");
+      fetchBenefits();
       setFetchData(false);
     }
-  }, [fetchData, fetchProductCategories, searchProducts]);
+  }, [fetchData, fetchProductCategories, searchProducts, fetchBenefits]);
     const handleProductChange = (event) => {
       setProduct(event.target.value);
       setAmount(products.find((p) => p.name === event.target.value).price);
@@ -87,6 +91,9 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
                 <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"flex-start"}}>
                   {productCategory.benefits.map((benefit) => 
                 <Typography startDecorator={<VerifiedIcon color='text.primary' sx={{ fontSize:18 }}/>} variant="contained" color="text.primary" >{benefit.name}</Typography>
+                )}
+                  {benefits.filter(bf => !productCategory.benefits.map(b => b.id).includes(bf.id)).map((benefit) =>
+                <Typography startDecorator={<RemoveCircleIcon color='danger' sx={{ fontSize:18 }}/>} variant="contained" color="text.primary" >{benefit.name}</Typography>
                 )}
                 </div>
             </Stack>

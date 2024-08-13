@@ -207,7 +207,8 @@
       "POSTED": "مرحل",
       "Amount": "المبلغ",
       "POST": "ترحيل",
-      "Transaction updated successfully!": "تم تحديث المعاملة بنجاح!"
+      "Transaction updated successfully!": "تم تحديث المعاملة بنجاح!",
+      "Subscription updated successfully!": "تم تحديث الاشتراك بنجاح!"
     }
   }
   

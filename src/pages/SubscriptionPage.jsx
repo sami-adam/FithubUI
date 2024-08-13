@@ -31,15 +31,15 @@ export default function SubscriptionPage({ defaultSearch="" }) {
         {"name": "subscriptionType", "label": "Subscription Type", "type": "select", "placeholder": "Filter By Subscription Type", "options": products.map((product) => product.name)},
     ]
     const columns = [
-        {"name": "reference", "label": "Reference", "width": 90},
+        {"name": "reference", "label": "Reference", "width": 100},
         {"name": "identificationNumber", "label": "ID Number"},
-        {"name": "member", "label": "Member", "special": "person", "width": 200},
+        {"name": "member", "label": "Member", "special": "person", "width": 250},
         {"name": "startDate", "label": "Start Date"},
         {"name": "endDate", "label": "End Date"},
         {"name": "totalPrice", "label": "Total Price", "width": 100, "special": "amount"},
-        {"name": "tax", "label": "Tax", "width": 80, "special": "amount"},
-        {"name": "discount", "label": "Discount", "width": 80, "special": "amount"},
-        {"name": "netAmount", "label": "Net Amount", "width": 80, "special": "amount"},
+        {"name": "tax", "label": "Tax", "width": 90, "special": "amount"},
+        {"name": "discount", "label": "Discount", "width": 90, "special": "amount"},
+        {"name": "netAmount", "label": "Net Amount", "width": 90, "special": "amount"},
         {"name": "status", "label": "Status", "special": "status"},
     ]
     

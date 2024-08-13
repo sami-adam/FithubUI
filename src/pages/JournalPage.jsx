@@ -13,7 +13,7 @@ export default function JournalPage() {
         { "name": "code", "label": "Code", "sort": true }, 
         { "name": "name", "label": "Name" },
         { "name": "type", "label": "Type" },
-        { "name": "account", "label": "Account" }
+        { "name": "account", "label": "Account", "width":200 }
     ]
 
     const rows = journals.map((journal) => ({
