@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import useMemberStore from '../../state/memberState';
 import useSubscriptionStore from '../../state/subscriptionState';
 import { useEffect, useState } from 'react';
-import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Radio, Typography } from '@mui/joy';
+import { Box, Button, Card, CardContent, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormLabel, Input, Modal, ModalDialog, Radio, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
 import { BiNews } from "react-icons/bi";
 import { HorozontalStepper, SnackbarCustom } from '../common/Common';
@@ -14,6 +14,7 @@ import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import { FaCalendarAlt } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -40,6 +41,7 @@ export default function MemberForm() {
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
+    const [openPictureEdit, setOpenPictureEdit] = useState(false);
 
     const member = location.state.object;
     const navigate = useNavigate();
@@ -199,9 +201,45 @@ export default function MemberForm() {
 
             </CardContent>
             <Box height={8} sx={{ gridColumn: '1/-1' }} />
-
+            <a onClick={()=> setOpenPictureEdit(true)}>
+            {member.profilePicture &&
+            <img src={`data:${member.profilePicture.type};base64,${member.profilePicture.data}`}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
+            || <img src="https://via.placeholder.com/100" alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>}
+            </a>
+            <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={member.profilePicture &&`data:${member.profilePicture.type};base64,${member.profilePicture.data}` || "https://via.placeholder.com/300"}/>
+            
         </Card>
         </div>
     )
 
+}
+
+export function ProfilePictureEdit({open, setOpen, src}){
+    return (
+        <Modal open={open} onClose={() => setOpen(false)}>
+        <ModalDialog variant="outlined" role="alertdialog">
+          <DialogTitle>
+            <WarningRoundedIcon />
+            Profile Picture
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+          <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+          <img src={src}  alt="Profile" style={{width: 300, height: 300, borderRadius: 10}}/>
+          </div>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="solid" color="neutral" onClick={() => setOpen(false)}>
+              Edit
+            </Button>
+            <Button variant="solid" color="danger" onClick={() => setOpen(false)}>
+              Delete
+            </Button>
+            <Button variant="plain" color="neutral" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+          </DialogActions>
+        </ModalDialog>
+      </Modal>
+    )
 }
