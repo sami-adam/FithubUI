@@ -16,7 +16,7 @@ export default function MemberPage() {
         {"name": "name", "label": "Full Name", "sort": true, "width": 180},
         {"name": "email", "label": "Email", "width": 220},
         {"name": "phone", "label": "Phone", "width": 120},
-        {"name": "gender", "label": "Gender", "width": 80},
+        {"name": "gender", "label": "Gender", "width": 80, "sort": true},
         {"name": "status", "label": "Status", "special": "status"},
     ]
 

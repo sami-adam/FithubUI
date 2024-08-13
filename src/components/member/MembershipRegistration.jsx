@@ -8,6 +8,7 @@ import useProductCategoryStore from '../../state/productCategoryState';
 import useProductStore from '../../state/productState';
 import useMembershipStore from '../../state/membershipState';
 import { useEffect, useState } from 'react';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 export default function MembershipRegistration({ setProduct, setAmount}) {
   const [fetchData, setFetchData] = useState(true);
@@ -43,7 +44,7 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
         flexDirection: 'row',
         display: 'flex',
         justifyContent: 'center',
-        gap: 2,
+        gap: 1,
         [`& .${radioClasses.checked}`]: {
           [`& .${radioClasses.action}`]: {
             inset: -1,
@@ -77,14 +78,15 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
             //gap: 1.5,
             //p: 2,
             minWidth: 120,
+            width: 300,
           }}
         >
           <Radio id={productCategory.id} value={productCategory.name} checkedIcon={<CheckCircleRoundedIcon/>}/>
-          <FormLabel sx={{fontSize:18}} htmlFor={productCategory.name}>{productCategory.name}</FormLabel>
+          <FormLabel sx={{fontSize:18}} htmlFor={productCategory.name}><Typography fontWeight="bold">{productCategory.name}</Typography></FormLabel>
             <Stack direction="column" spacing={0.5} sx={{ display: 'flex', alignItems: "center", justifyContent: "flex-start" }}>
                 <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", justifyContent:"flex-start"}}>
                   {productCategory.benefits.map((benefit) => 
-                <Typography startDecorator={<Check/>} variant="contained" color="text.primary" >{benefit.name}</Typography>
+                <Typography startDecorator={<VerifiedIcon color='text.primary' sx={{ fontSize:18 }}/>} variant="contained" color="text.primary" >{benefit.name}</Typography>
                 )}
                 </div>
             </Stack>
@@ -100,7 +102,7 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
       onChange={handleProductChange}
       sx={{
         flexDirection: 'row',
-        gap: 2,
+        gap: 1,
         paddingTop: 2,
         display: 'flex',
         justifyContent: 'center',
@@ -137,6 +139,7 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
             gap: 1.5,
             p: 2,
             minWidth: 200,
+            width: 300,
           }}
         >
           <Radio id={product.id} value={product.name} checkedIcon={<CheckCircleRoundedIcon />} />
@@ -144,7 +147,7 @@ export default function MembershipRegistration({ setProduct, setAmount}) {
 
           <div>
             <Typography variant="contained" color="primary" startDecorator={<Typography>SAR</Typography>}>
-              {product.price.toLocaleString()}
+              {product.price&&product.price.toLocaleString()}
             </Typography>
           </div>
         </Card>
