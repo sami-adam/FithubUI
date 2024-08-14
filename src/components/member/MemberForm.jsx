@@ -214,7 +214,7 @@ export default function MemberForm() {
             <a onClick={()=> setOpenPictureEdit(true)}>
             <img src={member.profilePicture && profileSrc.data || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
             </a>
-            <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={member.profilePicture && profileSrc.data || "https://via.placeholder.com/300"}/>
+            <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={profileSrc} setSrc={setProfileSrc}/>
             
         </Card>
         </div>
@@ -222,7 +222,8 @@ export default function MemberForm() {
 
 }
 
-export function ProfilePictureEdit({open, setOpen, src}){
+export function ProfilePictureEdit({open, setOpen, src, setSrc}){
+
     return (
         <Modal open={open} onClose={() => setOpen(false)}>
         <ModalDialog variant="outlined" role="alertdialog">
@@ -233,11 +234,11 @@ export function ProfilePictureEdit({open, setOpen, src}){
           <Divider />
           <DialogContent>
           <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
-          <img src={src}  alt="Profile" style={{width: 300, height: 300, borderRadius: 10}}/>
+          <img src={src.data}  alt="Profile" style={{width: 300, height: 300, borderRadius: 10}}/>
           </div>
           </DialogContent>
           <DialogActions sx={{ display: "flex", justifyContent:"space-between"}}>
-            <InputFileUpload />
+            <InputFileUpload file={src.data} setFile={setSrc} />
             <Button variant="solid" color="danger" onClick={() => setOpen(false)}>
               Delete
             </Button>

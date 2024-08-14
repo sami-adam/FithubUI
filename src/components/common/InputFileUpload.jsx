@@ -15,7 +15,7 @@ const VisuallyHiddenInput = styled('input')`
   width: 1px;
 `;
 
-export default function InputFileUpload() {
+export default function InputFileUpload({ file, setFile }) {
   return (
     <Button
       component="label"
@@ -42,7 +42,7 @@ export default function InputFileUpload() {
       }
     >
       Upload a file
-      <VisuallyHiddenInput type="file" />
+      <VisuallyHiddenInput type="file" onChange={(event) => setFile(event.target.files[0])} />
     </Button>
   );
 }
