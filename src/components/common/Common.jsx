@@ -146,7 +146,7 @@ export function HorozontalStepper({ stages = ["NEW", "DONE"], currentStage = 1 }
                     variant={activeStep <= index ? 'soft' : 'soft'}
                     color={activeStep < index ? 'neutral' : 'primary'}
                     >
-                    {activeStep < index ? index + 1 : (activeStep === index? <FaRegDotCircle fontSize="small"/> : <Check fontSize="small"/>)}
+                    {activeStep < index ? index + 1 : (activeStep === index? <FaRegDotCircle className="animated-icon" fontSize="small"/> : <Check fontSize="small"/>)}
                     </StepIndicator>
                 }
                 sx={{

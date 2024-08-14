@@ -15,6 +15,7 @@ import { BsSave } from "react-icons/bs";
 import { FaCalendarAlt } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import InputFileUpload from '../common/InputFileUpload';
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -228,10 +229,8 @@ export function ProfilePictureEdit({open, setOpen, src}){
           <img src={src}  alt="Profile" style={{width: 300, height: 300, borderRadius: 10}}/>
           </div>
           </DialogContent>
-          <DialogActions>
-            <Button variant="solid" color="neutral" onClick={() => setOpen(false)}>
-              Edit
-            </Button>
+          <DialogActions sx={{ display: "flex", justifyContent:"space-between"}}>
+            <InputFileUpload />
             <Button variant="solid" color="danger" onClick={() => setOpen(false)}>
               Delete
             </Button>

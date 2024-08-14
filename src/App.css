@@ -54,3 +54,19 @@ body {
 .header {
   font-family: 'IBM Sans Arabic', sans-serif;
 }
+
+
+.animated-icon {
+  font-size: 3rem; /* Adjust size as needed */
+  color: #3498db; /* Adjust color as needed */
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(0.7);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
