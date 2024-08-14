@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import useMemberStore from '../../state/memberState';
 import useSubscriptionStore from '../../state/subscriptionState';
+import useAttachmentStore from '../../state/attachmentState';
 import { useEffect, useState } from 'react';
 import { Box, Button, Card, CardContent, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormLabel, Input, Modal, ModalDialog, Radio, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
@@ -27,6 +28,7 @@ export default function MemberForm() {
     const updateMember = useMemberStore((state) => state.updateMember);
     const addMember = useMemberStore((state) => state.addMember);
     const deleteMember = useMemberStore((state) => state.deleteMember);
+    const fetchAttachment = useAttachmentStore((state) => state.fetchAttachment);
     const [subscriptions, fetchSubscriptions] = useSubscriptionStore((state) => [state.subscriptions, state.fetchSubscriptions]);
     const [fetchData, setFetchData] = useState(true);
     const {t} = useTranslation();
@@ -43,10 +45,11 @@ export default function MemberForm() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
     const [openPictureEdit, setOpenPictureEdit] = useState(false);
+    const [profileSrc, setProfileSrc] = useState("https://via.placeholder.com/300");
 
     const member = location.state.object;
     const navigate = useNavigate();
-
+    
     const memberSubscriptions = member&&subscriptions.filter(subscription => subscription.member.id === member.id);
 
     useEffect(() => {
@@ -58,11 +61,17 @@ export default function MemberForm() {
             setPhone(phone=>phone||member.phone);
             setGender(gender=>gender);
         }
-        if(fetchData){
+        async function fetchData(){
             fetchSubscriptions();
+            if(member.profilePicture){
+                setProfileSrc(await fetchAttachment(member.profilePicture.url));
+            }
             setFetchData(false);
         }
-    }, [mode, member, fetchData, fetchSubscriptions]);
+        if(fetchData){
+            fetchData();
+        }
+    }, [mode, member, fetchData, fetchSubscriptions, fetchAttachment]);
 
     const handleSave = () => {
         updateMember({
@@ -203,11 +212,9 @@ export default function MemberForm() {
             </CardContent>
             <Box height={8} sx={{ gridColumn: '1/-1' }} />
             <a onClick={()=> setOpenPictureEdit(true)}>
-            {member.profilePicture &&
-            <img src={`data:${member.profilePicture.type};base64,${member.profilePicture.data}`}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
-            || <img src="https://via.placeholder.com/100" alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>}
+            <img src={member.profilePicture && profileSrc.data || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
             </a>
-            <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={member.profilePicture &&`data:${member.profilePicture.type};base64,${member.profilePicture.data}` || "https://via.placeholder.com/300"}/>
+            <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={member.profilePicture && profileSrc.data || "https://via.placeholder.com/300"}/>
             
         </Card>
         </div>
