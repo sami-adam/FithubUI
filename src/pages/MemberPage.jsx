@@ -1,15 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useMemberStore from "../state/memberState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
-export default function MemberPage() {
+export default function MemberPage({ defaultSearch = "" }) {
     const [members, fetchMembers] = useMemberStore((state) => [state.members, state.fetchMembers]);
+    const searchMembers = useMemberStore((state) => state.searchMembers);
+
+    const location = useLocation();
+    if (location.state && location.state.search) {
+        defaultSearch = location.state.search;
+    }
+    const [search, setSearch] = useState(defaultSearch);
+
     const {t} = useTranslation();
     useEffect(() => {
-        fetchMembers();
-    }, [fetchMembers]);
+        if (search === "" && defaultSearch === "") {
+            fetchMembers();
+        }
+        if (search !== "") {
+            searchMembers(search);
+        }
+    }, [fetchMembers, search, searchMembers, defaultSearch]);
 
     const columns = [
         {"name": "id", "label": "ID Number", "width": 120},
@@ -44,7 +58,7 @@ export default function MemberPage() {
     }));
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Members" formUrl="/member-form"/>
+            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Members" formUrl="/member-form" setSearch={setSearch}/>
             <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/member-form"/>
         </div>
     );
