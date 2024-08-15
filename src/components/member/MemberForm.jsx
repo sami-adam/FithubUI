@@ -17,6 +17,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import InputFileUpload from '../common/InputFileUpload';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -214,7 +215,7 @@ export default function MemberForm() {
             <a onClick={()=> setOpenPictureEdit(true)}>
             <img src={member.profilePicture && profileSrc.data || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
             </a>
-            <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={profileSrc} setSrc={setProfileSrc}/>
+            <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={profileSrc} setSrc={setProfileSrc} defaultSrc={profileSrc} memberId={member.id}/>
             
         </Card>
         </div>
@@ -222,8 +223,23 @@ export default function MemberForm() {
 
 }
 
-export function ProfilePictureEdit({open, setOpen, src, setSrc}){
-
+export function ProfilePictureEdit({open, setOpen, src, setSrc, defaultSrc=null, memberId=null}){
+    const [profileUrl, setProfileUrl] = useState(null);
+    const [file, setFile] = useState(null);
+    const uploadProfilePicture = useMemberStore((state) => state.uploadProfilePicture);
+    const handleFileChange = (file) => {
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setProfileUrl(url);
+            setSrc(url);
+            setFile(file);
+        }
+    };
+    const handleUpload = () => {
+        const response = uploadProfilePicture(memberId, file);
+        setOpen(false);
+    }
+    console.log(src);
     return (
         <Modal open={open} onClose={() => setOpen(false)}>
         <ModalDialog variant="outlined" role="alertdialog">
@@ -233,14 +249,17 @@ export function ProfilePictureEdit({open, setOpen, src, setSrc}){
           </DialogTitle>
           <Divider />
           <DialogContent>
+          <Button sx={{ display: "flex", position:"absolute" }} variant='soft'><DeleteIcon color='danger' sx={{ fontSize: 24 }}/></Button>
           <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
-          <img src={src.data}  alt="Profile" style={{width: 300, height: 300, borderRadius: 10}}/>
+          <img src={defaultSrc&&defaultSrc.data || src}  alt="Profile" style={{width: 300, height: 300, borderRadius: 10}}/>
           </div>
           </DialogContent>
           <DialogActions sx={{ display: "flex", justifyContent:"space-between"}}>
-            <InputFileUpload file={src.data} setFile={setSrc} />
-            <Button variant="solid" color="danger" onClick={() => setOpen(false)}>
-              Delete
+            <div style={{ width: "50%" }}>
+                <InputFileUpload file={src} setFile={handleFileChange} />
+            </div>
+            <Button variant="solid" color="primary" onClick={handleUpload}>
+              Confirm
             </Button>
             <Button variant="plain" color="neutral" onClick={() => setOpen(false)}>
               Cancel

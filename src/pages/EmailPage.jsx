@@ -11,10 +11,10 @@ export default function EmailPage() {
 
     const columns = [
         {"name": "id", "label": "ID", "width": 80},
-        {"name": "subject", "label": "Subject", "sort": true},
-        {"name": "emailFrom", "label": "From", "width": 150},
-        {"name": "emailTo", "label": "To", "width": 150},
-        {"name": "scheduledDate", "label": "Scheduled Date", "width": 150},
+        {"name": "subject", "label": "Subject", "sort": true, "width": 300},
+        {"name": "emailFrom", "label": "From", "width": 220},
+        {"name": "emailTo", "label": "To", "width": 220},
+        {"name": "scheduledDate", "label": "Scheduled Date", "width": 250},
         {"name": "status", "label": "Status", "special": "status"},
     ]
 

@@ -72,6 +72,24 @@ const useMemberStore = create((set) => ({
         } catch (error) {
             console.error("Error searching members", error);
         }
+    },
+    uploadProfilePicture: async (id, file) => {
+        const formData = new FormData();
+        formData.append("attachment", file);
+        try {
+            const response = await axios.post(`${useMemberStore.getState().baseURL}/member/${id}/picture`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": "Bearer " + useMemberStore.getState().token
+                },
+            });
+            set((state) => ({
+                members: state.members.map((m) => (m.id === id ? response.data : m)),
+            }));
+            return response.data;
+        } catch (error) {
+            alert("Error uploading profile picture");
+        }
     }
 }))
 
