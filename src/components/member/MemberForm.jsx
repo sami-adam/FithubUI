@@ -213,7 +213,7 @@ export default function MemberForm() {
             </CardContent>
             <Box height={8} sx={{ gridColumn: '1/-1' }} />
             <a onClick={()=> setOpenPictureEdit(true)}>
-            <img src={member.profilePicture && profileSrc.data || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
+            <img src={member.profilePicture && profileSrc.data || profileSrc || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
             </a>
             <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={profileSrc} setSrc={setProfileSrc} defaultSrc={profileSrc} memberId={member.id}/>
             
@@ -227,6 +227,7 @@ export function ProfilePictureEdit({open, setOpen, src, setSrc, defaultSrc=null,
     const [profileUrl, setProfileUrl] = useState(null);
     const [file, setFile] = useState(null);
     const uploadProfilePicture = useMemberStore((state) => state.uploadProfilePicture);
+    const deleteProfilePicture = useMemberStore((state) => state.deleteProfilePicture);
     const handleFileChange = (file) => {
         if (file) {
             const url = URL.createObjectURL(file);
@@ -239,6 +240,14 @@ export function ProfilePictureEdit({open, setOpen, src, setSrc, defaultSrc=null,
         const response = uploadProfilePicture(memberId, file);
         setOpen(false);
     }
+    const handleDelete = () => {
+        const confirm = window.confirm("Are you sure you want to delete this profile picture?");
+        if(confirm){
+            deleteProfilePicture(memberId);
+            setSrc("https://via.placeholder.com/300");
+        }
+        setOpen(false);
+    }
     console.log(src);
     return (
         <Modal open={open} onClose={() => setOpen(false)}>
@@ -249,7 +258,7 @@ export function ProfilePictureEdit({open, setOpen, src, setSrc, defaultSrc=null,
           </DialogTitle>
           <Divider />
           <DialogContent>
-          <Button sx={{ display: "flex", position:"absolute" }} variant='soft'><DeleteIcon color='danger' sx={{ fontSize: 24 }}/></Button>
+          <Button sx={{ display: "flex", position:"absolute" }} variant='soft' onClick={handleDelete}><DeleteIcon color='danger' sx={{ fontSize: 24 }}/></Button>
           <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
           <img src={defaultSrc&&defaultSrc.data || src}  alt="Profile" style={{width: 300, height: 300, borderRadius: 10}}/>
           </div>

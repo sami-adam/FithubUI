@@ -90,6 +90,20 @@ const useMemberStore = create((set) => ({
         } catch (error) {
             alert("Error uploading profile picture");
         }
+    },
+    deleteProfilePicture: async (id) => {
+        try {
+            const response = await axios.delete(`${useMemberStore.getState().baseURL}/member/${id}/picture`, {
+                headers: {
+                    "Authorization": "Bearer " + useMemberStore.getState().token,
+                },
+            });
+            set((state) => ({
+                members: state.members.map((m) => (m.id === id ? response.data : m)),
+            }));
+        } catch (error) {
+            alert("Error deleting profile picture");
+        }
     }
 }))
 
