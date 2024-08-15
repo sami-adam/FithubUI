@@ -208,7 +208,14 @@
       "Amount": "المبلغ",
       "POST": "ترحيل",
       "Transaction updated successfully!": "تم تحديث المعاملة بنجاح!",
-      "Subscription updated successfully!": "تم تحديث الاشتراك بنجاح!"
+      "Subscription updated successfully!": "تم تحديث الاشتراك بنجاح!",
+      "Login failed!": "فشل تسجيل الدخول!",
+      "Employee Type": "نوع الموظف",
+      "Select Employee Type": "اختر نوع الموظف",
+      "Employee": "موظف",
+      "Instructor": "مدرب",
+      "INSTRUCTOR": "مدرب",
+      "EMPLOYEE": "موظف"
     }
   }
   

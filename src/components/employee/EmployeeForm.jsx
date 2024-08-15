@@ -2,7 +2,7 @@ import { useTheme } from '@emotion/react';
 import useEmployeeStore from '../../state/employeeState';
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
+import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
 import { BiNews } from "react-icons/bi";
 import { BiEdit } from "react-icons/bi";
@@ -34,6 +34,7 @@ export default function EmployeeForm() {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
+    const [employeeType, setEmployeeType] = useState('');
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
@@ -49,6 +50,7 @@ export default function EmployeeForm() {
             setEmail(email=>email||employee.email);
             setPhone(phone=>phone||employee.phone);
             setAddress(address=>address||employee.address);
+            setEmployeeType(employeeType=>employeeType||employee.employeeType);
         }
       }, [mode, employee]);
 
@@ -59,7 +61,8 @@ export default function EmployeeForm() {
             identificationNumber: identificationNumber,
             email: email,
             phone: phone,
-            address: address
+            address: address,
+            employeeType: employeeType
         });
         setMode('view');
         setOpenSnackbar(true);
@@ -72,7 +75,8 @@ export default function EmployeeForm() {
             identificationNumber: identificationNumber,
             email: email,
             phone: phone,
-            address: address
+            address: address,
+            employeeType: employeeType
         });
         setMode('view');
         setOpenSnackbar(true);
@@ -144,6 +148,21 @@ export default function EmployeeForm() {
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Phone")}</FormLabel>
           <Input startDecorator={<LiaPhoneSquareSolid fontSize={22} />} value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
+        </FormControl>
+
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
+          <FormLabel>{t("Employee Type")}</FormLabel>
+          <Select 
+              startDecorator={<MdOutlineMailOutline />} 
+              value={employeeType} 
+              placeholder={t("Select Employee Type")}
+              onChange={(e, newValue) => setEmployeeType(newValue)}
+              disabled={mode === 'view'}
+              sx={{ flexGrow: 1, mr: 1}}
+              >
+              <Option value="EMPLOYEE">{t("Employee")}</Option>
+              <Option value="INSTRUCTOR">{t("Instructor")}</Option>
+          </Select>
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
