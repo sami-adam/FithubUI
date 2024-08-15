@@ -1,17 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useEmployeeStore from "../state/employeeState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
-export default function EmployeePage() {
+export default function EmployeePage({ defaultSearch="" }) {
     const [employees, fetchEmployees] = useEmployeeStore((state) => [state.employees, state.fetchEmployees]);
+    const searchEmployees = useEmployeeStore((state) => state.searchEmployees);
 
+    const location = useLocation();
+    if (location.state && location.state.search) {
+        defaultSearch = location.state.search;
+    }
+    const [search, setSearch] = useState(defaultSearch);
     const {t} = useTranslation();
 
     useEffect(() => {
-        fetchEmployees();
-    }, [fetchEmployees]);
+        if (search === "" && defaultSearch === "") {
+            fetchEmployees();
+        }
+        if (search !== "") {
+            searchEmployees(search);
+        }
+    }, [fetchEmployees, search, searchEmployees, defaultSearch]);
 
     const columns = [
         {"name": "id", "label": "Identification Number", "width": 120},
@@ -46,7 +58,7 @@ export default function EmployeePage() {
 
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Employees" formUrl="/employee-form"/>
+            <DataTable columns={columns} rows={rows} selectionFilters={[]} setSearch={setSearch} pageTitle="Employees" formUrl="/employee-form"/>
             <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/employee-form"/>
         </div>
     );
