@@ -6,12 +6,13 @@ import { useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Card, CardContent, Chip, FormControl, FormLabel, Input, Typography, useTheme } from '@mui/joy';
 import { Add, Close } from '@mui/icons-material';
 import { BiNews } from "react-icons/bi";
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTranslation } from 'react-i18next';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
+import { PiDotDuotone } from "react-icons/pi";
+import { FaTags } from "react-icons/fa";
 
 export default function ProductCategoryForm() {
     const location = useLocation();
@@ -133,7 +134,7 @@ export default function ProductCategoryForm() {
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Name")}</FormLabel>
-          <Input startDecorator={<InfoOutlinedIcon />} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
+          <Input startDecorator={<PiDotDuotone />} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
@@ -148,7 +149,7 @@ export default function ProductCategoryForm() {
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Description")}</FormLabel>
-          <Input startDecorator={<InfoOutlinedIcon />} value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
+          <Input startDecorator={<PiDotDuotone />} value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
@@ -164,7 +165,8 @@ export default function ProductCategoryForm() {
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
           <FormLabel>{t("Benefits")}</FormLabel>
-          <Autocomplete
+          <Autocomplete 
+            startDecorator={<FaTags />}
             multiple
             placeholder=""
             limitTags={4}

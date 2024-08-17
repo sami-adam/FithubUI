@@ -1,14 +1,27 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useTransactionStore from "../state/transactionState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
+import { useLocation } from "react-router-dom";
 
-export default function TransactionPage() {
+export default function TransactionPage({ defaultSearch="" }) {
     const [transactions, fetchTransactions] = useTransactionStore((state) => [state.transactions, state.fetchTransactions]);
+    const searchTransactions = useTransactionStore((state) => state.searchTransactions);
+
+    const location = useLocation();
+    if (location.state && location.state.search) {
+        defaultSearch = location.state.search;
+    }
+    const [search, setSearch] = useState(defaultSearch);
 
     useEffect(() => {
-        fetchTransactions();
-    }, [fetchTransactions]);
+        if (search === "" && defaultSearch === "") {
+            fetchTransactions();
+        }
+        if (search !== "") {
+            searchTransactions(search);
+        }
+    }, [fetchTransactions, search, searchTransactions, defaultSearch]);
 
     const columns = [
         {"name": "id", "label": "Reference", "width": 120, "sort": true},
@@ -42,7 +55,7 @@ export default function TransactionPage() {
 
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Transactions" formUrl="/transaction-form"/>
+            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Transactions" formUrl="/transaction-form" setSearch={setSearch}/>
             <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/transaction-form"/>
         </div>
     );

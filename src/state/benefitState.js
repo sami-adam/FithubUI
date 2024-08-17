@@ -62,7 +62,7 @@ const useBenefitStore = create((set) => ({
             console.error("Error deleting benefit", error);
         }
     },
-    SearchBenefits: async (search) => {
+    searchBenefits: async (search) => {
         try {
             const response = await axios.get(`${useBenefitStore.getState().baseURL}/benefits/search/${search}`, {
                 headers: {

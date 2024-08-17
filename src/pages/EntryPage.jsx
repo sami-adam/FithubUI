@@ -1,14 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useEntryStore from "../state/entryState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
+import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-export default function EntryPage() {
+export default function EntryPage({ defaultSearch="" }) {
     const [entries, fetchEntries] = useEntryStore((state) => [state.entries, state.fetchEntries]);
+    const searchEntries = useEntryStore((state) => state.searchEntries);
+
+    const location = useLocation();
+    if (location.state && location.state.search) {
+        defaultSearch = location.state.search;
+    }
+    const [search, setSearch] = useState(defaultSearch);
+    const {t} = useTranslation();
 
     useEffect(() => {
-        fetchEntries();
-    }, [fetchEntries]);
+        if (search === "" && defaultSearch === "") {
+            fetchEntries();
+        }
+        if (search !== "") {
+            searchEntries(search);
+        }
+    }, [fetchEntries, search, searchEntries, defaultSearch]);
 
     const columns = [
         {"name": "transaction", "label": "Transaction", "width": 120, "sort": true},
@@ -41,7 +56,7 @@ export default function EntryPage() {
 
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Entries" formUrl="/entry-form"/>
+            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Entries" formUrl="/entry-form" setSearch={setSearch}/>
             <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/entry-form"/>
         </div>
     );

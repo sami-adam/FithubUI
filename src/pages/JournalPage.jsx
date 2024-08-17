@@ -1,13 +1,28 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useJournalStore from "../state/journalState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
-export default function JournalPage() {
+import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+export default function JournalPage({ defaultSearch = "" }) {
     const [journals, fetchJournals] = useJournalStore((state) => [state.journals, state.fetchJournals]);
+    const searchJournals = useJournalStore((state) => state.searchJournals);   
+
+    const location = useLocation();
+    if (location.state && location.state.search) {
+        defaultSearch = location.state.search;
+    }
+    const [search, setSearch] = useState(defaultSearch);
+    const {t} = useTranslation();
 
     useEffect(() => {
-        fetchJournals();
-    }, [fetchJournals]);
+        if (search === "" && defaultSearch === "") {
+            fetchJournals();
+        }
+        if (search !== "") {
+            searchJournals(search);
+        }
+    }, [fetchJournals, search, searchJournals, defaultSearch]);
 
     const columns = [
         { "name": "code", "label": "Code", "sort": true }, 
@@ -38,7 +53,7 @@ export default function JournalPage() {
 
     return (
         <div style={{ marginTop: "20px", paddingInlineStart: 8 }}>
-            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Journals" formUrl="/journal-form" />
+            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Journals" formUrl="/journal-form" setSearch={setSearch}/>
             <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/journal-form" />
         </div>
     );

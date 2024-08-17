@@ -1,14 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useAccountStore from "../state/accountState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
+import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-export default function AccountPage() {
+export default function AccountPage({ defaultSearch="" }) {
     const [accounts, fetchAccounts] = useAccountStore((state) => [state.accounts, state.fetchAccounts]);
+    const searchAccounts = useAccountStore((state) => state.searchAccounts);
+
+    const location = useLocation();
+    if (location.state && location.state.search) {
+        defaultSearch = location.state.search;
+    }
+    const [search, setSearch] = useState(defaultSearch);
+    const {t} = useTranslation();
 
     useEffect(() => {
-        fetchAccounts();
-    }, [fetchAccounts]);
+        if (search === "" && defaultSearch === "") {
+            fetchAccounts();
+        }
+        if (search !== "") {
+            searchAccounts(search);
+        }
+    }, [fetchAccounts, search, searchAccounts, defaultSearch]);
 
     const columns = [
         {"name": "code", "label": "Code", "width": 120, "sort": true},
@@ -43,7 +58,7 @@ export default function AccountPage() {
 
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Accounts" formUrl="/account-form"/>
+            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Accounts" formUrl="/account-form" setSearch={setSearch}/>
             <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/account-form"/>
         </div>
     );

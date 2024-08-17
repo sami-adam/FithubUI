@@ -58,6 +58,18 @@ const useProductCategoryStore = create((set) => ({
             console.error("Error deleting product category", error);
         }
     },
+    searchProductCategories: async (search) => {
+        try {
+            const response = await axios.get(useProductCategoryStore.getState().baseURL + `/product-categories/search/${search}`, {
+                headers: {
+                    "Authorization": "Bearer " + useProductCategoryStore.getState().token,
+                },
+            });
+            set({ productCategories: response.data });
+        } catch (error) {
+            console.error("Error searching product categories", error);
+        }
+    },
 }))
 
 export default useProductCategoryStore;

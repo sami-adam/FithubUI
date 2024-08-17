@@ -1,14 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useProductCategoryStore from "../state/productCategoryState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
+import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-export default function ProductCategoryPage() {
+export default function ProductCategoryPage({ defaultSearch="" }) {
     const [productCategories, fetchProductCategories] = useProductCategoryStore((state) => [state.productCategories, state.fetchProductCategories]);
+    const searchProductCategories = useProductCategoryStore((state) => state.searchProductCategories);
+
+    const location = useLocation();
+    if (location.state && location.state.search) {
+        defaultSearch = location.state.search;
+    }
+    const [search, setSearch] = useState(defaultSearch);
+    const {t} = useTranslation();
 
     useEffect(() => {
-        fetchProductCategories();
-    }, [fetchProductCategories]);
+        if (search === "" && defaultSearch === "") {
+            fetchProductCategories();
+        }
+        if (search !== "") {
+            searchProductCategories(search);
+        }
+    }, [fetchProductCategories, search, searchProductCategories, defaultSearch]);
 
     const columns = [
         {"name": "id", "label": "ID", "width": 120},
@@ -37,7 +52,7 @@ export default function ProductCategoryPage() {
 
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Product Categories" formUrl="/product-category-form"/>
+            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Product Categories" formUrl="/product-category-form" setSearch={setSearch}/>
             <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/product-category-form"/>
         </div>
     );

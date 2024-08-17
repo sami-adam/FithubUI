@@ -55,6 +55,18 @@ const useEmailStore = create((set) => ({
         } catch (error) {
             console.error("Error deleting email", error);
         }
+    },
+    serachEmails: async (search) => {
+        try {
+            const response = await axios.get(useEmailStore.getState().baseURL + "/emails/search/" + search, {
+                headers: {
+                    "Authorization": "Bearer " + useEmailStore.getState().token,
+                },
+            });
+            set({ emails: response.data });
+        } catch (error) {
+            console.error("Error fetching emails", error);
+        }
     }
 }))
 

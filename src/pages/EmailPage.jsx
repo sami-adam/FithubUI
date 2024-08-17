@@ -1,13 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useEmailStore from "../state/emailState";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
+import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-export default function EmailPage() {
+export default function EmailPage({ defaultSearch="" }) {
     const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
+    const serachEmails = useEmailStore((state) => state.serachEmails);
+
+    const location = useLocation();
+    if (location.state && location.state.search) {
+        defaultSearch = location.state.search;
+    }
+    const [search, setSearch] = useState(defaultSearch);
+    const {t} = useTranslation();
+
     useEffect(() => {
-        fetchEmails();
-    }, [fetchEmails]);
+        if (search === "" && defaultSearch === "") {
+            fetchEmails();
+        }
+        if (search !== "") {
+            serachEmails(search);
+        }
+    }, [fetchEmails, search, serachEmails, defaultSearch]);
 
     const columns = [
         {"name": "id", "label": "ID", "width": 80},
@@ -37,7 +53,7 @@ export default function EmailPage() {
     }));
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Emails"/>
+            <DataTable columns={columns} rows={rows} selectionFilters={[]} pageTitle="Emails" setSearch={setSearch}/>
             <DataList i18nIsDynamicList={true} listItems={listItems}/>
         </div>
     );

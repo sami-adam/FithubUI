@@ -22,6 +22,19 @@ const useUsersStore = create((set) => ({
                 console.error("Error fetching users", error);
             }
         }
+    },
+    serchUsers: async (search) => {
+        try {
+            const response = await axios.get(useUsersStore.getState().baseURL + "/auth/users/search/" + search, {
+                headers: {
+                    "Authorization": "Bearer " + useUsersStore.getState().token,
+                },
+            });
+            set({ users: response.data });
+        } catch (error) {
+            console.error("Error fetching users", error);
+        }
+
     }
 }));
 
