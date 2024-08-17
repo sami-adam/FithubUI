@@ -64,7 +64,7 @@ export default function MemberForm() {
         }
         async function fetchData(){
             fetchSubscriptions();
-            if(member.profilePicture){
+            if(member&&member.profilePicture){
                 setProfileSrc(await fetchAttachment(member.profilePicture.url));
             }
             setFetchData(false);
@@ -212,11 +212,15 @@ export default function MemberForm() {
 
             </CardContent>
             <Box height={8} sx={{ gridColumn: '1/-1' }} />
+            {member &&
+            <>
             <a onClick={()=> setOpenPictureEdit(true)}>
             <img src={member.profilePicture && profileSrc.data || profileSrc || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
             </a>
-            <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={profileSrc} setSrc={setProfileSrc} defaultSrc={profileSrc} memberId={member.id}/>
             
+            <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={profileSrc} setSrc={setProfileSrc} defaultSrc={profileSrc} memberId={member.id}/>
+            </>
+            }
         </Card>
         </div>
     )
