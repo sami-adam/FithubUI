@@ -215,7 +215,7 @@ export default function MemberForm() {
             {member &&
             <>
             <a onClick={()=> setOpenPictureEdit(true)}>
-            <img src={member.profilePicture && profileSrc.data || profileSrc || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
+            <img src={member.profilePicture && (profileSrc&&profileSrc.data) || profileSrc || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
             </a>
             
             <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={profileSrc} setSrc={setProfileSrc} defaultSrc={profileSrc} memberId={member.id}/>
