@@ -3,9 +3,9 @@ import useNotificationStore from "../state/notificationState";
 import { useTranslation } from "react-i18next";
 import { Box, Button, Card, CardActions, IconButton, List, ListItem, ListItemDecorator, Tooltip, Typography } from "@mui/joy";
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
-import DeleteIcon from '@mui/icons-material/Delete';
-import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
+import { MarkEmailReadOutlined } from "@mui/icons-material";
+import { DeleteOutlineOutlined } from "@mui/icons-material";
+import { MarkEmailUnreadOutlined } from "@mui/icons-material";
 
 export default function NotificationPage({ defaultSearch="" }) {
     const [notifications, fetchNotifications] = useNotificationStore((state) => [state.notifications, state.fetchNotifications]);
@@ -58,14 +58,14 @@ export default function NotificationPage({ defaultSearch="" }) {
                             <div style={{ display: "flex", flexDirection: "row"}}>
                                 {notification.read ? null :
                                 <Tooltip title={t("Mark as read")}>
-                                    <IconButton onClick={()=> handleMarkRead(notification.id)} variant="plain"><MarkEmailReadIcon/></IconButton>
+                                    <IconButton onClick={()=> handleMarkRead(notification.id)} variant="plain"><MarkEmailReadOutlined sx={{opacity:0.8}}/></IconButton>
                                 </Tooltip> }
                                 {!notification.read ? null :
                                 <Tooltip title={t("Mark as Unread")}>
-                                    <IconButton variant="plain" onClick={()=> handleMarkUnread(notification.id)}><MarkEmailUnreadIcon /></IconButton>
+                                    <IconButton variant="plain" onClick={()=> handleMarkUnread(notification.id)}><MarkEmailUnreadOutlined sx={{opacity:0.8}}/></IconButton>
                                 </Tooltip> }
                                 <Tooltip title={t("Delete")}>
-                                    <IconButton variant="plain"><DeleteIcon/></IconButton>
+                                    <IconButton variant="plain"><DeleteOutlineOutlined sx={{opacity:0.8}}/></IconButton>
                                 </Tooltip>
                             </div>
                         </CardActions>
