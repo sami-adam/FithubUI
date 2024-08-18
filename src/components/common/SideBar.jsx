@@ -28,13 +28,13 @@ import { GrTransaction } from "react-icons/gr";
 
 import { closeSidebar } from './../../utils';
 import DarkMode from './DarkMode';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { BsFillPersonVcardFill } from "react-icons/bs";
 import { Button, ListSubheader } from '@mui/joy';
 import { BiNews } from "react-icons/bi";
-//import useEmailStore from "../../state/emailState";
+import useNotificationStore from '../../state/notificationState';
 import { FaUsersRectangle } from "react-icons/fa6";
 import { SiFitbit } from "react-icons/si";
 import LanguageSwitch from './LanguageSwitch';
@@ -45,6 +45,10 @@ import DatasetIcon from '@mui/icons-material/Dataset';
 
 export default function Sidebar({children}) {
   //const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
+  const fetchUserUnreadNotifications = useNotificationStore((state) => state.fetchUserUnreadNotifications);
+  const unreadNotifcations = useNotificationStore((state) => state.unreadNotifcations);
+  const [fetchData, setFetchData] = useState(true);
+
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const {t} = useTranslation();
@@ -58,10 +62,14 @@ export default function Sidebar({children}) {
 
   useEffect(() => {
     //fetchEmails();
+    if (fetchData) {
+      fetchUserUnreadNotifications(user.id);  
+      setFetchData(false);
+    }
     if (user && !user.name && window.location.pathname !== "/login") {
       window.location.href = "/login";
     }
-  }, [user]);
+  }, [user, fetchUserUnreadNotifications, fetchData]);
   return (
     <div style={{display:"flex",flexDirection:"row"}}>
       {user && user.name &&
@@ -308,9 +316,15 @@ export default function Sidebar({children}) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate("/notifications")} selected={"/notifications" === window.location.pathname}>
               <NotificationsIcon />
-              {t("Notifications")}
+              <ListItemContent>
+                {t("Notifications")}
+              </ListItemContent>
+              <Chip size="sm" color="primary" variant="solid">
+                  {unreadNotifcations.length}
+              </Chip>
+              
             </ListItemButton>
           </ListItem>
           <ListItem>

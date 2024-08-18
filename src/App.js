@@ -35,6 +35,7 @@ import ProductCategoryForm from './components/product/ProductCayegoryForm';
 import BenefitPage from './pages/BenefitPage';
 import BenefitForm from './components/product/BenefitForm';
 import TransactionForm from './components/accounting/TransactionForm';
+import NotificationPage from './pages/NotificationPage';
 //const joyTheme = extendJoyTheme();
 
 
@@ -77,6 +78,7 @@ function App() {
           <Route path="/transaction-form" element={<TransactionForm/>} />
           <Route path="/journals" element={<JournalPage/>} />
           <Route path="/journal-form" element={<JournalForm/>} />
+          <Route path="/notifications" element={<NotificationPage/>} />
         </Routes>
         </Sidebar>
       </BrowserRouter>
