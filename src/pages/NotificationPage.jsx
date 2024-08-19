@@ -49,7 +49,11 @@ export default function NotificationPage({ defaultSearch="" }) {
                 >
                 {notifications.map((notification) => (
                 <ListItem sx={{borderRadius: 2, mb: 1}}>
-                    <Card sx={{width:{xs: "100%", "sm": "80%"}, border: "1px solid", borderColor:"divider"}} variant="soft">
+                    <Card sx={{width:{xs: "100%", "sm": "80%"}, border: "1px solid", borderColor:"divider",
+                        '&:hover': {
+                            borderColor: "primary.main"
+                        }
+                        }} variant="soft">
                         <ListItemDecorator>
                         <Typography gutterBottom level="title-md" startDecorator={<NotificationsIcon color={notification.read ? "disabled" : "primary"} sx={{ fontSize:24 }}/>} component="div">{notification.title}</Typography>
                         </ListItemDecorator>
