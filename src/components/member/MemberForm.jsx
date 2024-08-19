@@ -46,7 +46,7 @@ export default function MemberForm() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
     const [openPictureEdit, setOpenPictureEdit] = useState(false);
-    const [profileSrc, setProfileSrc] = useState("https://via.placeholder.com/300");
+    const [profileSrc, setProfileSrc] = useState("");
 
     const member = location.state.object;
     const navigate = useNavigate();
@@ -212,7 +212,7 @@ export default function MemberForm() {
             {member &&
             <>
             <a onClick={()=> setOpenPictureEdit(true)}>
-            <img src={member.profilePicture && member.profilePicture.url || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
+            <img src={profileSrc || member.profilePicture && member.profilePicture.url || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
             </a>
             
             <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={profileSrc} setSrc={setProfileSrc} defaultSrc={profileSrc} memberId={member.id}/>
