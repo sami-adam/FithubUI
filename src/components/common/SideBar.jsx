@@ -62,7 +62,7 @@ export default function Sidebar({children}) {
 
   useEffect(() => {
     //fetchEmails();
-    if (fetchData) {
+    if (fetchData && user) {
       fetchUserUnreadNotifications(user.id);  
       setFetchData(false);
     }
