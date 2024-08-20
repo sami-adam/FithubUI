@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, Typography, useTheme } from '@mui/joy';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 
-export default function Carousel({ items }) {
+export default function Carousel({ items, duration = 3000 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const theme  = useTheme();
 
@@ -15,7 +15,7 @@ export default function Carousel({ items }) {
   };
 
   useEffect(() => {
-    const interval = setInterval(handleNext, 3000);
+    const interval = setInterval(handleNext, duration);
     return () => clearInterval(interval);
   }, [currentIndex, items.length]);
 
@@ -31,17 +31,20 @@ export default function Carousel({ items }) {
             position: 'relative'
           }}
         >
-          <img
-            src={item.image}
-            alt={item.title}
-            style={{ width: '100%', height: '60%', objectFit:"revert-layer" }}
-          />
           <Typography
-            level="h6"
-            sx={{ position: 'absolute', bottom: 10, left: 10, color: '#fff', backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '5px' }}
+            level="h5"
+            variant="soft"
+            sx={{ position: 'absolute', top: 10, left: 10, backgroundColor:theme.palette.primary, padding: '5px'}}
           >
             {item.title}
           </Typography>
+          
+          <img
+            src={item.image}
+            alt={item.title}
+            style={{ width: '100%', height: 155.5, objectFit:"revert-layer",borderRadius: 5 }}
+          />
+          
         </Box>
       ))}
       <Button variant="contained"

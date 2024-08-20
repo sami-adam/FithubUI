@@ -4,7 +4,7 @@ import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
-import { CardOverflow, Chip, Skeleton } from '@mui/joy';
+import { CardCover, CardOverflow, Chip, Skeleton } from '@mui/joy';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { useNavigate } from 'react-router-dom';
 import Carousel from '../common/Carousel';
@@ -14,7 +14,7 @@ export default function FitnessClassCard({ fitnessClass }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   return (
-    <Card sx={{ width: { xs: 1, sm: 1 , md: 1 }, height: { xs: 1, sm: 1, md: 1 }, maxWidth: {xs: 1, sm: 1, md:1} }}>
+    <Card sx={{ width: { xs: 1, sm: 1 , md: 1 }, height: { xs: 1, sm: 1, md: 1 }, maxWidth: {xs: 1, sm: 1, md:1} , maxHeight:158}}>
       <div>
         <Typography level="title-lg">{t(fitnessClass.name)}</Typography>
         <Typography level="body-sm">{t(fitnessClass.intensityLevel)}</Typography>
@@ -26,12 +26,12 @@ export default function FitnessClassCard({ fitnessClass }) {
             {t("Trending")}
         </Chip>
       </div>
-        <AspectRatio ratio={16 / 9}>
+      <CardCover>
             {(fitnessClass.images && 
-            <Carousel items={fitnessClass.images.split(",").map((image) => ({image: image, title: fitnessClass.name}))} />
+            <Carousel items={fitnessClass.images.map((image) => ({image: image.url, title: fitnessClass.name}))} duration={Math.floor(Math.random() * (2000 + 1)) + 3000}/>
         ) 
             || <Skeleton variant="overlay" animation={false}/> }
-        </AspectRatio>
+        </CardCover>
       <CardContent orientation="horizontal">
         <div>
           <Typography level="body-xs">{t("Price")}:</Typography>

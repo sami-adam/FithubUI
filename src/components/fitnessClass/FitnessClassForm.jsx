@@ -1,9 +1,9 @@
 import useFitnessClassStore from "../../state/fitnessClassState";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import {  Option, Select, useTheme } from '@mui/joy';
+import {  IconButton, Option, Select, useTheme } from '@mui/joy';
 import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
-import { Add } from '@mui/icons-material';
+import { Add, AddCircle, RemoveCircle } from '@mui/icons-material';
 import { SnackbarCustom } from '../common/Common';
 import { BiNews } from "react-icons/bi";
 import { HtmlField } from "../common/Fields";
@@ -29,7 +29,7 @@ export default function FitnessClassForm() {
     const [name, setName] = useState('');
     const [intensityLevel, setIntensityLevel] = useState('');
     const [description, setDescription] = useState('');
-    const [images, setImages] = useState('');
+    const [images, setImages] = useState([]);
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
@@ -42,7 +42,7 @@ export default function FitnessClassForm() {
             setName(name=>name||fitnessClass.name);
             setIntensityLevel(intensityLevel=>intensityLevel||fitnessClass.intensityLevel);
             setDescription(description=>description||fitnessClass.description);
-            setImages(images=>images||fitnessClass.images);
+            setImages(images=> images.length > 0 ? images : fitnessClass.images);
         }
     }, [mode, fitnessClass]);
 
@@ -52,7 +52,7 @@ export default function FitnessClassForm() {
             name: name,
             intensityLevel: intensityLevel,
             description: description,
-            images: images
+            images: images.map(image => { return {"id": image.id, "url": image.url}}),
         });
         setMode('view');
         setOpenSnackbar(true);
@@ -64,7 +64,7 @@ export default function FitnessClassForm() {
             name: name,
             intensityLevel: intensityLevel,
             description: description,
-            images: images
+            images: images.map(image => { return {"url": image.url}}),
         });
         setMode('view');
         setOpenSnackbar(true);
@@ -80,6 +80,21 @@ export default function FitnessClassForm() {
         setOpenSnackbar(true);
         setSnack({type: 'success', title: 'Success', message: 'Fitness Class deleted successfully'});
     }
+
+    const handleAddImage = () => {
+      setImages([...images, { url: '' }]);
+      };
+    
+    const handleRemoveImage = (id) => {
+      setImages(images.filter(image => image.id !== id));
+    };
+
+    const handleChangeImage = (id, url) => {
+      const updatedImages = images.map(image => 
+          image.id === id ? { ...image, url: url||image.url } : image
+      );
+      setImages(updatedImages);
+    };
 
     return (
     <div>
@@ -139,7 +154,35 @@ export default function FitnessClassForm() {
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
           <FormLabel>{t("Images")}</FormLabel>
-          <Input value={images} onChange={(e) => setImages(e.target.value)} disabled={mode === 'view'} />
+          <Box sx={{ p: 2 }}>
+            {typeof(images) === "object" && images.length > 0 && images.map(image => (
+                <Box key={image.id} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                
+                <FormControl sx={{ width: "50%"}}>
+                <Input
+                    label={`URL ${image.id}`}
+                    value={image.url}
+                    onChange={(event) => handleChangeImage(image.id, event.target.value)}
+                    sx={{ flexGrow: 1, mr: 1}}
+                    disabled={mode === 'view'}
+                />
+                </FormControl>
+      
+                <IconButton onClick={() => handleRemoveImage(image.id)} color="danger" disabled={mode === 'view'}>
+                    <RemoveCircle />
+                </IconButton>
+                </Box>
+            ))}
+            <Button
+                startDecorator={<AddCircle />}
+                onClick={handleAddImage}
+                variant="outlined"
+                color="primary"
+                disabled={mode === 'view'}
+            >
+                {t("Add Image")}
+            </Button>
+            </Box>
         </FormControl>
 
         </CardContent>
