@@ -4,7 +4,7 @@ import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
-import { Chip, Skeleton } from '@mui/joy';
+import { CardCover, Chip, Skeleton } from '@mui/joy';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -25,15 +25,16 @@ export default function ProductCard({ product }) {
             {t("Trending")}
         </Chip>
       </div>
-      <AspectRatio minHeight="120px" maxHeight="200px">
-        {(product.image && <img src={product.image} loading="lazy" alt={product.name} />) || <Skeleton variant="overlay" animation={false}/> }
-      </AspectRatio>
+      <CardCover>
+        {(product.image && 
+        <img src={product.image} loading="lazy" alt={product.name} />) || <Skeleton variant="overlay" animation={false}/> }
+      </CardCover>
       <CardContent orientation="horizontal">
         <div>
-          <Typography level="body-xs">{t("Total price")}:</Typography>
-          <Typography fontSize="lg" fontWeight="lg">
-            {product.price} {t("SAR")}
-          </Typography>
+          <Typography level="body-xs" sx={{ color: "whitesmoke"}}>{t("Total price")}:</Typography>
+          <Chip color='primary' fontSize="lg" fontWeight="lg" variant='soft'>
+            <Typography color='text.primary'>{product.price} {t("SAR")}</Typography>
+          </Chip>
         </div>
         <Button
           variant="soft"
