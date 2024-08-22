@@ -8,6 +8,7 @@ import ReactQuill from 'react-quill';
 import { Box, Button, Typography, IconButton } from '@mui/joy';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import dayjs from 'dayjs';
 
 function ButtonField(props) {
   const {
@@ -34,12 +35,47 @@ function ButtonField(props) {
   );
 }
 
+function InputField(props) {
+  const {
+    label,
+    id,
+    disabled,
+    InputProps: { ref } = {},
+    inputProps: { 'aria-label': ariaLabel } = {},
+  } = props;
+
+  return (
+    <Input 
+      type='date'
+      id={id}
+      label={label ? `${label}` : 'MM/DD/YYYY'}
+      disabled={disabled}
+      ref={ref}
+      value={props.value? props.value.format('YYYY-MM-DD') : ''}
+      aria-label={ariaLabel} 
+      required 
+      slotProps={{
+        input: {
+          min: dayjs(new Date()).format('YYYY-MM-DD'),
+          //max: '2018-06-14',
+        },
+      }}
+      sx={{
+        '& input': {
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }
+      }}
+    />
+  );
+}
+
 export function ButtonDatePicker(props) {
   const [open, setOpen] = React.useState(false);
 
   return (
     <DatePicker
-      slots={{ ...props.slots, field: ButtonField }}
+      slots={{ ...props.slots, field: InputField}} // Only changed from button to input
       slotProps={{ ...props.slotProps, field: { setOpen } }}
       {...props}
       open={open}
