@@ -42,7 +42,7 @@ export default function ClassSchedulePage({ defaultSearch="" }) {
         "endDate": classSchedule.endDate,
         "instructor": classSchedule.instructor && classSchedule.instructor.name,
         "price": classSchedule.price,
-        "status": classSchedule.status,
+        "status": t(classSchedule.status),
         "object": classSchedule
     }));
 
