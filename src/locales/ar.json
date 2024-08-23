@@ -215,7 +215,15 @@
       "Employee": "موظف",
       "Instructor": "مدرب",
       "INSTRUCTOR": "مدرب",
-      "EMPLOYEE": "موظف"
+      "EMPLOYEE": "موظف",
+      "Class Schedule added successfully": "تمت إضافة جدول الفصل بنجاح",
+      "Class Schedule updated successfully": "تم تحديث جدول الفصل بنجاح",
+      "New Class Schedule": "جدول فصل جديد",
+      "PLANNED": "مخطط",
+      "RUNNING": "جاري",
+      "FINISHED": "منتهي",
+      "Class": "فصل",
+      "Class Schedules": "جداول الفصول"
     }
   }
   

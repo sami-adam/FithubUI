@@ -36,6 +36,8 @@ import BenefitPage from './pages/BenefitPage';
 import BenefitForm from './components/product/BenefitForm';
 import TransactionForm from './components/accounting/TransactionForm';
 import NotificationPage from './pages/NotificationPage';
+import ClassSchedulePage from './pages/ClassSchedulePage';
+import ClassScheduleForm from './components/fitnessClass/ClassScheduleForm';
 //const joyTheme = extendJoyTheme();
 
 
@@ -70,6 +72,8 @@ function App() {
           <Route path="/users" element={<UserPage/>} />
           <Route path="/fitness-classes" element={<FitnessClassPage/>} />
           <Route path="/fitness-class-form" element={<FitnessClassForm/>} />
+          <Route path="/class-schedules" element={<ClassSchedulePage/>} />
+          <Route path="/class-schedule-form" element={<ClassScheduleForm/>} />
           <Route path="/support" element={<SupportPage/>} />
           <Route path="/accounts" element={<AccountPage/>} />
           <Route path="/account-form" element={<AccountForm/>} />

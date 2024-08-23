@@ -1,0 +1,241 @@
+import useClassScheduleStore from '../../state/classScheduleState';
+import useFitnessClassStore from '../../state/fitnessClassState';
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
+import { Add } from '@mui/icons-material';
+import { BiNews } from "react-icons/bi";
+import { BiEdit } from "react-icons/bi";
+import { IoTrashBinOutline } from "react-icons/io5";
+import { BsSave } from "react-icons/bs";
+import dayjs from 'dayjs';
+import PortraitIcon from '@mui/icons-material/Portrait';
+import { HorozontalStepper, SnackbarCustom } from '../common/Common';
+import { useTranslation } from 'react-i18next';
+import useEmployeeStore from '../../state/employeeState';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { ButtonDatePicker } from '../common/Fields';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { NumericFormat } from 'react-number-format';
+
+
+export default function ClassScheduleForm() {
+    const location = useLocation();
+    const [fitnessClasses, fetchFitnessClasses] = useFitnessClassStore((state) => [state.fitnessClasses, state.fetchFitnessClasses]);
+    const [instructors, fetchInstructors] = useEmployeeStore((state) => [state.employees, state.fetchEmployees]);
+    const updateClassSchedule = useClassScheduleStore((state) => state.updateClassSchedule);
+    const addClassSchedule = useClassScheduleStore((state) => state.addClassSchedule);
+    const deleteClassSchedule = useClassScheduleStore((state) => state.deleteClassSchedule);
+
+    const [mode, setMode] = useState(location.state.viewMode||'view');
+    const [fetchData, setFetchData] = useState(true);
+
+    const [fitnessClass, setFitnessClass] = useState(null);
+    const [instructor, setInstructor] = useState(null);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [price, setPrice] = useState(null);
+    const [status, setStatus] = useState(null);
+
+    const {t} = useTranslation();
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
+    
+    const classSchedule = location.state.object;
+    const stages = ["NEW", "PLANNED", "RUNNING", "FINISHED", "CANCELLED"];
+
+    useEffect(() => {
+        if(fetchData){
+            fetchFitnessClasses();
+            fetchInstructors();
+            setFetchData(false);
+        }
+        if(classSchedule){
+            setFitnessClass(fitnessClass=>fitnessClass||classSchedule.fitnessClass);
+            setInstructor(instructor=>instructor||classSchedule.instructor);
+            setStartDate(startDate=>dayjs(startDate||classSchedule.startDate));
+            setEndDate(endDate=>dayjs(endDate||classSchedule.endDate));
+            setPrice(price=>price||classSchedule.price);
+            setStatus(status=>status||classSchedule.status);
+        }
+      }
+    , [mode, classSchedule, fetchData, fetchFitnessClasses, fetchInstructors]);
+
+    const handleSave = () => {
+       updateClassSchedule({
+            id: classSchedule.id,
+            fitnessClass: fitnessClass && {id: fitnessClass.id},
+            instructor: instructor && {id: instructor.id},
+            startDate: startDate,
+            endDate: endDate,
+            price: price,
+            status: status
+        });
+        setMode('view');
+        setSnack({type: 'success', title: 'Success', message: 'Class Schedule updated successfully'});
+        setOpenSnackbar(true);
+    }
+
+    const handleAdd = () => {
+        addClassSchedule({
+            fitnessClass: fitnessClass && {id: fitnessClass.id},
+            instructor: instructor && {id: instructor.id},
+            startDate: startDate,
+            endDate: endDate,
+            price: price,
+            status: "NEW"
+        });
+        setMode('view');
+        setSnack({type: 'success', title: 'Success', message: 'Class Schedule added successfully'});
+        setOpenSnackbar(true);
+    }
+
+    const handelDelete = () => {
+        const confirm = window.confirm("Are you sure you want to delete this class schedule?");
+
+        if(confirm){
+            deleteClassSchedule(classSchedule.id);
+            setMode('view');
+            setSnack({type: 'success', title: 'Success', message: 'Class Schedule deleted successfully'});
+            setOpenSnackbar(true);
+            window.history.back();
+        }
+    }
+
+    return (
+        <>
+    <div style={{ width: "90%"}}>
+    <Card
+      variant="outlined"
+      sx={{
+        maxHeight: 'max-content',
+        //maxWidth: '100%',
+        mx: 'auto',
+        // to make the demo resizable
+        overflow: 'auto',
+        resize: 'vertical',
+        width: { xs: '100%', md: '80%' },
+        mt: { xs: 10, md: 4 },
+        ml: { xs: 5, md: "auto" },
+      }}
+    >
+      <HorozontalStepper stages={stages} currentStage={(stages.indexOf(classSchedule&&classSchedule.status)||0)} />
+      <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
+      {/* <Divider inset="none" /> */}
+      <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
+        <div style={{display:"flex", flexDirection:"row"}}>
+          <Typography level="title-md" startDecorator={<BiNews />}>
+          {(classSchedule&&classSchedule.reference)|| t("New Class Schedule")}
+          </Typography>
+        
+        </div>
+        <div style={{ display: "flex", flexDirection:"row"}}>
+          <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
+          <Button variant='soft' startDecorator={<BsSave fontSize={20}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
+          <Box flexGrow={1} width={4}/>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
+          <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+        </div>
+        
+      </div>
+      {/* <Divider inset="none" /> */}
+      <CardContent
+        sx={{
+          display: 'grid',
+          paddingTop: 2,
+          gridTemplateColumns: 'repeat(2, minmax(80px, 1fr))',
+          gap: 1.5,
+        }}
+      >
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
+          <FormLabel>{t("Fitness Class")}</FormLabel>
+          <Autocomplete startDecorator={<PortraitIcon />}  
+          options={fitnessClasses} getOptionLabel={(option) => option.name}
+          value={fitnessClass} 
+          onChange={(event, newValue) => setFitnessClass(newValue)}
+          disabled={mode === 'view'}
+           />
+        </FormControl>
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
+          <FormLabel>{t("Instructor")}</FormLabel>
+          <Autocomplete startDecorator={<BiNews fontSize={18}/>} 
+          options={instructors} 
+          getOptionLabel={(option) => option.name}
+          value={instructor} onChange={(event, newValue) => setInstructor(newValue)}
+          disabled={mode === 'view'}
+          />
+        </FormControl>
+
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
+          <FormLabel>{t("Start Date")}</FormLabel>
+          <Input 
+            type='date'
+            id="startDate"
+            label={t("Start Date")}
+            disabled={mode === 'view'}
+            value={startDate? startDate.format('YYYY-MM-DD') : ''}
+            onChange={(e) => setStartDate(dayjs(e.target.value))}
+            required 
+            slotProps={{
+                input: {
+                min: dayjs(new Date()).format('YYYY-MM-DD'),
+                //max: '2018-06-14',
+                },
+            }}
+            sx={{
+                '& input': {
+                display: 'flex',
+                justifyContent: 'flex-end',
+                }
+            }}
+            />
+        </FormControl>
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
+          <FormLabel>{t("End Date")}</FormLabel>
+          <Input 
+            type='date'
+            id="endDate"
+            label={t("End Date")}
+            disabled={mode === 'view'}
+            value={endDate? endDate.format('YYYY-MM-DD') : ''}
+            onChange={(e) => setEndDate(dayjs(e.target.value))}
+            required
+            slotProps={{
+                input: {
+                min: dayjs(new Date()).format('YYYY-MM-DD'),
+                //max: '2018-06-14',
+                },
+            }}
+            sx={{
+                '& input': {
+                display: 'flex',
+                justifyContent: 'flex-end',
+                }
+            }}
+
+            />
+        </FormControl>
+
+        <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
+          <FormLabel>{t("Price")}</FormLabel>
+          <NumericFormat
+            value={price&&price.toLocaleString()}
+            //thousandSeparator
+            customInput={Input} 
+            startDecorator={<Typography variant="body2">{t("SAR")}</Typography>} 
+            sx={{ border: 'none' }}
+            onChange={(e) => setPrice(e.target.value)}
+            disabled={mode === 'view'}
+          />
+        </FormControl>
+
+        </CardContent>
+
+        </Card>
+        </div>
+        </>
+    );
+
+}
+
+

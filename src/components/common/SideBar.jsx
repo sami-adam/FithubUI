@@ -13,7 +13,7 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
 import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
@@ -42,6 +42,7 @@ import i18n from '../../i18n';
 import { useTranslation } from 'react-i18next';
 import { MenuToggler } from './Menus';
 import DatasetIcon from '@mui/icons-material/Dataset';
+import { BsCalendar3 } from "react-icons/bs";
 
 export default function Sidebar({children}) {
   //const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
@@ -155,7 +156,7 @@ export default function Sidebar({children}) {
         >
           <ListItem>
             <ListItemButton onClick={() => navigate("/home")} selected={"/home" === window.location.pathname}>
-              <HomeRoundedIcon />
+              <HomeRoundedIcon sx={{ fontSize: 24}} />
               <ListItemContent>
                 <Typography level="title-sm">{t("Home")}</Typography>
               </ListItemContent>
@@ -163,7 +164,7 @@ export default function Sidebar({children}) {
           </ListItem>
           <ListItem>
             <ListItemButton onClick={() => navigate("/dashboard")} selected={"/dashboard" === window.location.pathname}>
-              <DashboardRoundedIcon />
+              <SpaceDashboardIcon sx={{ fontSize: 24}} />
               <ListItemContent>
                 <Typography level="title-sm">{t("Dashboard")}</Typography>
               </ListItemContent>
@@ -171,17 +172,17 @@ export default function Sidebar({children}) {
           </ListItem>
           <ListItem>
             <ListItemButton role="menuitem" onClick={() => navigate("/subscriptions")} selected={window.location.pathname.includes("subscription")}>
-              <CalendarMonthIcon />
+              <CalendarMonthIcon sx={{ fontSize: 24}} />
               <ListItemContent>
                 <Typography level="title-sm">{t("Subscriptions")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton role="menuitem" onClick={() => navigate("/fitness-classes")} selected={window.location.pathname.includes("fitness-class")}>
-              <SiFitbit fontSize={18}/>
+            <ListItemButton role="menuitem" onClick={() => navigate("/class-schedules")} selected={window.location.pathname.includes("class-schedules")}>
+              <BsCalendar3 fontSize={18}/>
               <ListItemContent>
-                <Typography level="title-sm">{t("Fitness Classes")}</Typography>
+                <Typography level="title-sm">{t("Class Schedules")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -257,6 +258,14 @@ export default function Sidebar({children}) {
             <ListSubheader>{t("Master Data")}</ListSubheader>
             <MenuToggler mainMenu={"Master Data"} icon={<DatasetIcon/>}>
             <List>
+              <ListItem>
+                <ListItemButton role="menuitem" onClick={() => navigate("/fitness-classes")} selected={window.location.pathname.includes("fitness-class")}>
+                  <SiFitbit fontSize={18}/>
+                  <ListItemContent>
+                    <Typography level="title-sm">{t("Fitness Classes")}</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/products")} selected={window.location.pathname.includes("products") || window.location.pathname.includes("product-form")}>
                   <BiNews />
