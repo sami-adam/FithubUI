@@ -6,10 +6,7 @@ import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
-import PortraitIcon from '@mui/icons-material/Portrait';
-import { AiOutlineNumber } from "react-icons/ai";
 import { Autocomplete, Box, Table } from '@mui/joy';
-import { BiNews } from "react-icons/bi";
 import { useEffect, useRef, useState } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -22,14 +19,17 @@ import useProductStore from '../../state/productState';
 import useSubscriptionStore from '../../state/subscriptionState';
 import { ButtonDatePicker } from '../common/Fields';
 import dayjs from 'dayjs';
-import { Add } from '@mui/icons-material';
+import { Add, Person } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
 import { useLocation } from 'react-router-dom';
 import { DocumentSnackbar, HorozontalStepper, SnackbarCustom } from '../common/Common';
 import SubscriptionInvoice from '../../reports/SubscriptionInvoice';
 import { MdPictureAsPdf } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
-
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import Grid3x3Icon from '@mui/icons-material/Grid3x3';
+import EventIcon from '@mui/icons-material/Event';
+import PaymentsIcon from '@mui/icons-material/Payments';
 
 export default function SubscriptionForm() {
   const location = useLocation();
@@ -175,7 +175,7 @@ export default function SubscriptionForm() {
       </div>
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
         <div style={{display:"flex", flexDirection:"row"}}>
-          <Typography level="title-md" startDecorator={<BiNews />}>
+          <Typography level="title-md" >
           {(subscription&&subscription.reference)|| t("New Subscription")}
           </Typography>
           {subscription && 
@@ -203,8 +203,8 @@ export default function SubscriptionForm() {
         }}
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>{t("Member")}</FormLabel>
-          <Autocomplete startDecorator={<PortraitIcon />}  
+          <FormLabel><Typography level='h5' startDecorator={<Person sx={{ fontSize: 18}}/>}>{t("Member")}</Typography></FormLabel>
+          <Autocomplete 
           options={members} getOptionLabel={(option) => option.firstName + " " + option.lastName}
           value={member} 
           onChange={(event, newValue) => setMember(newValue)}
@@ -212,8 +212,8 @@ export default function SubscriptionForm() {
            />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>{t("Subscription")}</FormLabel>
-          <Autocomplete startDecorator={<BiNews fontSize={18}/>} 
+          <FormLabel><Typography level='h5' startDecorator={<CalendarMonthIcon sx={{ fontSize: 18}}/>}>{t("Subscription")}</Typography></FormLabel>
+          <Autocomplete 
           options={products} 
           getOptionLabel={(option) => option.name}
           value={product} onChange={(event, newValue) => setProduct(newValue)}
@@ -221,7 +221,7 @@ export default function SubscriptionForm() {
           />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>{t("Quantity")}</FormLabel>
+          <FormLabel><Typography level='h5' startDecorator={<Grid3x3Icon sx={{ fontSize: 18}}/>}>{t("Quantity")}</Typography></FormLabel>
           <Input
             type="number"
             slotProps={{
@@ -232,13 +232,12 @@ export default function SubscriptionForm() {
                 step: 1,
               },
             }} 
-            startDecorator={<AiOutlineNumber fontSize={18}/>}
             value={quantity} onChange={(e) => setQuantity(e.target.value)}
             disabled={mode === 'view'}
           />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>{t("Unit Price")}</FormLabel>
+          <FormLabel><Typography level='h5' startDecorator={<PaymentsIcon sx={{ fontSize: 18 }} fill='text.secondary'/>}>{t("Unit Price")}</Typography></FormLabel>
           <NumericFormat
             value={unitPrice&&unitPrice.toLocaleString()}
             thousandSeparator
@@ -251,7 +250,7 @@ export default function SubscriptionForm() {
         </FormControl>
         <FormControl></FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>{t("Start Date")}</FormLabel>
+          <FormLabel><Typography level='h5' startDecorator={<EventIcon sx={{ fontSize: 18}}/>}>{t("Start Date")}</Typography></FormLabel>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <ButtonDatePicker
               label={startDate == null ? null : startDate.format('MM/DD/YYYY')}
@@ -262,7 +261,7 @@ export default function SubscriptionForm() {
           </LocalizationProvider>
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>{t("End Date")}</FormLabel>
+          <FormLabel><Typography level='h5' startDecorator={<EventIcon sx={{ fontSize: 18}}/>}>{t("End Date")}</Typography></FormLabel>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <ButtonDatePicker
               label={endDate == null ? null : endDate.format('MM/DD/YYYY')}

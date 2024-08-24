@@ -126,17 +126,16 @@ export default function AccountForm() {
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Name")}</FormLabel>
-          <Input startDecorator={<MdOutlineMoney fontSize={18}/>} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
+          <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Code")}</FormLabel>
-          <Input startDecorator={<LuListTree fontSize={18} />} value={code} onChange={(e) => setCode(e.target.value)} disabled={mode === 'view'} />
+          <Input value={code} onChange={(e) => setCode(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Type")}</FormLabel>
           <Select 
-            startDecorator={<BsArrowDownSquare fontSize={18}/>}
             size="sm"
             placeholder={t("Select Type")}
             onChange={(event, newValue) => setType(newValue)}
@@ -149,7 +148,7 @@ export default function AccountForm() {
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Balance")}</FormLabel>
-          <Input startDecorator={<FaMoneyBill fontSize={18}/>} value={((account && account.balance) || 0).toLocaleString() + " " + t("SAR")} disabled />
+          <Input value={((account && account.balance) || 0).toLocaleString() + " " + t("SAR")} disabled />
         </FormControl>
 
         </CardContent>

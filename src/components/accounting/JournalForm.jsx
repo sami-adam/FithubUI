@@ -4,15 +4,11 @@ import useAccountStore from "../../state/accountState";
 import { useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
-import { BiNews } from "react-icons/bi";
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
-import { HiOutlineIdentification } from "react-icons/hi2";
-import { BsFilePerson } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 
 export default function JournalForm() {
@@ -117,7 +113,7 @@ export default function JournalForm() {
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-        <Typography level="title-lg" startDecorator={<BiNews />}>
+        <Typography level="title-lg">
             {t("Journal Information")}
         </Typography>
         <div style={{ display: "flex", flexDirection:"row"}}>
@@ -138,11 +134,11 @@ export default function JournalForm() {
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Name")}</FormLabel>
-          <Input startDecorator={<BsFilePerson fontSize={18}/>} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
+          <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Code")}</FormLabel>
-          <Input startDecorator={<HiOutlineIdentification fontSize={18} />} value={code} onChange={(e) => setCode(e.target.value)} disabled={mode === 'view'} />
+          <Input value={code} onChange={(e) => setCode(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
@@ -159,7 +155,7 @@ export default function JournalForm() {
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Account")}</FormLabel>
-          <Autocomplete startDecorator={<InfoOutlinedIcon />}  
+          <Autocomplete  
             options={accounts} getOptionLabel={(option) => `${option.code} - ${option.name}`}
             value={account} 
             onChange={(event, newValue) => setAccount(newValue)}
@@ -169,7 +165,7 @@ export default function JournalForm() {
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
           <FormLabel>{t("Description")}</FormLabel>
-          <Input startDecorator={<InfoOutlinedIcon />} value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
+          <Input value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         </CardContent>

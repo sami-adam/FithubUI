@@ -5,10 +5,8 @@ import useTaxStore from '../../state/taxState';
 import { useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Textarea, Typography, useTheme } from '@mui/joy';
 import { Add } from '@mui/icons-material';
-import { BiNews } from "react-icons/bi";
 import ImageIcon from '@mui/icons-material/Image';
 import { NumericFormat } from 'react-number-format';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTranslation } from 'react-i18next';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
@@ -117,7 +115,7 @@ export default function ProductForm() {
     >
       {/* <Divider inset="none" /> */}
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-        <Typography level="title-lg" startDecorator={<BiNews />}>
+        <Typography level="title-lg">
             {t("Subscription Type")}
         </Typography>
         <div style={{ display: "flex", flexDirection:"row"}}>
@@ -138,11 +136,11 @@ export default function ProductForm() {
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Name")}</FormLabel>
-          <Input startDecorator={<InfoOutlinedIcon />} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
+          <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Category")}</FormLabel>
-          <Autocomplete startDecorator={<InfoOutlinedIcon />}  
+          <Autocomplete 
           options={productCategories} getOptionLabel={(option) => option.name}
           value={category} 
           onChange={(event, newValue) => setCategory(newValue)}
@@ -164,7 +162,7 @@ export default function ProductForm() {
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Tax")}</FormLabel>
-          <Autocomplete startDecorator={<BiNews />} 
+          <Autocomplete 
           options={taxes} 
           getOptionLabel={(option) => option.name}
           value={tax} onChange={(event, newValue) => setTax(newValue)}

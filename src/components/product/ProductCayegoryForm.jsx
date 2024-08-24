@@ -5,7 +5,6 @@ import useAccountStore from '../../state/accountState';
 import { useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Card, CardContent, Chip, FormControl, FormLabel, Input, Typography, useTheme } from '@mui/joy';
 import { Add, Close } from '@mui/icons-material';
-import { BiNews } from "react-icons/bi";
 import { useTranslation } from 'react-i18next';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
@@ -113,7 +112,7 @@ export default function ProductCategoryForm() {
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-        <Typography level="title-lg" startDecorator={<BiNews />}>
+        <Typography level="title-lg">
             {t("Subscription Type")}
         </Typography>
         <div style={{ display: "flex", flexDirection:"row"}}>
@@ -134,12 +133,12 @@ export default function ProductCategoryForm() {
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Name")}</FormLabel>
-          <Input startDecorator={<PiDotDuotone />} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
+          <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Income Account")}</FormLabel>
-          <Autocomplete startDecorator={<BiNews />} 
+          <Autocomplete 
           options={accounts} 
           getOptionLabel={(account) => account.code + ' - ' + account.name}
           value={incomeAccount} onChange={(event, newValue) => setIncomeAccount(newValue)}
@@ -149,12 +148,12 @@ export default function ProductCategoryForm() {
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Description")}</FormLabel>
-          <Input startDecorator={<PiDotDuotone />} value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
+          <Input value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Expense Account")}</FormLabel>
-          <Autocomplete startDecorator={<BiNews />} 
+          <Autocomplete 
           options={accounts} 
           getOptionLabel={(account) => account.code + ' - ' + account.name}
           value={expenseAccount} onChange={(event, newValue) => setExpenseAccount(newValue)}

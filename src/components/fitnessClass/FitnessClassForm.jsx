@@ -3,14 +3,14 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import {  IconButton, Option, Select, useTheme } from '@mui/joy';
 import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
-import { Add, AddCircle, RemoveCircle } from '@mui/icons-material';
+import { Add, AddCircle } from '@mui/icons-material';
 import { SnackbarCustom } from '../common/Common';
-import { BiNews } from "react-icons/bi";
 import { HtmlField } from "../common/Fields";
 import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
 export default function FitnessClassForm() {
@@ -115,7 +115,7 @@ export default function FitnessClassForm() {
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-        <Typography level="title-lg" startDecorator={<BiNews />}>
+        <Typography level="title-lg">
             {t("Fitness Class Information")}
         </Typography>
         <div style={{ display: "flex", flexDirection:"row"}}>
@@ -156,7 +156,7 @@ export default function FitnessClassForm() {
           <FormLabel>{t("Images")}</FormLabel>
           <Box sx={{ p: 2 }}>
             {typeof(images) === "object" && images.length > 0 && images.map(image => (
-                <Box key={image.id} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Box key={image.id} sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                 
                 <FormControl sx={{ width: "50%"}}>
                 <Input
@@ -169,7 +169,7 @@ export default function FitnessClassForm() {
                 </FormControl>
       
                 <IconButton onClick={() => handleRemoveImage(image.id)} color="danger" disabled={mode === 'view'}>
-                    <RemoveCircle />
+                    <DeleteOutlineIcon />
                 </IconButton>
                 </Box>
             ))}

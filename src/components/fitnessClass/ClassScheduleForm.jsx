@@ -2,22 +2,20 @@ import useClassScheduleStore from '../../state/classScheduleState';
 import useFitnessClassStore from '../../state/fitnessClassState';
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
+import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
-import { BiNews } from "react-icons/bi";
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import dayjs from 'dayjs';
-import PortraitIcon from '@mui/icons-material/Portrait';
 import { HorozontalStepper, SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
 import useEmployeeStore from '../../state/employeeState';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { ButtonDatePicker } from '../common/Fields';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { NumericFormat } from 'react-number-format';
-
+import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
+import CoPresentIcon from '@mui/icons-material/CoPresent';
+import EventIcon from '@mui/icons-material/Event';
+import PaymentsIcon from '@mui/icons-material/Payments';
 
 export default function ClassScheduleForm() {
     const location = useLocation();
@@ -124,7 +122,7 @@ export default function ClassScheduleForm() {
       {/* <Divider inset="none" /> */}
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
         <div style={{display:"flex", flexDirection:"row"}}>
-          <Typography level="title-md" startDecorator={<BiNews />}>
+          <Typography level="title-md">
           {(classSchedule&&classSchedule.reference)|| t("New Class Schedule")}
           </Typography>
         
@@ -148,8 +146,8 @@ export default function ClassScheduleForm() {
         }}
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>{t("Fitness Class")}</FormLabel>
-          <Autocomplete startDecorator={<PortraitIcon />}  
+          <FormLabel><Typography level='h5' startDecorator={<CollectionsBookmarkIcon sx={{ fontSize: 18}}/>}>{t("Fitness Class")}</Typography></FormLabel>
+          <Autocomplete 
           options={fitnessClasses} getOptionLabel={(option) => option.name}
           value={fitnessClass} 
           onChange={(event, newValue) => setFitnessClass(newValue)}
@@ -157,8 +155,8 @@ export default function ClassScheduleForm() {
            />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>{t("Instructor")}</FormLabel>
-          <Autocomplete startDecorator={<BiNews fontSize={18}/>} 
+          <FormLabel><Typography level='h5' startDecorator={<CoPresentIcon sx={{ fontSize: 18}}/>}>{t("Instructor")}</Typography></FormLabel>
+          <Autocomplete 
           options={instructors} 
           getOptionLabel={(option) => option.name}
           value={instructor} onChange={(event, newValue) => setInstructor(newValue)}
@@ -167,7 +165,7 @@ export default function ClassScheduleForm() {
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>{t("Start Date")}</FormLabel>
+          <FormLabel><Typography level='h5' startDecorator={<EventIcon sx={{ fontSize: 18}}/>}>{t("Start Date")}</Typography></FormLabel>
           <Input 
             type='date'
             id="startDate"
@@ -191,7 +189,7 @@ export default function ClassScheduleForm() {
             />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>{t("End Date")}</FormLabel>
+          <FormLabel><Typography level='h5' startDecorator={<EventIcon sx={{ fontSize: 18}}/>}>{t("End Date")}</Typography></FormLabel>
           <Input 
             type='date'
             id="endDate"
@@ -217,7 +215,7 @@ export default function ClassScheduleForm() {
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>{t("Price")}</FormLabel>
+          <FormLabel><Typography level='h5' startDecorator={<PaymentsIcon sx={{ fontSize: 18 }} fill='text.secondary'/>}>{t("Price")}</Typography></FormLabel>
           <NumericFormat
             value={price&&price.toLocaleString()}
             //thousandSeparator

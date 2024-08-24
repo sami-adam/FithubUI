@@ -3,8 +3,6 @@ import useBenefitStore from '../../state/benefitState';
 import { useEffect, useState } from 'react';
 import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography, useTheme } from '@mui/joy';
 import { Add } from '@mui/icons-material';
-import { BiNews } from "react-icons/bi";
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTranslation } from 'react-i18next';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
@@ -91,7 +89,7 @@ export default function BenefitForm() {
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-        <Typography level="title-lg" startDecorator={<BiNews />}>
+        <Typography level="title-lg">
             {t("Benefit")}
         </Typography>
         <div style={{ display: "flex", flexDirection:"row"}}>
@@ -112,12 +110,12 @@ export default function BenefitForm() {
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Name")}</FormLabel>
-          <Input startDecorator={<InfoOutlinedIcon />} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
+          <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Description")}</FormLabel>
-          <Input startDecorator={<InfoOutlinedIcon />} value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
+          <Input value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <Box height={8} sx={{ gridColumn: '1/-1' }} />

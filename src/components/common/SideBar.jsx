@@ -179,7 +179,7 @@ export default function Sidebar({children}) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton role="menuitem" onClick={() => navigate("/class-schedules")} selected={window.location.pathname.includes("class-schedules")}>
+            <ListItemButton role="menuitem" onClick={() => navigate("/class-schedules")} selected={window.location.pathname.includes("class-schedule")}>
               <BsCalendar3 fontSize={18}/>
               <ListItemContent>
                 <Typography level="title-sm">{t("Class Schedules")}</Typography>

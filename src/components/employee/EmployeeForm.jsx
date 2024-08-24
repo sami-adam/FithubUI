@@ -3,19 +3,16 @@ import useEmployeeStore from '../../state/employeeState';
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
-import { Add } from '@mui/icons-material';
-import { BiNews } from "react-icons/bi";
+import { Add, Email, Person } from '@mui/icons-material';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
-import { HiOutlineIdentification } from "react-icons/hi2";
-import { MdOutlineMailOutline } from "react-icons/md";
-import { BsFilePerson } from "react-icons/bs";
-import { LiaPhoneSquareSolid } from "react-icons/lia";
-import { FaLocationDot } from "react-icons/fa6";
 import { SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
-
+import BadgeIcon from '@mui/icons-material/Badge';
+import ContactsIcon from '@mui/icons-material/Contacts';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 
 export default function EmployeeForm() {
     const location = useLocation();
@@ -112,7 +109,7 @@ export default function EmployeeForm() {
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-        <Typography level="title-lg" startDecorator={<BiNews />}>
+        <Typography level="title-lg">
             {t("Employee Information")}
         </Typography>
         <div style={{ display: "flex", flexDirection:"row"}}>
@@ -132,28 +129,27 @@ export default function EmployeeForm() {
         }}
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>{t("Name")}</FormLabel>
-          <Input startDecorator={<BsFilePerson fontSize={18}/>} value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
+          <FormLabel><Typography level='h5' startDecorator={<Person sx={{ fontSize: 18}}/>}>{t("Name")}</Typography></FormLabel>
+          <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>{t("ID Number")}</FormLabel>
-          <Input startDecorator={<HiOutlineIdentification fontSize={18} />} value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
+          <FormLabel><Typography level='h5' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>}>{t("ID Number")}</Typography></FormLabel>
+          <Input value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>{t("Email")}</FormLabel>
-          <Input type="email" startDecorator={<MdOutlineMailOutline fontSize={18}/>} value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
+          <FormLabel><Typography level='h5' startDecorator={<Email sx={{ fontSize: 18}}/>}>{t("Email")}</Typography></FormLabel>
+          <Input value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel>{t("Phone")}</FormLabel>
-          <Input startDecorator={<LiaPhoneSquareSolid fontSize={22} />} value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
+          <FormLabel><Typography level='h5' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>}>{t("Phone")}</Typography></FormLabel>
+          <Input value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel>{t("Employee Type")}</FormLabel>
+          <FormLabel><Typography level='h5' startDecorator={<LibraryAddCheckIcon sx={{ fontSize: 18}}/>}>{t("Employee Type")}</Typography></FormLabel>
           <Select 
-              startDecorator={<MdOutlineMailOutline />} 
               value={employeeType} 
               placeholder={t("Select Employee Type")}
               onChange={(e, newValue) => setEmployeeType(newValue)}
@@ -166,8 +162,8 @@ export default function EmployeeForm() {
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
-          <FormLabel>{t("Address")}</FormLabel>
-          <Input type="search" startDecorator={<FaLocationDot fontSize={18}/>} value={address} onChange={(e) => setAddress(e.target.value)} disabled={mode === 'view'} />
+          <FormLabel><Typography level='h5' startDecorator={<LocationOnIcon sx={{ fontSize: 18}}/>}>{t("Address")}</Typography></FormLabel>
+          <Input type="search" value={address} onChange={(e) => setAddress(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
 

@@ -4,12 +4,8 @@ import useSubscriptionStore from '../../state/subscriptionState';
 import useAttachmentStore from '../../state/attachmentState';
 import { useEffect, useState } from 'react';
 import { Box, Button, Card, CardContent, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormLabel, Input, Modal, ModalDialog, Radio, Typography } from '@mui/joy';
-import { Add } from '@mui/icons-material';
-import { BiNews } from "react-icons/bi";
+import { Add, Email } from '@mui/icons-material';
 import { HorozontalStepper, SnackbarCustom } from '../common/Common';
-import { HiOutlineIdentification } from "react-icons/hi2";
-import { LiaPhoneSquareSolid } from "react-icons/lia";
-import { MdOutlineMailOutline } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
@@ -18,6 +14,10 @@ import { useTranslation } from 'react-i18next';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import InputFileUpload from '../common/InputFileUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
+import BadgeIcon from '@mui/icons-material/Badge';
+import ContactsIcon from '@mui/icons-material/Contacts';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -140,7 +140,7 @@ export default function MemberForm() {
             </Button>}
         </div>
         <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
-            <Typography level="title-lg" startDecorator={<BiNews />}>
+            <Typography level="title-lg">
                 {t("Member Information")}
             </Typography>
             <div style={{ display: "flex", flexDirection:"row"}}>
@@ -160,21 +160,21 @@ export default function MemberForm() {
             }}
         >
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-                <FormLabel>{t("First Name")}</FormLabel>
+                <FormLabel><Typography level='h5' startDecorator={<CheckBoxOutlineBlankIcon sx={{ fontSize: 18}}/>}>{t("First Name")}</Typography></FormLabel>
                 <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-                <FormLabel>{t("Last Name")}</FormLabel>
+                <FormLabel><Typography level='h5' startDecorator={<CheckBoxOutlineBlankIcon sx={{ fontSize: 18}}/>}>{t("Last Name")}</Typography></FormLabel>
                 <Input value={lastName} onChange={(e) => setLastName(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-                <FormLabel>{t("ID Number")}</FormLabel>
-                <Input startDecorator={<HiOutlineIdentification fontSize={18}/>} value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
+                <FormLabel><Typography level='h5' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>}>{t("ID Number")}</Typography></FormLabel>
+                <Input value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-                <FormLabel>{t("Gender")}</FormLabel>
+                <FormLabel><Typography level='h5' startDecorator={<RadioButtonCheckedIcon sx={{ fontSize: 18}}/>}>{t("Gender")}</Typography></FormLabel>
                 <Box sx={{ display: 'flex', gap: 2 }}>
                     <Radio 
                         checked={gender === 0}
@@ -198,13 +198,13 @@ export default function MemberForm() {
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-            <FormLabel>{t("Email")}</FormLabel>
-            <Input type="email" startDecorator={<MdOutlineMailOutline fontSize={18}/>} value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
+            <FormLabel><Typography level='h5' startDecorator={<Email sx={{ fontSize: 18}}/>}>{t("Email")}</Typography></FormLabel>
+            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-            <FormLabel>{t("Phone")}</FormLabel>
-            <Input startDecorator={<LiaPhoneSquareSolid fontSize={22} />} value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
+            <FormLabel><Typography level='h5' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>}>{t("Phone")}</Typography></FormLabel>
+            <Input value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             </CardContent>

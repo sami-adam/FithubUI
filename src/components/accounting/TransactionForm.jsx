@@ -4,17 +4,14 @@ import useJournalStore from "../../state/journalState";
 import useAccountStore from "../../state/accountState";
 import { useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormLabel, IconButton, Input, Option, Select, Typography } from '@mui/joy';
-import { Add, AddCircle, RemoveCircle } from '@mui/icons-material';
-import { BiNews } from "react-icons/bi";
+import { Add, AddCircle } from '@mui/icons-material';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
-import { MdOutlineMoney } from "react-icons/md";
-import { FaMoneyBill } from "react-icons/fa6";
-import { LuListTree } from "react-icons/lu";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
+import { DeleteOutlined } from "@ant-design/icons";
 
 
 export default function TransactionForm() {
@@ -137,7 +134,7 @@ export default function TransactionForm() {
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-        <Typography level="title-lg" startDecorator={<BiNews />}>
+        <Typography level="title-lg">
             {t("Transaction Information")}
         </Typography>
         <div style={{ display: "flex", flexDirection:"row"}}>
@@ -163,7 +160,7 @@ export default function TransactionForm() {
         </div>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Journal")}</FormLabel>
-          <Autocomplete startDecorator={<MdOutlineMoney />} 
+          <Autocomplete 
           options={journals} 
           getOptionLabel={(option) => option.name}
           value={journal} onChange={(event, newValue) => setJournal(newValue)}
@@ -172,7 +169,7 @@ export default function TransactionForm() {
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Description")}</FormLabel>
-          <Input startDecorator={<LuListTree fontSize={18} />} value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
+          <Input value={description} onChange={(e) => setDescription(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
@@ -181,7 +178,7 @@ export default function TransactionForm() {
             {entries.length > 0 && entries.map(entry => (
                 <Box key={entry.id} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <FormControl sx={{ width: "45%"}}>
-                <Autocomplete startDecorator={<MdOutlineMoney />} 
+                <Autocomplete
                     options={accounts} 
                     getOptionLabel={(account) => account.code + ' - ' + account.name}
                     value={entry.account} onChange={(event, newValue) => handleChangeEntry(entry.id, newValue, null, null, null)}
@@ -191,7 +188,6 @@ export default function TransactionForm() {
                 </FormControl>
                 <FormControl sx={{ width: "15%"}}>
                 <Select 
-                    startDecorator={<FaMoneyBill />} 
                     value={entry.type} 
                     onChange={(e, newValue) => handleChangeEntry(entry.id, null, newValue, null, null)}
                     disabled={mode === 'view'}
@@ -220,7 +216,7 @@ export default function TransactionForm() {
                     />
                 </FormControl>
                 <IconButton onClick={() => handleRemoveEntry(entry.id)} color="danger" disabled={mode === 'view'}>
-                    <RemoveCircle />
+                    <DeleteOutlined />
                 </IconButton>
                 </Box>
             ))}
