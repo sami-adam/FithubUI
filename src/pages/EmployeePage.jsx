@@ -27,9 +27,8 @@ export default function EmployeePage({ defaultSearch="" }) {
 
     const columns = [
         {"name": "id", "label": "Identification Number", "width": 120},
-        {"name": "name", "label": "Full Name", "sort": true, "width": 120},
+        {"name": "name", "label": "Full Name", "sort": true, "width": 300, special: "person"},
         {"name": "employeeType", "label": "Employee Type", "width": 120},
-        {"name": "email", "label": "Email", "width": 180},
         {"name": "phone", "label": "Phone"},
         {"name": "address", "label": "Address", "width": 200},
     ]

@@ -27,8 +27,7 @@ export default function MemberPage({ defaultSearch = "" }) {
 
     const columns = [
         {"name": "id", "label": "ID Number", "width": 120},
-        {"name": "name", "label": "Full Name", "sort": true, "width": 180},
-        {"name": "email", "label": "Email", "width": 220},
+        {"name": "name", "label": "Full Name", "sort": true, "width": 300, "special": "person"},
         {"name": "phone", "label": "Phone", "width": 120},
         {"name": "gender", "label": "Gender", "width": 80, "sort": true},
         {"name": "status", "label": "Status", "special": "status"},

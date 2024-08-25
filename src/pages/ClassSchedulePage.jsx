@@ -30,9 +30,9 @@ export default function ClassSchedulePage({ defaultSearch="" }) {
         {"name": "class", "label": "Class", "sort": true, "width": 120},
         {"name": "startDate" , "label": "Start Date", "width": 120},
         {"name": "endDate", "label": "End Date", "width": 120},
-        {"name": "instructor", "label": "Instructor", "width": 120},
-        {"name": "price", "label": "Price", "width": 120},
-        {"name": "status", "label": "Status", "width": 120}
+        {"name": "instructor", "label": "Instructor", "width": 300, "special": "person"},
+        {"name": "price", "label": "Price", "width": 120, "special": "amount"},
+        {"name": "status", "label": "Status", "width": 120, "special": "status"}
     ]
 
     const rows = classSchedules.map((classSchedule) => ({
@@ -41,6 +41,8 @@ export default function ClassSchedulePage({ defaultSearch="" }) {
         "startDate": classSchedule.startDate,
         "endDate": classSchedule.endDate,
         "instructor": classSchedule.instructor && classSchedule.instructor.name,
+        "name": classSchedule.instructor && classSchedule.instructor.name,
+        "email": classSchedule.instructor && classSchedule.instructor.email,
         "price": classSchedule.price,
         "status": t(classSchedule.status),
         "object": classSchedule
