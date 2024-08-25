@@ -38,8 +38,8 @@ export default function ClassSchedulePage({ defaultSearch="" }) {
     const rows = classSchedules.map((classSchedule) => ({
         "id": classSchedule.reference,
         "class": classSchedule.fitnessClass && classSchedule.fitnessClass.name,
-        "startDate": classSchedule.startDate,
-        "endDate": classSchedule.endDate,
+        "startDate": classSchedule.startDate.substring(0, 10),
+        "endDate": classSchedule.endDate.substring(0, 10),
         "instructor": classSchedule.instructor && classSchedule.instructor.name,
         "name": classSchedule.instructor && classSchedule.instructor.name,
         "email": classSchedule.instructor && classSchedule.instructor.email,

@@ -40,6 +40,7 @@ export default function MemberPage({ defaultSearch = "" }) {
         "lastName": member.lastName,
         "name": member.firstName + " " + member.lastName,
         "email": member.email,
+        "image": member.profilePicture && member.profilePicture.url,
         "phone": member.phone,
         "gender": t(member.gender),
         "status": member.status,
