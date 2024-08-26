@@ -18,6 +18,18 @@ const useProductCategoryStore = create((set) => ({
             console.error("Error fetching product categories", error);
         }
     },
+    fetchProductCategory: async (id) => {
+        try {
+            const response = await axios.get(useProductCategoryStore.getState().baseURL + `/product-category/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useProductCategoryStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching product category", error);
+        }
+    },
     addProductCategory: async (productCategory) => {
         try {
             const response = await axios.post(useProductCategoryStore.getState().baseURL + "/product-category", productCategory, {

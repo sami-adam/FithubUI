@@ -23,6 +23,18 @@ const useEmployeeStore = create((set) => ({
             }
         }
     },
+    fetchEmployee: async (id) => {
+        try {
+            const response = await axios.get(`${useEmployeeStore.getState().baseURL}/employee/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useEmployeeStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching employee", error);
+        }
+    },
     addEmployee: async (employee) => {
         try {
             const response = await axios.post(`${useEmployeeStore.getState().baseURL}/employee`, employee, {

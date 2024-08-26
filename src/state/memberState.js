@@ -23,6 +23,18 @@ const useMemberStore = create((set) => ({
             }
         }
     },
+    fetchMember: async (id) => {
+        try {
+            const response = await axios.get(`${useMemberStore.getState().baseURL}/member/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useMemberStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching member", error);
+        }
+    },
     addMember: async (member) => {
         try {
             const response = await axios.post(`${useMemberStore.getState().baseURL}/member`, member, {

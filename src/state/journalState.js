@@ -23,6 +23,18 @@ const useJournalStore = create((set) => ({
             }
         }
     },
+    fetchJournal: async (id) => {
+        try {
+            const response = await axios.get(`${useJournalStore.getState().baseURL}/journal/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useJournalStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching journal", error);
+        }
+    },
     addJournal: async (journal) => {
         try {
             const response = await axios.post(`${useJournalStore.getState().baseURL}/journal`, journal, {

@@ -24,6 +24,18 @@ const useBenefitStore = create((set) => ({
             }
         }
     },
+    fetchBenefit: async (id) => {
+        try {
+            const response = await axios.get(`${useBenefitStore.getState().baseURL}/benefit/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useBenefitStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching benefit", error);
+        }
+    },
     addBenefit: async (benefit) => {
         try {
             const response = await axios.post(`${useBenefitStore.getState().baseURL}/benefit`, benefit, {

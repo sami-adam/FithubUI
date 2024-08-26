@@ -20,6 +20,18 @@ const useSubscriptionStore = create((set) => ({
             window.location.replace(useSubscriptionStore.getState().signInUrl);
         }
     },
+    fetchSubscription: async (id) => {
+        try {
+            const response = await axios.get(`${useSubscriptionStore.getState().baseURL}/subscription/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useSubscriptionStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching subscription", error);
+        }
+    },
     addSubscription: async (subscription) => {
         try {
             const response = await axios.post(`${useSubscriptionStore.getState().baseURL}/subscription`, subscription, {

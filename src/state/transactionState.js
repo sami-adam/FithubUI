@@ -23,6 +23,18 @@ const useTransactionStore = create((set) => ({
             }
         }
     },
+    fetchTransaction: async (id) => {
+        try {
+            const response = await axios.get(`${useTransactionStore.getState().baseURL}/transaction/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useTransactionStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching transaction", error);
+        }
+    },
     addTransaction: async (transaction) => {
         try {
             const response = await axios.post(`${useTransactionStore.getState().baseURL}/transaction`, transaction, {

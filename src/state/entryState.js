@@ -21,6 +21,18 @@ const useEntryStore = create((set) => ({
             }
         }
     },
+    fetchEntry: async (id) => {
+        try {
+            const response = await axios.get(`${useEntryStore.getState().baseURL}/entry/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useEntryStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching entry", error);
+        }
+    },
     addEntry: async (entry) => {
         try {
             const response = await axios.post(`${useEntryStore.getState().baseURL}/entry`, entry, {

@@ -38,6 +38,7 @@ import TransactionForm from './components/accounting/TransactionForm';
 import NotificationPage from './pages/NotificationPage';
 import ClassSchedulePage from './pages/ClassSchedulePage';
 import ClassScheduleForm from './components/fitnessClass/ClassScheduleForm';
+import NotFoundPage from './pages/NotFoundPage';
 //const joyTheme = extendJoyTheme();
 
 
@@ -58,31 +59,43 @@ function App() {
           <Route path="/" element={<HomePage/>} />
           <Route  path="/subscriptions" element={<SubscriptionPage />} />
           <Route  path="/subscription-form" element={<SubscriptionForm />} />
+          <Route path="/subscriptions/:id" element={<SubscriptionForm />} />
           <Route path="/members" element={<MemberPage/>} />
           <Route path="/member-form" element={<MemberForm/>} />
+          <Route path="/members/:id" element={<MemberForm/>} />
           <Route path="/employees" element={<EmployeePage/>} />
           <Route path="/employee-form" element={<EmployeeForm/>} />
+          <Route path="/employees/:id" element={<EmployeeForm/>} />
           <Route path="/emails" element={<EmailPage/>} />
           <Route path="/products" element={<ProductPage/>} />
           <Route path="/product-form" element={<ProductForm/>} />
+          <Route path="/products/:id" element={<ProductForm/>} />
           <Route path="/product-categories" element={<ProductCategoryPage/>} />
           <Route path="/product-category-form" element={<ProductCategoryForm/>} />
+          <Route path="/product-categories/:id" element={<ProductCategoryForm/>} />
           <Route path="/benefits" element={<BenefitPage/>} />
           <Route path="/benefit-form" element={<BenefitForm/>} />
+          <Route path="/benefits/:id" element={<BenefitForm/>} />
           <Route path="/users" element={<UserPage/>} />
           <Route path="/fitness-classes" element={<FitnessClassPage/>} />
           <Route path="/fitness-class-form" element={<FitnessClassForm/>} />
+          <Route path="/fitness-classes/:id" element={<FitnessClassForm/>} />
           <Route path="/class-schedules" element={<ClassSchedulePage/>} />
           <Route path="/class-schedule-form" element={<ClassScheduleForm/>} />
+          <Route path="/class-schedules/:id" element={<ClassScheduleForm/>} />
           <Route path="/support" element={<SupportPage/>} />
           <Route path="/accounts" element={<AccountPage/>} />
           <Route path="/account-form" element={<AccountForm/>} />
+          <Route path="/accounts/:id" element={<AccountForm/>} />
           <Route path="/entries" element={<EntryPage/>} />
           <Route path="/transactions" element={<TransactionPage/>} />
           <Route path="/transaction-form" element={<TransactionForm/>} />
+          <Route path="/transactions/:id" element={<TransactionForm/>} />
           <Route path="/journals" element={<JournalPage/>} />
           <Route path="/journal-form" element={<JournalForm/>} />
+          <Route path="/journals/:id" element={<JournalForm/>} />
           <Route path="/notifications" element={<NotificationPage/>} />
+          <Route path="/404" element={<NotFoundPage/>} />
         </Routes>
         </Sidebar>
       </BrowserRouter>

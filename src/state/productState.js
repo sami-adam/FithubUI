@@ -24,6 +24,18 @@ const useProductStore = create((set) => ({
             }
         }
     },
+    fetchProduct: async (id) => {
+        try {
+            const response = await axios.get(`${useProductStore.getState().baseURL}/product/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useProductStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching product", error);
+        }
+    },
     addProduct: async (product) => {
         try {
             const response = await axios.post(useProductStore.getState().baseURL + "/product", product, {

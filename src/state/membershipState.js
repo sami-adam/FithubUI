@@ -21,6 +21,18 @@ const useMembershipStore = create((set) => ({
             }
         }
     },
+    fetchMembership: async (id) => {
+        try {
+            const response = await axios.get(`${useMembershipStore.getState().baseURL}/membership/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useMembershipStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching membership", error);
+        }
+    },
     addMembership: async (membership) => {
         try {
             const response = await axios.post(`${useMembershipStore.getState().baseURL}/membership`, membership, {

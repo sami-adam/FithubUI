@@ -23,6 +23,24 @@ const useAccountStore = create((set) => ({
             }
         }
     },
+    fetchAccount: async (id) => {
+        try {
+            const response = await axios.get(`${useAccountStore.getState().baseURL}/account/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useAccountStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            if (error.response.status === 403) {
+                localStorage.removeItem("token");
+                window.location.href = useAccountStore.getState().signInUrl;
+            }
+            if (error.response.status === 404) {
+                window.location.href = "/404";
+            }
+        }
+    },
     addAccount: async (account) => {
         try {
             const response = await axios.post(`${useAccountStore.getState().baseURL}/account`, account, {

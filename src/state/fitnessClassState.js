@@ -23,6 +23,18 @@ const useFitnessClassStore = create((set) => ({
             }
         }
     },
+    fetchFitnessClass: async (id) => {
+        try {
+            const response = await axios.get(`${useFitnessClassStore.getState().baseURL}/fitness-class/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useFitnessClassStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching fitness class", error);
+        }
+    },
     addFitnessClass: async (fitnessClass) => {
         try {
             const response = await axios.post(`${useFitnessClassStore.getState().baseURL}/fitness-class`, fitnessClass, {

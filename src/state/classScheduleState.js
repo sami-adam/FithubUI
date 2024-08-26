@@ -20,6 +20,20 @@ const useClassScheduleStore = create((set) => ({
             console.error("Error fetching class schedules", error);
         }
     },
+    fetchClassSchedule: async (id) => {
+        try {
+            const response = await axios.get(`${useClassScheduleStore.getState().baseURL}/class-schedule/${
+                id
+            }`, {
+                headers: {
+                    "Authorization": "Bearer " + useClassScheduleStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching class schedule", error);
+        }
+    },
 
     addClassSchedule: async (classSchedule) => {
         try {

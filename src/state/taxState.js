@@ -24,6 +24,18 @@ const useTaxStore = create((set) => ({
             }
         }
     },
+    fetchTax: async (id) => {
+        try {
+            const response = await axios.get(useTaxStore.getState().baseURL + `/tax/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useTaxStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching tax", error);
+        }
+    },
     addTax: async (tax) => {
         try {
             const response = await axios.post(useTaxStore.getState().baseURL + "/tax", tax, {

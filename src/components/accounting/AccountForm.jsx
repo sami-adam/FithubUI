@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useAccountStore from "../../state/accountState";
 import { useEffect, useState } from 'react';
 import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
@@ -9,23 +9,24 @@ import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
-import { MdOutlineMoney } from "react-icons/md";
-import { FaMoneyBill } from "react-icons/fa6";
-import { LuListTree } from "react-icons/lu";
-import { BsArrowDownSquare } from "react-icons/bs";
 
 
 export default function AccountForm() {
+    const { id } = useParams();
     const location = useLocation();
-    if (!location.state) {
+    if (!location.state && !id) {
         window.location.href = '/accounts';
     }
 
     const updateAccount = useAccountStore((state) => state.updateAccount);
     const addAccount = useAccountStore((state) => state.addAccount);
     const deleteAccount = useAccountStore((state) => state.deleteAccount);
+    const fetchAccount = useAccountStore((state) => state.fetchAccount);
+    const [fetchData, setFetchData] = useState(true);
 
-    const [mode, setMode] = useState(location.state.viewMode||'view');
+    const [account, setAccount] = useState(!id ? location.state.object : null);
+
+    const [mode, setMode] = useState(!id ? location.state.viewMode : "view" ||'view');
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -34,7 +35,6 @@ export default function AccountForm() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
-    const account = location.state.object;
     const {t} = useTranslation();
 
     const accountTypes = [
@@ -46,12 +46,22 @@ export default function AccountForm() {
     ]
 
     useEffect(() => {
-        if(account){
-            setName(name=>name||account.name);
-            setCode(code=>code||account.code);
-            setType(type=>type||account.type);
+        async function getData(){
+          if(fetchData && id){
+            setAccount(await fetchAccount(id));
+            setFetchData(false);
+          }
         }
-      }, [mode, account]);
+        if(account){
+          setName(name=>name||account.name);
+          setCode(code=>code||account.code);
+          setType(type=>type||account.type);
+        }
+        if(fetchData && id){
+          getData();
+          setFetchData(false);
+        }
+      }, [mode, account, fetchData, id, fetchAccount]);
 
     const handleSave = () => {
         updateAccount({
