@@ -30,6 +30,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Grid3x3Icon from '@mui/icons-material/Grid3x3';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
+import LoadingPage from '../common/LaodingPage';
 
 export default function SubscriptionForm() {
   const location = useLocation();
@@ -55,6 +56,7 @@ export default function SubscriptionForm() {
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
   const [openDownload, setOpenDownload] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const inputRef = useRef(null);
   const {t} = useTranslation();
@@ -68,7 +70,7 @@ export default function SubscriptionForm() {
     if(id && mode !== 'add' && !subscription){
       fetchSubscription(id).then((data) => {
         setSubscription(data);
-      });
+      }).finally(() => setLoading(false));
     }
     if(mode !== 'view' && fetchData){
       fetchMembers();
@@ -158,6 +160,7 @@ export default function SubscriptionForm() {
   return (
     <>
     <div>
+      {loading && <LoadingPage/> ||
     <Card
       variant="outlined"
       sx={{
@@ -343,7 +346,7 @@ export default function SubscriptionForm() {
       
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
       </CardContent>
-    </Card>
+    </Card> }
     </div>
     </>
   );
