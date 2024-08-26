@@ -31,6 +31,7 @@ import Grid3x3Icon from '@mui/icons-material/Grid3x3';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import LoadingPage from '../common/LaodingPage';
+import { FormBackButton } from '../common/Buttons';
 
 export default function SubscriptionForm() {
   const location = useLocation();
@@ -175,6 +176,7 @@ export default function SubscriptionForm() {
         ml: { xs: 5, md: "auto" },
       }}
     >
+      <br/>
       <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />
       <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
       {/* <Divider inset="none" /> */}
@@ -183,6 +185,7 @@ export default function SubscriptionForm() {
             <Typography fontSize="small">{t("INVOICE")}</Typography>
         </Button>
       </div>
+      <FormBackButton/>
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
         <div style={{display:"flex", flexDirection:"row"}}>
           <Typography level="title-md" >
