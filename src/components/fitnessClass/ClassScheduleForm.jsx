@@ -1,6 +1,6 @@
 import useClassScheduleStore from '../../state/classScheduleState';
 import useFitnessClassStore from '../../state/fitnessClassState';
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
@@ -24,8 +24,10 @@ export default function ClassScheduleForm() {
     const updateClassSchedule = useClassScheduleStore((state) => state.updateClassSchedule);
     const addClassSchedule = useClassScheduleStore((state) => state.addClassSchedule);
     const deleteClassSchedule = useClassScheduleStore((state) => state.deleteClassSchedule);
+    const fetchClassSchedule = useClassScheduleStore((state) => state.fetchClassSchedule);
+    const [classSchedule, setClassSchedule] = useState(null);
 
-    const [mode, setMode] = useState(location.state.viewMode||'view');
+    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
     const [fetchData, setFetchData] = useState(true);
 
     const [fitnessClass, setFitnessClass] = useState(null);
@@ -36,13 +38,18 @@ export default function ClassScheduleForm() {
     const [status, setStatus] = useState(null);
 
     const {t} = useTranslation();
+    const { id } = useParams();
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
     
-    const classSchedule = location.state.object;
     const stages = ["NEW", "PLANNED", "RUNNING", "FINISHED", "CANCELLED"];
 
     useEffect(() => {
+        if(id && mode !== 'add' && !classSchedule){
+            fetchClassSchedule(id).then((data) => {
+                setClassSchedule(data);
+            });
+        }
         if(fetchData){
             fetchFitnessClasses();
             fetchInstructors();

@@ -1,6 +1,6 @@
 import { useTheme } from '@emotion/react';
 import useEmployeeStore from '../../state/employeeState';
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
 import { Add, Email, Person } from '@mui/icons-material';
@@ -16,15 +16,16 @@ import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 
 export default function EmployeeForm() {
     const location = useLocation();
-    if (!location.state) {
-        window.location.href = '/employees';
-    }
+    
+    const { id } = useParams();
 
     const updateEmployee = useEmployeeStore((state) => state.updateEmployee);
     const addEmployee = useEmployeeStore((state) => state.addEmployee);
     const deleteEmployee = useEmployeeStore((state) => state.deleteEmployee);
+    const fetchEmployee = useEmployeeStore((state) => state.fetchEmployee);
+    const [employee, setEmployee] = useState(null);
 
-    const [mode, setMode] = useState(location.state.viewMode||'view');
+    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
     const [name, setName] = useState('');
     const [identificationNumber, setIdentificationNumber] = useState('');
@@ -36,11 +37,15 @@ export default function EmployeeForm() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
-    const employee = location.state.object;
     const theme = useTheme();
     const {t} = useTranslation();
 
     useEffect(() => {
+        if(id && mode !== 'add' && !employee){
+            fetchEmployee(id).then((data) => {
+                setEmployee(data);
+            });
+        }
         if(employee){
             setName(name=>name||employee.name);
             setIdentificationNumber(identificationNumber=>identificationNumber||employee.identificationNumber);

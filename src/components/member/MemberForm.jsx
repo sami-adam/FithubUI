@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import useMemberStore from '../../state/memberState';
 import useSubscriptionStore from '../../state/subscriptionState';
 import useAttachmentStore from '../../state/attachmentState';
@@ -22,19 +22,19 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
     const location = useLocation();
-    if (!location.state) {
-        window.location.href = '/members';
-    }
+    const { id } = useParams();
 
     const updateMember = useMemberStore((state) => state.updateMember);
     const addMember = useMemberStore((state) => state.addMember);
     const deleteMember = useMemberStore((state) => state.deleteMember);
     const fetchAttachment = useAttachmentStore((state) => state.fetchAttachment);
     const [subscriptions, fetchSubscriptions] = useSubscriptionStore((state) => [state.subscriptions, state.fetchSubscriptions]);
+    const fetchMember = useMemberStore((state) => state.fetchMember);
+    const [member, setMember] = useState(null);
     const [fetchData, setFetchData] = useState(true);
     const {t} = useTranslation();
 
-    const [mode, setMode] = useState(location.state.viewMode||'view');
+    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -48,12 +48,16 @@ export default function MemberForm() {
     const [openPictureEdit, setOpenPictureEdit] = useState(false);
     const [profileSrc, setProfileSrc] = useState("");
 
-    const member = location.state.object;
     const navigate = useNavigate();
     
     const memberSubscriptions = member&&subscriptions.filter(subscription => subscription.member.id === member.id);
 
     useEffect(() => {
+        if(id && mode !== 'add' && !member){
+            fetchMember(id).then((member) => {
+                setMember(member);
+            });
+        }
         if(member){
             setFirstName(firstName=>firstName||member.firstName);
             setLastName(lastName=>lastName||member.lastName);

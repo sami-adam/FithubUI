@@ -1,5 +1,5 @@
 import useFitnessClassStore from "../../state/fitnessClassState";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import {  IconButton, Option, Select, useTheme } from '@mui/joy';
 import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
@@ -15,15 +15,15 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 export default function FitnessClassForm() {
     const location = useLocation();
-    if (!location.state) {
-        window.location.href = '/fitness-classes';
-    }
+    const { id } = useParams();
 
     const updateFitnessClass = useFitnessClassStore((state) => state.updateFitnessClass);
     const addFitnessClass = useFitnessClassStore((state) => state.addFitnessClass);
     const deleteFitnessClass = useFitnessClassStore((state) => state.deleteFitnessClass);
+    const fetchFitnessClass = useFitnessClassStore((state) => state.fetchFitnessClass);
+    const [fitnessClass, setFitnessClass] = useState(null);
 
-    const [mode, setMode] = useState(location.state.viewMode||'view');
+    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
     const {t} = useTranslation();
 
     const [name, setName] = useState('');
@@ -34,10 +34,14 @@ export default function FitnessClassForm() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
-    const fitnessClass = location.state.object;
     const theme = useTheme();
 
     useEffect(() => {
+        if(id && mode !== 'add' && !fitnessClass){
+            fetchFitnessClass(id).then((data) => {
+                setFitnessClass(data);
+            });
+        }
         if(fitnessClass){
             setName(name=>name||fitnessClass.name);
             setIntensityLevel(intensityLevel=>intensityLevel||fitnessClass.intensityLevel);

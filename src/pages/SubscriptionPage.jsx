@@ -59,7 +59,7 @@ export default function SubscriptionPage({ defaultSearch="" }) {
         "discount": subscription.discountAmount,
         "netAmount": subscription.netAmount,
         "status": subscription.status,
-        "object": subscription
+        "objectId": subscription.id
     }));
 
     const listItems = subscriptions.map((subscription) => ({
@@ -71,7 +71,7 @@ export default function SubscriptionPage({ defaultSearch="" }) {
         "secondRow": [subscription.endDate, ""],
         "thirdRow": [subscription.totalAmount, subscription.netAmount],
         "status": subscription.status,
-        "object": subscription
+        "objectId": subscription.id
     }));
 
     const handleExport = (subscriptionIds) => {

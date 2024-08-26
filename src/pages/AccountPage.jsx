@@ -42,7 +42,7 @@ export default function AccountPage({ defaultSearch="" }) {
         "debit": account.debit,
         "credit": account.credit,
         "balance": account.balance,
-        "object": account
+        "objectId": account.id
     }));
 
     const listItems = accounts.map((account) => ({
@@ -53,7 +53,7 @@ export default function AccountPage({ defaultSearch="" }) {
         "firstRow": [account.debit, account.credit],
         "secondRow": [account.balance, ""],
         "status": "NEW",
-        "object": account
+        "objectId": account.id
     }));
 
     return (

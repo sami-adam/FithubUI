@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useTransactionStore from "../../state/transactionState";
 import useJournalStore from "../../state/journalState";
 import useAccountStore from "../../state/accountState";
@@ -16,9 +16,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 
 export default function TransactionForm() {
     const location = useLocation();
-    if (!location.state) {
-        window.location.href = '/transactions';
-    }
+    const { id } = useParams();
     const [fetchData, setFetchData] = useState(true);
 
     const updateTransaction = useTransactionStore((state) => state.updateTransaction);
@@ -29,7 +27,10 @@ export default function TransactionForm() {
     const [journals, fetchJournals] = useJournalStore((state) => [state.journals, state.fetchJournals]);
     const [accounts, fetchAccounts] = useAccountStore((state) => [state.accounts, state.fetchAccounts]);
 
-    const [mode, setMode] = useState(location.state.viewMode||'view');
+    const fetchTransaction = useTransactionStore((state) => state.fetchTransaction);
+    const [transaction, setTransaction] = useState(null);
+
+    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
     const [journal, setJournal] = useState(null);
     const [description, setDescription] = useState('');
@@ -38,10 +39,14 @@ export default function TransactionForm() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
-    const [transaction, setTransaction] = useState(location.state.object);
     const {t} = useTranslation();
 
     useEffect(() => {
+        if(id && mode !== 'add' && !transaction){
+            fetchTransaction(id).then((data) => {
+                setTransaction(data);
+            });
+        }
         if(fetchData){
             fetchJournals();
             fetchAccounts();

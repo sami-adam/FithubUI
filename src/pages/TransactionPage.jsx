@@ -39,7 +39,7 @@ export default function TransactionPage({ defaultSearch="" }) {
         "description": transaction.description,
         "amount": transaction.entries && transaction.entries.filter((entry) => entry.type === "DEBIT").map((entry) => entry.debit).reduce((a, b) => a + b, 0),
         "status": transaction.status,
-        "object": transaction
+        "objectId": transaction.id
     }));
 
     const listItems = transactions.map((transaction) => ({
@@ -50,7 +50,7 @@ export default function TransactionPage({ defaultSearch="" }) {
         "firstRow": [transaction.status],
         "secondRow": [transaction.journal && transaction.journal.name],
         "status": "NEW",
-        "object": transaction
+        "objectId": transaction.id
     }));
 
     return (

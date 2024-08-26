@@ -45,7 +45,7 @@ export default function ClassSchedulePage({ defaultSearch="" }) {
         "email": classSchedule.instructor && classSchedule.instructor.email,
         "price": classSchedule.price,
         "status": classSchedule.status,
-        "object": classSchedule
+        "objectId": classSchedule.id
     }));
 
     const listItems = classSchedules.map((classSchedule) => ({
@@ -55,7 +55,7 @@ export default function ClassSchedulePage({ defaultSearch="" }) {
         "subtitle": classSchedule.startDate + " - " + classSchedule.endDate,
         "firstRow": [classSchedule.instructor && classSchedule.instructor.name, classSchedule.price],
         "secondRow": [classSchedule.status, ""],
-        "object": classSchedule
+        "objectId": classSchedule.id
     }));
 
     return (

@@ -14,19 +14,14 @@ import { useTranslation } from 'react-i18next';
 export default function AccountForm() {
     const { id } = useParams();
     const location = useLocation();
-    if (!location.state && !id) {
-        window.location.href = '/accounts';
-    }
 
     const updateAccount = useAccountStore((state) => state.updateAccount);
     const addAccount = useAccountStore((state) => state.addAccount);
     const deleteAccount = useAccountStore((state) => state.deleteAccount);
     const fetchAccount = useAccountStore((state) => state.fetchAccount);
-    const [fetchData, setFetchData] = useState(true);
+    const [account, setAccount] = useState(null);
 
-    const [account, setAccount] = useState(!id ? location.state.object : null);
-
-    const [mode, setMode] = useState(!id ? location.state.viewMode : "view" ||'view');
+    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -46,22 +41,17 @@ export default function AccountForm() {
     ]
 
     useEffect(() => {
-        async function getData(){
-          if(fetchData && id){
-            setAccount(await fetchAccount(id));
-            setFetchData(false);
-          }
+        if(id && mode !== 'add' && !account){
+            fetchAccount(id).then((data) => {
+                setAccount(data);
+            });
         }
         if(account){
-          setName(name=>name||account.name);
-          setCode(code=>code||account.code);
-          setType(type=>type||account.type);
+            setName(name=>name||account.name);
+            setCode(code=>code||account.code);
+            setType(type=>type||account.type);
         }
-        if(fetchData && id){
-          getData();
-          setFetchData(false);
-        }
-      }, [mode, account, fetchData, id, fetchAccount]);
+      }, [mode, account, id]);
 
     const handleSave = () => {
         updateAccount({

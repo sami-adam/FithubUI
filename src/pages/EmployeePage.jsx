@@ -40,7 +40,7 @@ export default function EmployeePage({ defaultSearch="" }) {
         "phone": employee.phone,
         "address": employee.address,
         "employeeType": t(employee.employeeType),
-        "object": employee
+        "objectId": employee.id
     }));
 
     const listItems = employees.map((employee) => ({
@@ -52,7 +52,7 @@ export default function EmployeePage({ defaultSearch="" }) {
         "secondRow": [employee.phone, ""],
         "thirdRow": [employee.email, t(employee.employeeType)],
         "status": "NEW",
-        "object": employee
+        "objectId": employee.id
     }));
 
     return (

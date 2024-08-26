@@ -21,7 +21,7 @@ import { ButtonDatePicker } from '../common/Fields';
 import dayjs from 'dayjs';
 import { Add, Person } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { DocumentSnackbar, HorozontalStepper, SnackbarCustom } from '../common/Common';
 import SubscriptionInvoice from '../../reports/SubscriptionInvoice';
 import { MdPictureAsPdf } from "react-icons/md";
@@ -33,12 +33,15 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 
 export default function SubscriptionForm() {
   const location = useLocation();
+  const { id } = useParams();
   const [members, fetchMembers] = useMemberStore((state) => [state.members, state.fetchMembers]);
   const [products, fetchProducts] = useProductStore((state) => [state.products, state.fetchProducts]);
   const updateSubscription = useSubscriptionStore((state) => state.updateSubscription);
   const addSubscription = useSubscriptionStore((state) => state.addSubscription);
   const deleteSubscription = useSubscriptionStore((state) => state.deleteSubscription);
-  const [mode, setMode] = useState(location.state.viewMode||'view');
+  const fetchSubscription = useSubscriptionStore((state) => state.fetchSubscription);
+  const [subscription, setSubscription] = useState(null);
+  const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
   const [fetchData, setFetchData] = useState(true);
 
   const [member, setMember] = useState(null);
@@ -59,10 +62,14 @@ export default function SubscriptionForm() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
   
-  const subscription = location.state.object;
   const stages = ['NEW', 'PAID', "ACTIVE", "EXPIRED"];
 
   useEffect(() => {
+    if(id && mode !== 'add' && !subscription){
+      fetchSubscription(id).then((data) => {
+        setSubscription(data);
+      });
+    }
     if(mode !== 'view' && fetchData){
       fetchMembers();
       fetchProducts();

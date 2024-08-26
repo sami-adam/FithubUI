@@ -102,7 +102,7 @@ export default function DataList({ listItems=[] , formUrl="" }) {
                   </Box>
                 )}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                    <Link level="body-xs" component="button" onClick={() => navigate(formUrl, { state: {object: listItem.object}})}>
+                    <Link level="body-xs" component="button" onClick={() => navigate(`${window.location.pathname}/${listItem.objectId}`)}>
                       Details
                     </Link>
                   <RowMenu />

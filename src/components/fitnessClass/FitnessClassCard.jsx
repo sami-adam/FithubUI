@@ -45,7 +45,7 @@ export default function FitnessClassCard({ fitnessClass }) {
           color="primary"
           aria-label="Explore Bahamas Islands"
           sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 , width: { xs: '50%', sm: 'auto' } }}
-          onClick={() => {navigate("/fitness-class-form", {state: {object: fitnessClass}})}}
+          onClick={() => {navigate(`${window.location.pathname}/${fitnessClass.id}`)}}
         >
           {t("Details")}
         </Button>

@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import useProductCategoryStore from '../../state/productCategoryState';
 import useBenefitStore from '../../state/benefitState';
 import useAccountStore from '../../state/accountState';
@@ -15,19 +15,19 @@ import { FaTags } from "react-icons/fa";
 
 export default function ProductCategoryForm() {
     const location = useLocation();
-    if (!location.state) {
-        window.location.href = '/product-categories';
-    }
+    const { id } = useParams();
     const [fetchData, setFetchData] = useState(true);
 
     const updateProductCategory = useProductCategoryStore((state) => state.updateProductCategory);
     const addProductCategory = useProductCategoryStore((state) => state.addProductCategory);
     const deleteProductCategory = useProductCategoryStore((state) => state.deleteProductCategory);
+    const fetchProductCategory = useProductCategoryStore((state) => state.fetchProductCategory);
+    const [productCategory, setProductCategory] = useState(null);
 
     const [benefits, fetchBenefits] = useBenefitStore((state) => [state.benefits, state.fetchBenefits]);
     const [accounts, fetchAccounts] = useAccountStore((state) => [state.accounts, state.fetchAccounts]);
 
-    const [mode, setMode] = useState(location.state.viewMode||'view');
+    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -35,7 +35,6 @@ export default function ProductCategoryForm() {
     const [incomeAccount, setIncomeAccount] = useState(null);
     const [expenseAccount, setExpenseAccount] = useState(null);
 
-    const productCategory = location.state.object;
     console.log(productCategory);
     const theme = useTheme();
     const {t} = useTranslation();
@@ -43,6 +42,11 @@ export default function ProductCategoryForm() {
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
     useEffect(() => {
+        if(id && mode !== 'add' && !productCategory){
+            fetchProductCategory(id).then((data) => {
+                setProductCategory(data);
+            });
+        }
         if(fetchData){
             fetchBenefits();
             fetchAccounts();

@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useJournalStore from "../../state/journalState";
 import useAccountStore from "../../state/accountState";
 import { useEffect, useState } from 'react';
@@ -13,18 +13,18 @@ import { useTranslation } from 'react-i18next';
 
 export default function JournalForm() {
     const location = useLocation();
-    if (!location.state) {
-        window.location.href = '/journals';
-    }
+    const { id } = useParams();
 
     const updateJournal = useJournalStore((state) => state.updateJournal);
     const addJournal = useJournalStore((state) => state.addJournal);
     const deleteJournal = useJournalStore((state) => state.deleteJournal);
+    const fetchJournal = useJournalStore((state) => state.fetchJournal);
+    const [journal, setJournal] = useState(null);
 
     const [accounts, fetchAccounts] = useAccountStore((state) => [state.accounts, state.fetchAccounts]);
     const [fetchData, setFetchData] = useState(true);
 
-    const [mode, setMode] = useState(location.state.viewMode||'view');
+    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -35,8 +35,6 @@ export default function JournalForm() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
-    const journal = location.state.object;
-
     const {t} = useTranslation();
 
     const journalTypes = [
@@ -44,6 +42,11 @@ export default function JournalForm() {
     ]
 
     useEffect(() => {
+        if(id && mode !== 'add' && !journal){
+            fetchJournal(id).then((data) => {
+                setJournal(data);
+            });
+        }
         if(fetchData){
             fetchAccounts();
             setFetchData(false);

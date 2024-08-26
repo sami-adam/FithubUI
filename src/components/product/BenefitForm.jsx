@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import useBenefitStore from '../../state/benefitState';
 import { useEffect, useState } from 'react';
 import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography, useTheme } from '@mui/joy';
@@ -11,31 +11,34 @@ import { SnackbarCustom } from '../common/Common';
 
 export default function BenefitForm() {
     const location = useLocation();
-    if (!location.state) {
-        window.location.href = '/benefits';
-    }
-
     const updateBenefit = useBenefitStore((state) => state.updateBenefit);
     const addBenefit = useBenefitStore((state) => state.addBenefit);
     const deleteBenefit = useBenefitStore((state) => state.deleteBenefit);
+    const fetchBenefit = useBenefitStore((state) => state.fetchBenefit);
+    const [benefit, setBenefit] = useState(null);
 
-    const [mode, setMode] = useState(location.state.viewMode||'view');
+    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
 
-    const benefit = location.state.object;
     const theme = useTheme();
     const {t} = useTranslation();
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
+    const { id } = useParams();
 
     useEffect(() => {
+        if(id && mode !== 'add' && !benefit){
+            fetchBenefit(id).then((data) => {
+                setBenefit(data);
+            });
+        }
         if(benefit){
             setName(name=>name||benefit.name);
             setDescription(description=>description||benefit.description);
         }
-    }, [benefit]);
+    }, [benefit, mode, id]);
 
     const handleSave = () => {
         updateBenefit({id: benefit.id,

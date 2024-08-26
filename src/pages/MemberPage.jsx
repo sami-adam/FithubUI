@@ -44,7 +44,7 @@ export default function MemberPage({ defaultSearch = "" }) {
         "phone": member.phone,
         "gender": t(member.gender),
         "status": member.status,
-        "object": member,
+        "objectId": member.id,
     }));
 
     const listItems = members.map((member) => ({
@@ -54,7 +54,7 @@ export default function MemberPage({ defaultSearch = "" }) {
         "subtitle": member.email,
         "firstRow": [member.gender, member.identificationNumber],
         "status":"NEW",
-        "object": member,
+        "objectId": member.id,
     }));
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>

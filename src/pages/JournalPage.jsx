@@ -37,7 +37,7 @@ export default function JournalPage({ defaultSearch = "" }) {
         "code": journal.code,
         "type": journal.type,
         "account": journal.account && `${journal.account.code} - ${journal.account.name}`,
-        "object": journal
+        "objectId": journal.id
     }));
 
     const listItems = journals.map((journal) => ({
@@ -48,7 +48,7 @@ export default function JournalPage({ defaultSearch = "" }) {
         "firstRow": [journal.type, journal.account && journal.account.name],
         "secondRow": [journal.account && journal.account.code, ""],
         "status": "NEW",
-        "object": journal
+        "objectId": journal.id
     }));
 
     return (

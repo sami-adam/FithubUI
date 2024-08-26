@@ -35,7 +35,7 @@ export default function BenefitPage({ defaultSearch="" }) {
         "id": benefit.id,
         "name": benefit.name,
         "description": benefit.description,
-        "object": benefit
+        "objectId": benefit.id
     }));
 
     const listItems = benefits.map((benefit) => ({
@@ -47,7 +47,7 @@ export default function BenefitPage({ defaultSearch="" }) {
         "secondRow": ["", ""],
         "thirdRow": ["", ""],
         "status": "NEW",
-        "object": benefit
+        "objectId": benefit.id
     }));
 
     return (

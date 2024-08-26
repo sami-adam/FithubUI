@@ -35,7 +35,7 @@ export default function ProductCategoryPage({ defaultSearch="" }) {
         "id": productCategory.id,
         "name": productCategory.name,
         "benefits": productCategory.benefits.map(benefit => benefit.name).join(", "),
-        "object": productCategory
+        "objectId": productCategory.id
     }));
 
     const listItems = productCategories.map((productCategory) => ({
@@ -47,7 +47,7 @@ export default function ProductCategoryPage({ defaultSearch="" }) {
         "secondRow": [productCategory.description],
         "thirdRow": [""],
         "status": "NEW",
-        "object": productCategory
+        "objectId": productCategory.id
     }));
 
     return (

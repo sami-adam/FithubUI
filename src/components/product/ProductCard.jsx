@@ -44,7 +44,7 @@ export default function ProductCard({ product }) {
           color="primary"
           aria-label="Explore Bahamas Islands"
           sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 , width: { xs: '50%', sm: 'auto' } }}
-          onClick={() => {navigate("/product-form", {state: {object: product}})}}
+          onClick={() => {navigate(`${window.location.pathname}/${product.id}`)}}
         >
           {t("Details")}
         </Button>

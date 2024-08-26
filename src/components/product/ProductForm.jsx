@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import useProductStore from '../../state/productState';
 import useProductCategoryStore from '../../state/productCategoryState';
 import useTaxStore from '../../state/taxState';
@@ -14,17 +14,17 @@ import { BsSave } from "react-icons/bs";
 
 export default function ProductForm() {
     const location = useLocation();
-    if (!location.state) {
-        window.location.href = '/products';
-    }
+    const { id } = useParams();
     const updateProduct = useProductStore((state) => state.updateProduct);
     const addProduct = useProductStore((state) => state.addProduct);
     const deleteProduct = useProductStore((state) => state.deleteProduct);
+    const fetchProduct = useProductStore((state) => state.fetchProduct);
+    const [product, setProduct] = useState(null);
 
     const [productCategories, fetchProductCategories] = useProductCategoryStore((state) => [state.productCategories, state.fetchProductCategories]);
     const [taxes, fetchTaxes] = useTaxStore((state) => [state.taxes, state.fetchTaxes]);
 
-    const [mode, setMode] = useState(location.state.viewMode||'view');
+    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
@@ -35,11 +35,15 @@ export default function ProductForm() {
     const [durationType, setDurationType] = useState("");
     const [fetchData, setFetchData] = useState(true);
 
-    const product = location.state.object;
     const theme = useTheme();
     const {t} = useTranslation();
 
     useEffect(() => {
+        if(id && mode !== 'add' && !product){
+            fetchProduct(id).then((data) => {
+                setProduct(data);
+            });
+        }
         if(mode !== 'view' && fetchData){
           fetchProductCategories();
           fetchTaxes();
