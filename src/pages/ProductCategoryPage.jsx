@@ -26,7 +26,7 @@ export default function ProductCategoryPage({ defaultSearch="" }) {
     }, [fetchProductCategories, search, searchProductCategories, defaultSearch]);
 
     const columns = [
-        {"name": "id", "label": "ID", "width": 120},
+        {"name": "id", "label": "ID", "width": 140},
         {"name": "name", "label": "Name", "sort": true},
         {"name": "benefits", "label": "Benefits", "width": 350},
     ]

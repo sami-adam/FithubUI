@@ -26,7 +26,7 @@ export default function MemberPage({ defaultSearch = "" }) {
     }, [fetchMembers, search, searchMembers, defaultSearch]);
 
     const columns = [
-        {"name": "id", "label": "ID Number", "width": 120},
+        {"name": "id", "label": "ID Number", "width": 140},
         {"name": "name", "label": "Full Name", "sort": true, "width": 300, "special": "person"},
         {"name": "phone", "label": "Phone", "width": 120},
         {"name": "gender", "label": "Gender", "width": 80, "sort": true},

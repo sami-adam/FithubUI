@@ -26,7 +26,7 @@ export default function EmailPage({ defaultSearch="" }) {
     }, [fetchEmails, search, serachEmails, defaultSearch]);
 
     const columns = [
-        {"name": "id", "label": "ID", "width": 80},
+        {"name": "id", "label": "ID", "width": 140},
         {"name": "subject", "label": "Subject", "sort": true, "width": 300},
         {"name": "emailFrom", "label": "From", "width": 220},
         {"name": "emailTo", "label": "To", "width": 220},

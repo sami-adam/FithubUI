@@ -25,7 +25,7 @@ export default function JournalPage({ defaultSearch = "" }) {
     }, [fetchJournals, search, searchJournals, defaultSearch]);
 
     const columns = [
-        { "name": "code", "label": "Code", "sort": true }, 
+        { "name": "code", "label": "Code", "sort": true, "width": 140 }, 
         { "name": "name", "label": "Name" },
         { "name": "type", "label": "Type" },
         { "name": "account", "label": "Account", "width":200 }

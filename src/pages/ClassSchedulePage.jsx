@@ -26,7 +26,7 @@ export default function ClassSchedulePage({ defaultSearch="" }) {
     }, [fetchClassSchedules, search, searchClassSchedules, defaultSearch]);
 
     const columns = [
-        {"name": "id", "label": "Reference", "width": 120},
+        {"name": "id", "label": "Reference", "width": 140},
         {"name": "class", "label": "Class", "sort": true, "width": 120},
         {"name": "startDate" , "label": "Start Date", "width": 120},
         {"name": "endDate", "label": "End Date", "width": 120},
@@ -44,7 +44,7 @@ export default function ClassSchedulePage({ defaultSearch="" }) {
         "name": classSchedule.instructor && classSchedule.instructor.name,
         "email": classSchedule.instructor && classSchedule.instructor.email,
         "price": classSchedule.price,
-        "status": t(classSchedule.status),
+        "status": classSchedule.status,
         "object": classSchedule
     }));
 

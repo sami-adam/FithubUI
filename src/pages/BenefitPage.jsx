@@ -26,7 +26,7 @@ export default function BenefitPage({ defaultSearch="" }) {
     }, [fetchBenefits, search, searchBenefits, defaultSearch]);
 
     const columns = [
-        {"name": "id", "label": "ID", "width": 120},
+        {"name": "id", "label": "ID", "width": 140},
         {"name": "name", "label": "Name", "sort": true, "width": 180},
         {"name": "description", "label": "Description", "width": 300},
     ]

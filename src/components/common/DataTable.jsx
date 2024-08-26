@@ -371,6 +371,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                     {column.special === "status" ? <StatusChip status={row[column.name]} /> :
                     column.special === "person"? <PersonBox person={{"name": row.name, "email": row.email, "image": row.image}}/>: 
                     column.special === "amount"? <Typography level="body-sm">{row[column.name] && row[column.name].toLocaleString()} {t("SAR")}</Typography>:
+                    column.name === "id" || column === columns[0] ? <Typography level="body-sm"><Button variant='outlined' sx={{ border: "none" }} onClick={()=>navigate(formUrl, { state: {object: row.object}})}>{row[column.name]}</Button></Typography>:
                     <Typography level="body-sm">{row[column.name]}</Typography>}
                 </td>))}
                 

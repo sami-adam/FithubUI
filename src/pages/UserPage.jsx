@@ -26,7 +26,7 @@ export default function UserPage({ defaultSearch="" }) {
     }, [fetchUsers, search, serchUsers, defaultSearch]);
 
     const columns = [
-        {"name": "id", "label": "ID", "width": 120},
+        {"name": "id", "label": "ID", "width": 140},
         {"name": "username", "label": "Username", "sort": true, "width": 200},
         {"name": "company", "label": "Company"},
         {"name": "email", "label": "Email", "width": 300},

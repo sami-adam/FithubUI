@@ -41,7 +41,7 @@ export default function MemberForm() {
     const [identificationNumber, setIdentificationNumber] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const [gender, setGender] = useState(0);
+    const [gender, setGender] = useState(null);
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
@@ -60,7 +60,7 @@ export default function MemberForm() {
             setIdentificationNumber(identificationNumber=>identificationNumber||member.identificationNumber);
             setEmail(email=>email||member.email);
             setPhone(phone=>phone||member.phone);
-            setGender(gender=>gender);
+            setGender(gender=>gender||member.gender);
         }
         async function fetchData(){
             fetchSubscriptions();
@@ -177,18 +177,18 @@ export default function MemberForm() {
                 <FormLabel><Typography level='h5' startDecorator={<RadioButtonCheckedIcon sx={{ fontSize: 18}}/>}>{t("Gender")}</Typography></FormLabel>
                 <Box sx={{ display: 'flex', gap: 2 }}>
                     <Radio 
-                        checked={gender === 0}
-                        onChange={() => setGender(0)}
-                        value={0}
+                        checked={gender === "MALE"}
+                        onChange={() => setGender("MALE")}
+                        value={"MALE"}
                         name="radio-buttons"
                         slotProps={{ input: { 'aria-label': 'Male' } }}
                         label={t("Male")}
                         disabled={mode === 'view'}
                     />
                     <Radio 
-                        checked={gender === 1}
-                        onChange={() => setGender(1)}
-                        value={1}
+                        checked={gender === "FEMALE"}
+                        onChange={() => setGender("FEMALE")}
+                        value={"FEMALE"}
                         name="radio-buttons"
                         slotProps={{ input: { 'aria-label': 'Female' } }}
                         label={t("Female")}

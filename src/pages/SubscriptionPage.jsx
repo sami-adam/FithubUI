@@ -31,7 +31,7 @@ export default function SubscriptionPage({ defaultSearch="" }) {
         {"name": "subscriptionType", "label": "Subscription Type", "type": "select", "placeholder": "Filter By Subscription Type", "options": products.map((product) => product.name)},
     ]
     const columns = [
-        {"name": "reference", "label": "Reference", "width": 100},
+        {"name": "id", "label": "Reference", "width": 140},
         {"name": "identificationNumber", "label": "ID Number"},
         {"name": "member", "label": "Member", "special": "person", "width": 250},
         {"name": "startDate", "label": "Start Date"},
@@ -44,8 +44,8 @@ export default function SubscriptionPage({ defaultSearch="" }) {
     ]
     
     const rows = subscriptions.map((subscription) => ({
-        "id": subscription.id,
-        "reference": subscription.reference,
+        //"id": subscription.id,
+        "id": subscription.reference,
         "name": (subscription.member&&subscription.member.firstName) + " " + (subscription.member&&subscription.member.lastName),
         "member": subscription.member,
         "identificationNumber": subscription.member&&subscription.member.identificationNumber,
