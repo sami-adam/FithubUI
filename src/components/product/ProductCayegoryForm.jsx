@@ -12,6 +12,7 @@ import { BsSave } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
 import { PiDotDuotone } from "react-icons/pi";
 import { FaTags } from "react-icons/fa";
+import FormBaseLayout from '../common/FormBaseLayout';
 
 export default function ProductCategoryForm() {
     const location = useLocation();
@@ -23,6 +24,7 @@ export default function ProductCategoryForm() {
     const deleteProductCategory = useProductCategoryStore((state) => state.deleteProductCategory);
     const fetchProductCategory = useProductCategoryStore((state) => state.fetchProductCategory);
     const [productCategory, setProductCategory] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [benefits, fetchBenefits] = useBenefitStore((state) => [state.benefits, state.fetchBenefits]);
     const [accounts, fetchAccounts] = useAccountStore((state) => [state.accounts, state.fetchAccounts]);
@@ -45,7 +47,7 @@ export default function ProductCategoryForm() {
         if(id && mode !== 'add' && !productCategory){
             fetchProductCategory(id).then((data) => {
                 setProductCategory(data);
-            });
+            }).finally(() => setLoading(false));
         }
         if(fetchData){
             fetchBenefits();
@@ -98,21 +100,7 @@ export default function ProductCategoryForm() {
     }
 
     return (
-        <div style={{ width: "100%"}}>
-    <Card
-      variant="outlined"
-      sx={{
-        maxHeight: 'max-content',
-        //maxWidth: '100%',
-        mx: 'auto',
-        // to make the demo resizable
-        overflow: 'auto',
-        resize: 'vertical',
-        width: { xs: '100%', md: '80%' },
-        mt: { xs: 10, md: 4 },
-        ml: { xs: 5, md: "auto" },
-      }}
-    >
+      <FormBaseLayout loading={loading}>
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
@@ -198,7 +186,6 @@ export default function ProductCategoryForm() {
 
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
         </CardContent>
-        </Card>
-        </div>
+      </FormBaseLayout> 
     );
 }

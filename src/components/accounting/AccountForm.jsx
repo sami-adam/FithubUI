@@ -89,7 +89,7 @@ export default function AccountForm() {
     }
 
     return (
-      <FormBaseLayout>
+      <FormBaseLayout loading={loading}>
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>

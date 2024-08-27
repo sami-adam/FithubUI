@@ -16,6 +16,7 @@ import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
+import FormBaseLayout from '../common/FormBaseLayout';
 
 export default function ClassScheduleForm() {
     const location = useLocation();
@@ -26,6 +27,7 @@ export default function ClassScheduleForm() {
     const deleteClassSchedule = useClassScheduleStore((state) => state.deleteClassSchedule);
     const fetchClassSchedule = useClassScheduleStore((state) => state.fetchClassSchedule);
     const [classSchedule, setClassSchedule] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
     const [fetchData, setFetchData] = useState(true);
@@ -48,7 +50,7 @@ export default function ClassScheduleForm() {
         if(id && mode !== 'add' && !classSchedule){
             fetchClassSchedule(id).then((data) => {
                 setClassSchedule(data);
-            });
+            }).finally(() => setLoading(false));
         }
         if(fetchData){
             fetchFitnessClasses();
@@ -108,22 +110,7 @@ export default function ClassScheduleForm() {
     }
 
     return (
-        <>
-    <div style={{ width: "90%"}}>
-    <Card
-      variant="outlined"
-      sx={{
-        maxHeight: 'max-content',
-        //maxWidth: '100%',
-        mx: 'auto',
-        // to make the demo resizable
-        overflow: 'auto',
-        resize: 'vertical',
-        width: { xs: '100%', md: '80%' },
-        mt: { xs: 10, md: 4 },
-        ml: { xs: 5, md: "auto" },
-      }}
-    >
+      <FormBaseLayout loading={loading}>
       <HorozontalStepper stages={stages} currentStage={(stages.indexOf(classSchedule&&classSchedule.status)||0)} />
       <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
       {/* <Divider inset="none" /> */}
@@ -236,9 +223,7 @@ export default function ClassScheduleForm() {
 
         </CardContent>
 
-        </Card>
-        </div>
-        </>
+      </FormBaseLayout>
     );
 
 }

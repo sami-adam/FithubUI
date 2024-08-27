@@ -18,6 +18,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import FormBaseLayout from '../common/FormBaseLayout';
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -31,6 +32,7 @@ export default function MemberForm() {
     const [subscriptions, fetchSubscriptions] = useSubscriptionStore((state) => [state.subscriptions, state.fetchSubscriptions]);
     const fetchMember = useMemberStore((state) => state.fetchMember);
     const [member, setMember] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [fetchData, setFetchData] = useState(true);
     const {t} = useTranslation();
 
@@ -56,7 +58,7 @@ export default function MemberForm() {
         if(id && mode !== 'add' && !member){
             fetchMember(id).then((member) => {
                 setMember(member);
-            });
+            }).finally(() => setLoading(false));
         }
         if(member){
             setFirstName(firstName=>firstName||member.firstName);
@@ -115,21 +117,7 @@ export default function MemberForm() {
     }
 
     return (
-        <div style={{ width: "100%" }}>
-        <Card
-        variant="outlined"
-        sx={{
-            maxHeight: 'max-content',
-            //maxWidth: '100%',
-            mx: 'auto',
-            // to make the demo resizable
-            overflow: 'auto',
-            resize: 'vertical',
-            width: { xs: '100%', md: '80%' },
-            mt: { xs: 10, md: 4 },
-            ml: { xs: 5, md: "auto" },
-        }}
-        >
+        <FormBaseLayout loading={loading}>
         {/* <Divider inset="none" /> */}
         <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
         <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
@@ -222,8 +210,7 @@ export default function MemberForm() {
             <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={profileSrc} setSrc={setProfileSrc} defaultSrc={profileSrc} memberId={member.id}/>
             </>
             }
-        </Card>
-        </div>
+        </FormBaseLayout>
     )
 
 }

@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
+import FormBaseLayout from '../common/FormBaseLayout';
 
 export default function ProductForm() {
     const location = useLocation();
@@ -20,6 +21,7 @@ export default function ProductForm() {
     const deleteProduct = useProductStore((state) => state.deleteProduct);
     const fetchProduct = useProductStore((state) => state.fetchProduct);
     const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [productCategories, fetchProductCategories] = useProductCategoryStore((state) => [state.productCategories, state.fetchProductCategories]);
     const [taxes, fetchTaxes] = useTaxStore((state) => [state.taxes, state.fetchTaxes]);
@@ -42,7 +44,7 @@ export default function ProductForm() {
         if(id && mode !== 'add' && !product){
             fetchProduct(id).then((data) => {
                 setProduct(data);
-            });
+            }).finally(() => setLoading(false));
         }
         if(mode !== 'view' && fetchData){
           fetchProductCategories();
@@ -98,25 +100,7 @@ export default function ProductForm() {
     }
 
     return (
-        <>
-    {/* <div>
-      <IconButton onClick={() => window.history.back()}><ArrowBack/></IconButton>
-    </div> */}
-    <div style={{ width: "100%"}}>
-    <Card
-      variant="outlined"
-      sx={{
-        maxHeight: 'max-content',
-        //maxWidth: '100%',
-        mx: 'auto',
-        // to make the demo resizable
-        overflow: 'auto',
-        resize: 'vertical',
-        width: { xs: '100%', md: '80%' },
-        mt: { xs: 10, md: 4 },
-        ml: { xs: 5, md: "auto" },
-      }}
-    >
+      <FormBaseLayout loading={loading}>
       {/* <Divider inset="none" /> */}
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
         <Typography level="title-lg">
@@ -197,9 +181,7 @@ export default function ProductForm() {
       
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
       </CardContent>
-    </Card>
-    </div>
-    </>
+    </FormBaseLayout>
     );
 
 }

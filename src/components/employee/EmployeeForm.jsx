@@ -2,7 +2,7 @@ import { useTheme } from '@emotion/react';
 import useEmployeeStore from '../../state/employeeState';
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
+import { Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
 import { Add, Email, Person } from '@mui/icons-material';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
@@ -13,6 +13,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
+import FormBaseLayout from '../common/FormBaseLayout';
 
 export default function EmployeeForm() {
     const location = useLocation();
@@ -24,6 +25,7 @@ export default function EmployeeForm() {
     const deleteEmployee = useEmployeeStore((state) => state.deleteEmployee);
     const fetchEmployee = useEmployeeStore((state) => state.fetchEmployee);
     const [employee, setEmployee] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
@@ -44,7 +46,7 @@ export default function EmployeeForm() {
         if(id && mode !== 'add' && !employee){
             fetchEmployee(id).then((data) => {
                 setEmployee(data);
-            });
+            }).finally(()=> setLoading(false)) 
         }
         if(employee){
             setName(name=>name||employee.name);
@@ -96,21 +98,7 @@ export default function EmployeeForm() {
     }
 
     return (
-        <div style={{ width:"100%"}}>
-            <Card
-      variant="outlined"
-      sx={{
-        maxHeight: 'max-content',
-        maxWidth: '100%',
-        mx: 'auto',
-        // to make the demo resizable
-        overflow: 'auto',
-        resize: 'vertical',
-        width: { xs: '100%', md: '80%' },
-        mt: { xs: 10, md: 4 },
-        ml: { xs: 4, md: "auto" },
-      }}
-    >
+      <FormBaseLayout loading={loading}>
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
@@ -175,9 +163,7 @@ export default function EmployeeForm() {
         </CardContent>
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
 
-        </Card>
-        
-        </div>
+        </FormBaseLayout>
     );
       
 }

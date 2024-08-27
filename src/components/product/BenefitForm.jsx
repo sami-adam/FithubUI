@@ -8,6 +8,7 @@ import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
+import FormBaseLayout from '../common/FormBaseLayout';
 
 export default function BenefitForm() {
     const location = useLocation();
@@ -16,6 +17,7 @@ export default function BenefitForm() {
     const deleteBenefit = useBenefitStore((state) => state.deleteBenefit);
     const fetchBenefit = useBenefitStore((state) => state.fetchBenefit);
     const [benefit, setBenefit] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
@@ -32,7 +34,7 @@ export default function BenefitForm() {
         if(id && mode !== 'add' && !benefit){
             fetchBenefit(id).then((data) => {
                 setBenefit(data);
-            });
+            }).finally(() => setLoading(false));
         }
         if(benefit){
             setName(name=>name||benefit.name);
@@ -74,21 +76,7 @@ export default function BenefitForm() {
     }
 
     return (
-        <div style={{ width: "100%"}}>
-    <Card
-      variant="outlined"
-      sx={{
-        maxHeight: 'max-content',
-        //maxWidth: '100%',
-        mx: 'auto',
-        // to make the demo resizable
-        overflow: 'auto',
-        resize: 'vertical',
-        width: { xs: '100%', md: '80%' },
-        mt: { xs: 10, md: 4 },
-        ml: { xs: 5, md: "auto" },
-      }}
-    >
+      <FormBaseLayout loading={loading}>
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
@@ -123,8 +111,7 @@ export default function BenefitForm() {
 
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
         </CardContent>
-        </Card>
-        </div>
+      </FormBaseLayout>
     )
 
 }

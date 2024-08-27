@@ -9,6 +9,7 @@ import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
+import FormBaseLayout from "../common/FormBaseLayout";
 
 
 export default function JournalForm() {
@@ -31,6 +32,7 @@ export default function JournalForm() {
     const [description, setDescription] = useState('');
     const [type, setType] = useState('');
     const [account, setAccount] = useState('');
+    const [loading, setLoading] = useState(true);
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
@@ -45,7 +47,7 @@ export default function JournalForm() {
         if(id && mode !== 'add' && !journal){
             fetchJournal(id).then((data) => {
                 setJournal(data);
-            });
+            }).finally(() => setLoading(false));
         }
         if(fetchData){
             fetchAccounts();
@@ -98,21 +100,7 @@ export default function JournalForm() {
     }
 
     return (
-        <div style={{ width:"100%"}}>
-            <Card
-      variant="outlined"
-      sx={{
-        maxHeight: 'max-content',
-        maxWidth: '100%',
-        mx: 'auto',
-        // to make the demo resizable
-        overflow: 'auto',
-        resize: 'vertical',
-        width: { xs: '100%', md: '80%' },
-        mt: { xs: 10, md: 4 },
-        ml: { xs: 4, md: "auto" },
-      }}
-    >
+      <FormBaseLayout loading={loading}>
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
@@ -173,8 +161,6 @@ export default function JournalForm() {
 
         </CardContent>
 
-        </Card>
-
-        </div>
+      </FormBaseLayout>
     )
 }

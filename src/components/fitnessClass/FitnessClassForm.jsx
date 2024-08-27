@@ -11,6 +11,7 @@ import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import FormBaseLayout from "../common/FormBaseLayout";
 
 
 export default function FitnessClassForm() {
@@ -22,6 +23,7 @@ export default function FitnessClassForm() {
     const deleteFitnessClass = useFitnessClassStore((state) => state.deleteFitnessClass);
     const fetchFitnessClass = useFitnessClassStore((state) => state.fetchFitnessClass);
     const [fitnessClass, setFitnessClass] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
     const {t} = useTranslation();
@@ -40,7 +42,7 @@ export default function FitnessClassForm() {
         if(id && mode !== 'add' && !fitnessClass){
             fetchFitnessClass(id).then((data) => {
                 setFitnessClass(data);
-            });
+            }).finally(() => setLoading(false));
         }
         if(fitnessClass){
             setName(name=>name||fitnessClass.name);
@@ -101,21 +103,7 @@ export default function FitnessClassForm() {
     };
 
     return (
-    <div>
-        <Card
-      variant="outlined"
-      sx={{
-        maxHeight: 'max-content',
-        maxWidth: { xs: '100%', md: '90%' },
-        mx: 'auto',
-        // to make the demo resizable
-        overflow: 'auto',
-        resize: 'vertical',
-        width: { xs: '100%', md: '100%' },
-        mt: { xs: 10, md: 4 },
-        ml: { xs: 5, md: "auto" },
-      }}
-    >
+      <FormBaseLayout loading={loading}>
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
@@ -193,9 +181,7 @@ export default function FitnessClassForm() {
 
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
 
-        </Card>
-
-        </div>
+      </FormBaseLayout>
     )
 
 
