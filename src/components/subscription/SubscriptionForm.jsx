@@ -41,6 +41,7 @@ export default function SubscriptionForm() {
   const addSubscription = useSubscriptionStore((state) => state.addSubscription);
   const deleteSubscription = useSubscriptionStore((state) => state.deleteSubscription);
   const fetchSubscription = useSubscriptionStore((state) => state.fetchSubscription);
+  const generateAccountTransaction = useSubscriptionStore((state) => state.generateAccountTransaction);
   const [subscription, setSubscription] = useState(null);
   const [mode, setMode] = useState((location.state && location.state.viewMode) ||'view');
   const [fetchData, setFetchData] = useState(true);
@@ -187,6 +188,7 @@ export default function SubscriptionForm() {
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
           <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view' && subscription? 'none': 'none'}}>{t("DELETE")}</Button>
+          <Button variant='soft' startDecorator={<MdPictureAsPdf fontSize={20}/>} onClick={() => generateAccountTransaction(subscription&&subscription.id)}>{t("Generate Transaction")}</Button>
         </div>
         
       </div>
@@ -315,6 +317,12 @@ export default function SubscriptionForm() {
                     <Typography variant="body2" paddingInlineEnd={1.5}>{t("SAR")}</Typography>
                     <Typography variant="body2">{total&&total.toLocaleString()}</Typography>
                 </div>
+              </td>
+            </tr>
+            <tr>
+              <th>{t("Transacrion")}</th>
+              <td>
+                <Typography>{subscription && subscription.transaction && subscription.transaction.reference}</Typography>
               </td>
             </tr>
             </tbody>

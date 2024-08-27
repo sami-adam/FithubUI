@@ -115,6 +115,17 @@ const useSubscriptionStore = create((set) => ({
         } catch (error) {
             console.error("Error printing excel", error);
         }
+    },
+    generateAccountTransaction: async (id) => {
+        try {
+            await axios.post(`${useSubscriptionStore.getState().baseURL}/subscription/account-transaction/${id}`, {}, {
+                headers: {
+                    "Authorization": "Bearer " + useSubscriptionStore.getState().token,
+                },
+            });
+        } catch (error) {
+            console.error("Error generating account transaction", error);
+        }
     }
 }))
 
