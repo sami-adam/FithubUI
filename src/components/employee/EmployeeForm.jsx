@@ -1,4 +1,3 @@
-import { useTheme } from '@emotion/react';
 import useEmployeeStore from '../../state/employeeState';
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
@@ -27,7 +26,7 @@ export default function EmployeeForm() {
     const [employee, setEmployee] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
+    const [mode, setMode] = useState((location.state && location.state.viewMode) ||'view');
 
     const [name, setName] = useState('');
     const [identificationNumber, setIdentificationNumber] = useState('');
@@ -39,7 +38,6 @@ export default function EmployeeForm() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
-    const theme = useTheme();
     const {t} = useTranslation();
 
     useEffect(() => {
@@ -56,7 +54,7 @@ export default function EmployeeForm() {
             setAddress(address=>address||employee.address);
             setEmployeeType(employeeType=>employeeType||employee.employeeType);
         }
-      }, [mode, employee]);
+      }, [mode, employee, id, fetchEmployee]);
 
     const handleSave = () => {
         updateEmployee({
@@ -111,6 +109,7 @@ export default function EmployeeForm() {
           <Box flexGrow={1} width={4}/>
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
           <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
         </div>
       </div>
       {/* <Divider inset="none" /> */}

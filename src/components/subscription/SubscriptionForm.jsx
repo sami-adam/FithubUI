@@ -1,4 +1,3 @@
-import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
@@ -30,7 +29,6 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Grid3x3Icon from '@mui/icons-material/Grid3x3';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import LoadingPage from '../common/LaodingPage';
 import { FormBackButton } from '../common/Buttons';
 import FormBaseLayout from '../common/FormBaseLayout';
 
@@ -44,7 +42,7 @@ export default function SubscriptionForm() {
   const deleteSubscription = useSubscriptionStore((state) => state.deleteSubscription);
   const fetchSubscription = useSubscriptionStore((state) => state.fetchSubscription);
   const [subscription, setSubscription] = useState(null);
-  const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
+  const [mode, setMode] = useState((location.state && location.state.viewMode) ||'view');
   const [fetchData, setFetchData] = useState(true);
 
   const [member, setMember] = useState(null);
@@ -118,7 +116,7 @@ export default function SubscriptionForm() {
       }
     }
   }, [members, products, subscription, mode, product, unitPrice, quantity, subtotal, tax, 
-    discount, fetchData, fetchMembers, fetchProducts]);
+    discount, fetchData, fetchMembers, fetchProducts, fetchSubscription, id]);
 
   const handleSave = () => {
     updateSubscription({
@@ -188,6 +186,7 @@ export default function SubscriptionForm() {
           <Box flexGrow={1} width={4}/>
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
           <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view' && subscription? 'none': 'none'}}>{t("DELETE")}</Button>
         </div>
         
       </div>

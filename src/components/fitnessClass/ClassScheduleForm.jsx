@@ -2,7 +2,7 @@ import useClassScheduleStore from '../../state/classScheduleState';
 import useFitnessClassStore from '../../state/fitnessClassState';
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
+import { Autocomplete, Box, Button, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
@@ -29,7 +29,7 @@ export default function ClassScheduleForm() {
     const [classSchedule, setClassSchedule] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
+    const [mode, setMode] = useState((location.state && location.state.viewMode) ||'view');
     const [fetchData, setFetchData] = useState(true);
 
     const [fitnessClass, setFitnessClass] = useState(null);
@@ -66,7 +66,7 @@ export default function ClassScheduleForm() {
             setStatus(status=>status||classSchedule.status);
         }
       }
-    , [mode, classSchedule, fetchData, fetchFitnessClasses, fetchInstructors]);
+    , [mode, classSchedule, fetchData, fetchFitnessClasses, fetchInstructors, id, fetchClassSchedule]);
 
     const handleSave = () => {
        updateClassSchedule({
@@ -127,6 +127,7 @@ export default function ClassScheduleForm() {
           <Box flexGrow={1} width={4}/>
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
           <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view' && classSchedule? 'none': 'none'}}>{t("DELETE")}</Button>
         </div>
         
       </div>
