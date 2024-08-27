@@ -46,6 +46,7 @@ import { CardActions, useTheme } from '@mui/joy';
 import { SnackbarCustom } from './Common';
 import SyncProblemIcon from '@mui/icons-material/SyncProblem';
 import { useTranslation } from 'react-i18next';
+import LoadingPage from './LaodingPage';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -124,11 +125,24 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
   const [openError, setOpenError] = React.useState(false);
   const [error, setError] = React.useState(null);
   const [sortField, setSortField] = React.useState("id");
+  const [loading, setLoading] = React.useState(true);
 
   const {t} = useTranslation();
   const theme = useTheme();
 
   const primaryColor = theme.palette.primary.main;
+
+  React.useEffect(() => {
+    if(rows.length > 0){
+      setLoading(false);
+    }
+    if(loading === true){
+      setTimeout(() => {
+        setLoading(false);
+      }
+      , 1000);
+    }
+  }, [rows]);
 
   const navigate = useNavigate();
   const renderFilters = () => (
@@ -167,6 +181,8 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
     setOrder(order === 'asc' ? 'desc' : 'asc');
   }
   return (
+    <>
+    {loading && <LoadingPage /> ||
     <React.Fragment>
         {error && <SnackbarCustom type={error.type} message={error.message} open={openError} setOpen={setOpenError} />}
         <Box
@@ -436,6 +452,8 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
         </Button>
       </Box>
     </React.Fragment>
+    }
+    </>
   );
 }
 

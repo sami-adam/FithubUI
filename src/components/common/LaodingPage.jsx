@@ -1,7 +1,10 @@
 import React from 'react';
 import { Box, CircularProgress, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { LinearProgress } from '@mui/joy';
 
 const LoadingPage = () => {
+  const { t } = useTranslation();
   return (
     <Box
       sx={{
@@ -10,9 +13,10 @@ const LoadingPage = () => {
         left: "50%",
       }}
     >
-      <CircularProgress size={60} thickness={4.5} />
-      <Typography variant="h6" sx={{ mt: 2 }}>
-        Loading...
+      {/* <CircularProgress size={60} thickness={4.5} /> */}
+      <LinearProgress />
+      <Typography variant="h5" sx={{ mt: 2 }}>
+        {t("Loading...")}
       </Typography>
     </Box>
   );
