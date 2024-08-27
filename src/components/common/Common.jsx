@@ -4,7 +4,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import SyncDisabledIcon from '@mui/icons-material/SyncDisabled';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Check } from "@mui/icons-material";
 import { FaRegDotCircle } from "react-icons/fa";
 import InfoIcon from '@mui/icons-material/Info';
@@ -136,6 +136,9 @@ export default function StatusChip({ status }) {
 export function HorozontalStepper({ stages = ["NEW", "DONE"], currentStage = 1 }) {
     const [activeStep, setActiveStep] = useState(currentStage);
     const {t} = useTranslation();
+    useEffect(() => {
+        setActiveStep(currentStage);
+    }, [currentStage]);
     return (
         <Stepper sx={{ width: '100%', overflow:"clip"}}>
         {stages.map((step, index) => (

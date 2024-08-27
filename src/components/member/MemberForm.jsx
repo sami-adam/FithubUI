@@ -73,7 +73,7 @@ export default function MemberForm() {
         if(fetchData){
             fetchData();
         }
-    }, [mode, member, fetchData, fetchSubscriptions, fetchAttachment]);
+    }, [mode, member, fetchData, fetchSubscriptions, fetchAttachment, fetchMember, id]);
 
     const handleSave = () => {
         updateMember({
