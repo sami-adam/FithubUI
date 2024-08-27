@@ -1,7 +1,7 @@
 import { useLocation, useParams } from 'react-router-dom';
 import useBenefitStore from '../../state/benefitState';
 import { useEffect, useState } from 'react';
-import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography, useTheme } from '@mui/joy';
+import { Box, Button, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { BiEdit } from "react-icons/bi";
@@ -19,12 +19,11 @@ export default function BenefitForm() {
     const [benefit, setBenefit] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
+    const [mode, setMode] = useState((location.state && location.state.viewMode) ||'view');
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
 
-    const theme = useTheme();
     const {t} = useTranslation();
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
@@ -40,7 +39,7 @@ export default function BenefitForm() {
             setName(name=>name||benefit.name);
             setDescription(description=>description||benefit.description);
         }
-    }, [benefit, mode, id]);
+    }, [benefit, mode, id, fetchBenefit]);
 
     const handleSave = () => {
         updateBenefit({id: benefit.id,
@@ -89,6 +88,7 @@ export default function BenefitForm() {
           <Box flexGrow={1} width={4}/>
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
           <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view' && benefit? 'flex': 'none'}}>{t("DELETE")}</Button>
         </div>
       </div>
       {/* <Divider inset="none" /> */}

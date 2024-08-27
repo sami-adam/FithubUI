@@ -3,7 +3,7 @@ import useTransactionStore from "../../state/transactionState";
 import useJournalStore from "../../state/journalState";
 import useAccountStore from "../../state/accountState";
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormLabel, IconButton, Input, Option, Select, Typography } from '@mui/joy';
+import { Autocomplete, Box, Button, CardContent, FormControl, FormLabel, IconButton, Input, Option, Select, Typography } from '@mui/joy';
 import { Add, AddCircle } from '@mui/icons-material';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
@@ -32,7 +32,7 @@ export default function TransactionForm() {
     const [transaction, setTransaction] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
+    const [mode, setMode] = useState((location.state && location.state.viewMode) ||'view');
 
     const [journal, setJournal] = useState(null);
     const [description, setDescription] = useState('');
@@ -59,7 +59,7 @@ export default function TransactionForm() {
             setDescription(description=>description||transaction.description);
             setEntries(entries=>entries.length > 0 ? entries :transaction.entries);
         }
-      }, [mode, transaction, fetchData, fetchJournals, fetchAccounts]);
+      }, [mode, transaction, fetchData, fetchJournals, fetchAccounts, fetchTransaction, id]);
 
     const handleSave = () => {
         updateTransaction({
@@ -136,6 +136,7 @@ export default function TransactionForm() {
           <Box flexGrow={1} width={4}/>
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
           <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
         </div>
       </div>
       {/* <Divider inset="none" /> */}

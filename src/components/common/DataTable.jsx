@@ -142,7 +142,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
       }
       , 1000);
     }
-  }, [rows]);
+  }, [rows, loading]);
 
   const navigate = useNavigate();
   const renderFilters = () => (
@@ -182,7 +182,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
   }
   return (
     <>
-    {loading && <LoadingPage /> ||
+    {(loading && <LoadingPage />) ||
     <React.Fragment>
         {error && <SnackbarCustom type={error.type} message={error.message} open={openError} setOpen={setOpenError} />}
         <Box
@@ -499,7 +499,7 @@ function StatusChip({ status }) {
 function PersonBox({person}){
     return (
     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', wordBreak:"break-all", width:190 }}>
-    <Avatar size="sm">{person.image && <img src={person.image} alt="Profile" style={{width: 30, height: 30, borderRadius: 50}}/> ||person.name[0]}</Avatar>
+    <Avatar size="sm">{(person.image && <img src={person.image} alt="Profile" style={{width: 30, height: 30, borderRadius: 50}}/>) ||person.name[0]}</Avatar>
     <div>
         <Typography level="body-xs">{person.name}</Typography>
         <a onClick={(e) => e.stopPropagation()} href={`mailto:${person.email}`}>

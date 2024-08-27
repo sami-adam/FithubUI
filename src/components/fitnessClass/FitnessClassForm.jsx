@@ -1,8 +1,8 @@
 import useFitnessClassStore from "../../state/fitnessClassState";
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import {  IconButton, Option, Select, useTheme } from '@mui/joy';
-import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
+import {  IconButton, Option, Select } from '@mui/joy';
+import { Box, Button, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
 import { Add, AddCircle } from '@mui/icons-material';
 import { SnackbarCustom } from '../common/Common';
 import { HtmlField } from "../common/Fields";
@@ -25,7 +25,7 @@ export default function FitnessClassForm() {
     const [fitnessClass, setFitnessClass] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
+    const [mode, setMode] = useState((location.state && location.state.viewMode) ||'view');
     const {t} = useTranslation();
 
     const [name, setName] = useState('');
@@ -35,8 +35,6 @@ export default function FitnessClassForm() {
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
-
-    const theme = useTheme();
 
     useEffect(() => {
         if(id && mode !== 'add' && !fitnessClass){
@@ -50,7 +48,7 @@ export default function FitnessClassForm() {
             setDescription(description=>description||fitnessClass.description);
             setImages(images=> images.length > 0 ? images : fitnessClass.images);
         }
-    }, [mode, fitnessClass]);
+    }, [mode, fitnessClass, id, fetchFitnessClass]);
 
     const handleSave = () => {
         updateFitnessClass({
@@ -116,6 +114,7 @@ export default function FitnessClassForm() {
           <Box flexGrow={1} width={4}/>
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
           <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
         </div>
       </div>
       {/* <Divider inset="none" /> */}

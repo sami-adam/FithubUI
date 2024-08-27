@@ -3,14 +3,13 @@ import useProductCategoryStore from '../../state/productCategoryState';
 import useBenefitStore from '../../state/benefitState';
 import useAccountStore from '../../state/accountState';
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, Card, CardContent, Chip, FormControl, FormLabel, Input, Typography, useTheme } from '@mui/joy';
+import { Autocomplete, Box, Button, CardContent, Chip, FormControl, FormLabel, Input, Typography } from '@mui/joy';
 import { Add, Close } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
-import { PiDotDuotone } from "react-icons/pi";
 import { FaTags } from "react-icons/fa";
 import FormBaseLayout from '../common/FormBaseLayout';
 
@@ -29,7 +28,7 @@ export default function ProductCategoryForm() {
     const [benefits, fetchBenefits] = useBenefitStore((state) => [state.benefits, state.fetchBenefits]);
     const [accounts, fetchAccounts] = useAccountStore((state) => [state.accounts, state.fetchAccounts]);
 
-    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
+    const [mode, setMode] = useState((location.state && location.state.viewMode) ||'view');
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -38,7 +37,6 @@ export default function ProductCategoryForm() {
     const [expenseAccount, setExpenseAccount] = useState(null);
 
     console.log(productCategory);
-    const theme = useTheme();
     const {t} = useTranslation();
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
@@ -61,7 +59,7 @@ export default function ProductCategoryForm() {
             setIncomeAccount(incomeAccount=>incomeAccount||productCategory.incomeAccount);
             setExpenseAccount(expenseAccount=>expenseAccount||productCategory.expenseAccount);
         }
-    }, [productCategory, fetchData, fetchBenefits, fetchAccounts]);
+    }, [productCategory, fetchData, fetchBenefits, fetchAccounts, id, mode, fetchProductCategory]);
 
     const handleSave = () => {
         updateProductCategory({id: productCategory.id,
@@ -113,6 +111,7 @@ export default function ProductCategoryForm() {
           <Box flexGrow={1} width={4}/>
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
           <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view' && productCategory? 'none': 'none'}}>{t("DELETE")}</Button>
         </div>
       </div>
       {/* <Divider inset="none" /> */}

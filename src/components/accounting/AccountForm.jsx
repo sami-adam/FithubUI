@@ -1,7 +1,7 @@
 import { useLocation, useParams } from "react-router-dom";
 import useAccountStore from "../../state/accountState";
 import { useEffect, useState } from 'react';
-import { Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
+import { Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
 import { BiNews } from "react-icons/bi";
 import { BiEdit } from "react-icons/bi";
@@ -23,7 +23,7 @@ export default function AccountForm() {
     const [account, setAccount] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
+    const [mode, setMode] = useState((location.state && location.state.viewMode)||'view');
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -53,7 +53,7 @@ export default function AccountForm() {
             setCode(code=>code||account.code);
             setType(type=>type||account.type);
         }
-      }, [mode, account, id]);
+      }, [mode, account, id, fetchAccount]);
 
     const handleSave = () => {
         updateAccount({
@@ -83,9 +83,10 @@ export default function AccountForm() {
         if(confirm){
             deleteAccount(account.id);
             window.location.href = '/accounts';
+            setOpenSnackbar(true);
+            setSnack({type: 'success', title: 'Success', message: 'Account deleted successfully'});
         }
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Account deleted successfully'});
+        
     }
 
     return (
@@ -102,6 +103,7 @@ export default function AccountForm() {
           <Box flexGrow={1} width={4}/>
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
           <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
         </div>
       </div>
       {/* <Divider inset="none" /> */}

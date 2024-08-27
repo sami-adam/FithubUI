@@ -3,7 +3,7 @@ import useProductStore from '../../state/productState';
 import useProductCategoryStore from '../../state/productCategoryState';
 import useTaxStore from '../../state/taxState';
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormLabel, Input, Option, Select, Textarea, Typography, useTheme } from '@mui/joy';
+import { Autocomplete, Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Textarea, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
 import ImageIcon from '@mui/icons-material/Image';
 import { NumericFormat } from 'react-number-format';
@@ -26,7 +26,7 @@ export default function ProductForm() {
     const [productCategories, fetchProductCategories] = useProductCategoryStore((state) => [state.productCategories, state.fetchProductCategories]);
     const [taxes, fetchTaxes] = useTaxStore((state) => [state.taxes, state.fetchTaxes]);
 
-    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
+    const [mode, setMode] = useState((location.state && location.state.viewMode) ||'view');
 
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
@@ -37,7 +37,6 @@ export default function ProductForm() {
     const [durationType, setDurationType] = useState("");
     const [fetchData, setFetchData] = useState(true);
 
-    const theme = useTheme();
     const {t} = useTranslation();
 
     useEffect(() => {
@@ -62,7 +61,7 @@ export default function ProductForm() {
             setDescription(description=>description||product.description);
             setDurationType(durationType=>durationType||product.durationType);
         }
-      }, [mode, fetchData, product, fetchProductCategories, fetchTaxes]);
+      }, [mode, fetchData, product, fetchProductCategories, fetchTaxes, id, fetchProduct]);
     
     const handleSave = () => {
         updateProduct({
@@ -112,6 +111,7 @@ export default function ProductForm() {
           <Box flexGrow={1} width={4}/>
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
           <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view' && product? 'none': 'none'}}>{t("DELETE")}</Button>
         </div>
       </div>
       {/* <Divider inset="none" /> */}
