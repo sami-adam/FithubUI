@@ -32,6 +32,7 @@ import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import LoadingPage from '../common/LaodingPage';
 import { FormBackButton } from '../common/Buttons';
+import FormBaseLayout from '../common/FormBaseLayout';
 
 export default function SubscriptionForm() {
   const location = useLocation();
@@ -159,23 +160,7 @@ export default function SubscriptionForm() {
   }
 
   return (
-    <>
-    <div>
-      {loading && <LoadingPage/> ||
-    <Card
-      variant="outlined"
-      sx={{
-        maxHeight: 'max-content',
-        //maxWidth: '100%',
-        mx: 'auto',
-        // to make the demo resizable
-        overflow: 'auto',
-        resize: 'vertical',
-        width: { xs: '100%', md: '80%' },
-        mt: { xs: 10, md: 4 },
-        ml: { xs: 5, md: "auto" },
-      }}
-    >
+    <FormBaseLayout loading={loading}>
       <br/>
       <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />
       <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
@@ -349,8 +334,6 @@ export default function SubscriptionForm() {
       
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
       </CardContent>
-    </Card> }
-    </div>
-    </>
+    </FormBaseLayout>
   );
 }

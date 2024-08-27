@@ -2,7 +2,7 @@ import Add from '@mui/icons-material/Add';
 import { Button, useTheme } from '@mui/joy';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function AddNewButton({ title, formUrl }){
     const theme = useTheme();
@@ -24,8 +24,11 @@ export default function AddNewButton({ title, formUrl }){
 
 export function FormBackButton(){
     return (
-        <Button variant='soft' sx={{ position: "absolute", zIndex: 9999, top:1, right:1}} onClick={() => window.history.back()}>
-            <ArrowLeftIcon/>
+        <>
+        <Button variant='soft' sx={{ position: "absolute", top:1, right:1}} onClick={() => window.history.back()}>
+            <ArrowBackIcon sx={{ fontSize:24 }}/>
         </Button>
+        <br/>
+        </>
     )
 }

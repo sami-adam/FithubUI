@@ -174,6 +174,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                 display: 'flex',
                 mb: 1,
                 gap: 1,
+                mx: 1,
                 flexDirection: { xs: 'column', sm: 'row' },
                 alignItems: { xs: 'start', sm: 'center' },
                 flexWrap: 'wrap',
@@ -199,6 +200,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           display: { xs: 'flex', sm: 'none' },
           my: 1,
           gap: 1,
+          mx: 1,
         }}
       >
         <Input
@@ -240,6 +242,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           display: { xs: 'none', sm: 'flex' },
           flexWrap: 'wrap',
           gap: 1.5,
+          mx: 1,
           '& > *': {
             minWidth: { xs: '120px', md: '160px' },
           },
@@ -261,6 +264,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           flexShrink: 1,
           overflow: 'auto',
           minHeight: 0,
+          mx: 1,
         }}
       >
         <Table

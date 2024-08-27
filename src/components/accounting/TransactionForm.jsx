@@ -12,6 +12,7 @@ import { SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { DeleteOutlined } from "@ant-design/icons";
+import FormBaseLayout from "../common/FormBaseLayout";
 
 
 export default function TransactionForm() {
@@ -29,6 +30,7 @@ export default function TransactionForm() {
 
     const fetchTransaction = useTransactionStore((state) => state.fetchTransaction);
     const [transaction, setTransaction] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
@@ -45,7 +47,7 @@ export default function TransactionForm() {
         if(id && mode !== 'add' && !transaction){
             fetchTransaction(id).then((data) => {
                 setTransaction(data);
-            });
+            }).finally(() => setLoading(false));
         }
         if(fetchData){
             fetchJournals();
@@ -121,21 +123,7 @@ export default function TransactionForm() {
     };
 
     return (
-        <div style={{ width:"100%"}}>
-            <Card
-      variant="outlined"
-      sx={{
-        maxHeight: 'max-content',
-        maxWidth: '100%',
-        mx: 'auto',
-        // to make the demo resizable
-        overflow: 'auto',
-        resize: 'vertical',
-        width: { xs: '100%', md: '80%' },
-        mt: { xs: 10, md: 4 },
-        ml: { xs: 4, md: "auto" },
-      }}
-    >
+      <FormBaseLayout loading={loading}>
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
@@ -239,8 +227,7 @@ export default function TransactionForm() {
 
         </CardContent>
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
-        </Card>
-        </div>
+        </FormBaseLayout>
     );
     
 }

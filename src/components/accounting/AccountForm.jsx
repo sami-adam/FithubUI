@@ -9,6 +9,7 @@ import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
+import FormBaseLayout from "../common/FormBaseLayout";
 
 
 export default function AccountForm() {
@@ -20,6 +21,7 @@ export default function AccountForm() {
     const deleteAccount = useAccountStore((state) => state.deleteAccount);
     const fetchAccount = useAccountStore((state) => state.fetchAccount);
     const [account, setAccount] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
 
@@ -44,7 +46,7 @@ export default function AccountForm() {
         if(id && mode !== 'add' && !account){
             fetchAccount(id).then((data) => {
                 setAccount(data);
-            });
+            }).finally(() => setLoading(false));
         }
         if(account){
             setName(name=>name||account.name);
@@ -87,21 +89,7 @@ export default function AccountForm() {
     }
 
     return (
-        <div style={{ width:"100%"}}>
-            <Card
-      variant="outlined"
-      sx={{
-        maxHeight: 'max-content',
-        maxWidth: '100%',
-        mx: 'auto',
-        // to make the demo resizable
-        overflow: 'auto',
-        resize: 'vertical',
-        width: { xs: '100%', md: '80%' },
-        mt: { xs: 10, md: 4 },
-        ml: { xs: 4, md: "auto" },
-      }}
-    >
+      <FormBaseLayout>
       {/* <Divider inset="none" /> */}
       <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
@@ -153,7 +141,6 @@ export default function AccountForm() {
 
         </CardContent>
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
-        </Card>
-        </div>
+        </FormBaseLayout>
     )
 }

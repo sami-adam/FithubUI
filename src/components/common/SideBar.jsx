@@ -362,12 +362,8 @@ export default function Sidebar({children}) {
         </IconButton>
       </Box>
     </Sheet>}
-    <div style={{display:"flex",justifyContent:"center", alignItems:"start", width:"80%"}}>
+    <div style={{display:"flex",justifyContent:"center", alignItems:"start", width:"100%"}}>
         {children}
-    </div>
-    <div style={{paddingTop:{xs: 36, sm:14}, display: window.location.pathname.includes("form")? "block": "none"}}>
-      <Button variant='contained' onClick={() => window.history.back()}
-      ><Typography>{t("Back")}</Typography></Button>
     </div>
     </div>
   );
