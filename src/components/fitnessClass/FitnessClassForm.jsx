@@ -37,6 +37,9 @@ export default function FitnessClassForm() {
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
     useEffect(() => {
+        if(mode === 'add'){
+          setLoading(false);
+        }
         if(id && mode !== 'add' && !fitnessClass){
             fetchFitnessClass(id).then((data) => {
                 setFitnessClass(data);

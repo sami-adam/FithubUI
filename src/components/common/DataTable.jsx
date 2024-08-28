@@ -208,7 +208,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
             >
                 Download PDF
             </Button> */}
-            <AddNewButton title={t(pageTitle)} formUrl={formUrl}/>
+            <AddNewButton title={t(pageTitle)} formUrl={`${window.location.pathname}/new`} />
         </Box>
       <Sheet
         className="SearchAndFilters-mobile"

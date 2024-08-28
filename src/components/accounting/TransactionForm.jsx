@@ -44,6 +44,9 @@ export default function TransactionForm() {
     const {t} = useTranslation();
 
     useEffect(() => {
+        if(mode === 'add'){
+          setLoading(false);
+        }
         if(id && mode !== 'add' && !transaction){
             fetchTransaction(id).then((data) => {
                 setTransaction(data);

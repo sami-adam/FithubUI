@@ -42,6 +42,9 @@ export default function ProductCategoryForm() {
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
     useEffect(() => {
+        if(mode === 'add'){
+          setLoading(false);
+        }
         if(id && mode !== 'add' && !productCategory){
             fetchProductCategory(id).then((data) => {
                 setProductCategory(data);

@@ -30,6 +30,9 @@ export default function BenefitForm() {
     const { id } = useParams();
 
     useEffect(() => {
+        if(mode === 'add'){
+          setLoading(false);
+        }
         if(id && mode !== 'add' && !benefit){
             fetchBenefit(id).then((data) => {
                 setBenefit(data);

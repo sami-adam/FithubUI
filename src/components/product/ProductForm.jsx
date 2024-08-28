@@ -40,6 +40,9 @@ export default function ProductForm() {
     const {t} = useTranslation();
 
     useEffect(() => {
+        if(mode === 'add'){
+          setLoading(false);
+        }
         if(id && mode !== 'add' && !product){
             fetchProduct(id).then((data) => {
                 setProduct(data);

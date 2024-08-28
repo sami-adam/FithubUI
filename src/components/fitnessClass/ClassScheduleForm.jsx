@@ -47,6 +47,9 @@ export default function ClassScheduleForm() {
     const stages = ["NEW", "PLANNED", "RUNNING", "FINISHED", "CANCELLED"];
 
     useEffect(() => {
+        if(mode === 'add'){
+          setLoading(false);
+        }
         if(id && mode !== 'add' && !classSchedule){
             fetchClassSchedule(id).then((data) => {
                 setClassSchedule(data);

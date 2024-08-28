@@ -43,6 +43,9 @@ export default function AccountForm() {
     ]
 
     useEffect(() => {
+        if(mode === 'add'){
+          setLoading(false);
+        }
         if(id && mode !== 'add' && !account){
             fetchAccount(id).then((data) => {
                 setAccount(data);

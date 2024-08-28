@@ -70,6 +70,9 @@ export default function SubscriptionForm() {
   const stages = ['NEW', 'PAID', "ACTIVE", "EXPIRED"];
 
   useEffect(() => {
+    if(mode === 'add'){
+      setLoading(false);
+    }
     if(id && mode !== 'add' && !subscription){
       fetchSubscription(id).then((data) => {
         setSubscription(data);

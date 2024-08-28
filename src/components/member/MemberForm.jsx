@@ -3,7 +3,7 @@ import useMemberStore from '../../state/memberState';
 import useSubscriptionStore from '../../state/subscriptionState';
 import useAttachmentStore from '../../state/attachmentState';
 import { useEffect, useState } from 'react';
-import { Box, Button, Card, CardContent, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormLabel, Input, Modal, ModalDialog, Radio, Typography } from '@mui/joy';
+import { Box, Button, CardContent, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormLabel, Input, Modal, ModalDialog, Radio, Typography } from '@mui/joy';
 import { Add, Email } from '@mui/icons-material';
 import { HorozontalStepper, SnackbarCustom } from '../common/Common';
 import { BiEdit } from "react-icons/bi";
@@ -36,7 +36,7 @@ export default function MemberForm() {
     const [fetchData, setFetchData] = useState(true);
     const {t} = useTranslation();
 
-    const [mode, setMode] = useState(location.state && location.state.viewMode||'view');
+    const [mode, setMode] = useState((location.state && location.state.viewMode) ||'view');
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -55,6 +55,9 @@ export default function MemberForm() {
     const memberSubscriptions = member&&subscriptions.filter(subscription => subscription.member.id === member.id);
 
     useEffect(() => {
+        if(mode === 'add'){
+            setLoading(false);
+          }
         if(id && mode !== 'add' && !member){
             fetchMember(id).then((member) => {
                 setMember(member);
@@ -141,6 +144,7 @@ export default function MemberForm() {
                 <Box flexGrow={1} width={4}/>
                 <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
                 <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+                <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
             </div>
         </div>
         {/* <Divider inset="none" /> */}
@@ -204,7 +208,7 @@ export default function MemberForm() {
             {member &&
             <>
             <a onClick={()=> setOpenPictureEdit(true)}>
-            <img src={profileSrc || member.profilePicture && member.profilePicture.url || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
+            <img src={profileSrc || (member.profilePicture && member.profilePicture.url) || "https://via.placeholder.com/300"}  alt="Profile" style={{width: 100, height: 100, borderRadius: 50}}/>
             </a>
             
             <ProfilePictureEdit open={openPictureEdit} setOpen={setOpenPictureEdit} src={profileSrc} setSrc={setProfileSrc} defaultSrc={profileSrc} memberId={member.id}/>
@@ -252,7 +256,7 @@ export function ProfilePictureEdit({open, setOpen, src, setSrc, defaultSrc=null,
           <DialogContent>
           <Button sx={{ display: "flex", position:"absolute" }} variant='soft' onClick={handleDelete}><DeleteIcon color='danger' sx={{ fontSize: 24 }}/></Button>
           <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
-          <img src={defaultSrc&&defaultSrc.data || src}  alt="Profile" style={{width: 300, height: 300, borderRadius: 10}}/>
+          <img src={(defaultSrc&&defaultSrc.data) || src}  alt="Profile" style={{width: 300, height: 300, borderRadius: 10}}/>
           </div>
           </DialogContent>
           <DialogActions sx={{ display: "flex", justifyContent:"space-between"}}>

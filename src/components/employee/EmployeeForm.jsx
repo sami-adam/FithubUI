@@ -41,6 +41,9 @@ export default function EmployeeForm() {
     const {t} = useTranslation();
 
     useEffect(() => {
+        if(mode === 'add'){
+          setLoading(false);
+        }
         if(id && mode !== 'add' && !employee){
             fetchEmployee(id).then((data) => {
                 setEmployee(data);

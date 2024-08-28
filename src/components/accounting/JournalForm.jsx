@@ -44,6 +44,9 @@ export default function JournalForm() {
     ]
 
     useEffect(() => {
+        if(mode === 'add'){
+          setLoading(false);
+        }
         if(id && mode !== 'add' && !journal){
             fetchJournal(id).then((data) => {
                 setJournal(data);
