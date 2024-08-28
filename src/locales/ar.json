@@ -225,7 +225,10 @@
       "Class": "فصل",
       "Class Schedules": "جداول الفصول",
       "Subscription added successfully!": "تمت إضافة الاشتراك بنجاح!",
-      "Loading...": "جاري التحميل..."
+      "Loading...": "جاري التحميل...",
+      "Transaction": "معاملة",
+      "Generate Transaction": "إنشاء معاملة",
+      "Transaction created successfully!": "تمت إضافة المعاملة بنجاح!"
     }
   }
   

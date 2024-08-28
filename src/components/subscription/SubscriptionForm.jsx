@@ -20,7 +20,7 @@ import { ButtonDatePicker } from '../common/Fields';
 import dayjs from 'dayjs';
 import { Add, Person } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
-import { useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { DocumentSnackbar, HorozontalStepper, SnackbarCustom } from '../common/Common';
 import SubscriptionInvoice from '../../reports/SubscriptionInvoice';
 import { MdPictureAsPdf } from "react-icons/md";
@@ -31,6 +31,7 @@ import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import { FormBackButton } from '../common/Buttons';
 import FormBaseLayout from '../common/FormBaseLayout';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 
 export default function SubscriptionForm() {
   const location = useLocation();
@@ -56,6 +57,7 @@ export default function SubscriptionForm() {
   const [tax, setTax] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
+  const [transaction, setTransaction] = useState(null);
   const [openDownload, setOpenDownload] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -96,6 +98,7 @@ export default function SubscriptionForm() {
       setTax(subtotal * ((product&&(((product.tax&&product.tax.rate)||0) / 100)) || 0));
       setDiscount(discount=> discount || subscription.discountAmount);
       setTotal(subtotal + tax - discount);
+      setTransaction(subscription.transaction);
     }
     if(product && product.durationType && mode !== 'view'&&startDate){
       switch(product.durationType){
@@ -158,6 +161,19 @@ export default function SubscriptionForm() {
     }
   }
 
+  const handelAccountTransactionCreation = () => {
+    setLoading(true);
+    generateAccountTransaction(subscription&&subscription.id).then((data) => {
+      console.log(data);
+    }).finally(() => {
+    fetchSubscription(id).then((data) => {
+      setSubscription(data);
+      setOpenSnackbar(true);
+      setSnack({type: 'success', title: 'Success', message: 'Transaction created successfully!'});
+    }).finally(() => setLoading(false));
+  });
+  }
+
   return (
     <FormBaseLayout loading={loading}>
       <br/>
@@ -188,7 +204,6 @@ export default function SubscriptionForm() {
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
           <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
           <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view' && subscription? 'none': 'none'}}>{t("DELETE")}</Button>
-          <Button variant='soft' startDecorator={<MdPictureAsPdf fontSize={20}/>} onClick={() => generateAccountTransaction(subscription&&subscription.id)}>{t("Generate Transaction")}</Button>
         </div>
         
       </div>
@@ -320,9 +335,15 @@ export default function SubscriptionForm() {
               </td>
             </tr>
             <tr>
-              <th>{t("Transacrion")}</th>
-              <td>
-                <Typography>{subscription && subscription.transaction && subscription.transaction.reference}</Typography>
+              <td colSpan={2}>
+              <Button variant='outlined' color='primary' sx={{ borderColor: "divider", display: (mode == 'add' || transaction)? "none": "flex" }} startDecorator={<SettingsSuggestIcon sx={{ fontSize: 24 }}/>} onClick={handelAccountTransactionCreation}>{t("Generate Transaction")}</Button>
+              <div style={{ display:"flex", flexDirection: "row" }}>
+                <Typography variant="body2">{t("Transaction")}</Typography>
+                <Box width={"4%"}/>
+                <Link to={`/transactions/${transaction && transaction.id}`} style={{ textDecoration: 'none', display: transaction ? "flex": "none"}}>
+                  <Typography sx={{ display: transaction ? "flex": "none", fontWeight: "bold"}}> {transaction && transaction.reference}</Typography>
+                </Link>
+              </div>
               </td>
             </tr>
             </tbody>
