@@ -39,6 +39,8 @@ import NotificationPage from './pages/NotificationPage';
 import ClassSchedulePage from './pages/ClassSchedulePage';
 import ClassScheduleForm from './components/fitnessClass/ClassScheduleForm';
 import NotFoundPage from './pages/NotFoundPage';
+import SignUpPage from './pages/SignUpPage';
+import UserCreatedPage from './pages/UserCreatedPage';
 //const joyTheme = extendJoyTheme();
 
 
@@ -54,6 +56,8 @@ function App() {
         <Sidebar>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/user-created" element={<UserCreatedPage />} />
           <Route path="/undefined" element={<LoginPage />} />
           <Route path="/home" element={<HomePage/>} />
           <Route path="/" element={<HomePage/>} />

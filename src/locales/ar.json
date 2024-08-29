@@ -228,7 +228,14 @@
       "Loading...": "جاري التحميل...",
       "Transaction": "معاملة",
       "Generate Transaction": "إنشاء معاملة",
-      "Transaction created successfully!": "تمت إضافة المعاملة بنجاح!"
+      "Transaction created successfully!": "تمت إضافة المعاملة بنجاح!",
+      "Join FitHub!": "انضم إلى FitHub!",
+      "Create your account to get started.": "أنشئ حسابك للبدء.",
+      "Phone Number (Optional)": "رقم الهاتف (اختياري)",
+      "Already have an account?": "هل لديك حساب؟",
+      "Sign Up": "تسجيل",
+      "Phone Number": "رقم الهاتف",
+      "Optional": "اختياري"
     }
   }
   

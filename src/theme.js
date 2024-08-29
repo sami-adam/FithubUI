@@ -4,7 +4,6 @@ import createCache from '@emotion/cache';
 import i18n from './i18n';
 import stylisRTLPlugin from 'stylis-plugin-rtl';
 import { prefixer } from 'stylis';
-import { BorderColor } from '@mui/icons-material';
 
 const cacheRtl = createCache({
   key: 'joyrtl',
