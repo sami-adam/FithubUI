@@ -40,6 +40,20 @@ const theme = extendTheme({
         },
       },
     },
+    JoySelect: {
+      styleOverrides: {
+        root: {
+          border: "none",
+        },
+      },
+    },
+    JoyFormLabel: {
+      styleOverrides: {
+        root: {
+          fontWeight: "bold",
+        },
+      },
+    },
   },
   fontFamily: {
     display: i18n.language === 'ar' ? 'IBM Sans Arabic' : 'sans-serif', // applies to `h1`–`h4`
