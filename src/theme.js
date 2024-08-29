@@ -29,14 +29,20 @@ const theme = extendTheme({
     JoyAutocomplete: {
       styleOverrides: {
         root: {
-          border: "none",
+          borderTop: "none",
+          borderLeft: "none",
+          borderRight: "none",
+          backgroundColor: "var(--palette-primary-solidBg)",
         }
       }
     },
     JoyInput: {
       styleOverrides: {
         root: {
-          border: "none",
+          borderTop: "none",
+          borderLeft: "none",
+          borderRight: "none",
+          backgroundColor: "var(--palette-primary-solidBg)",
         },
       },
     },
