@@ -9,7 +9,7 @@ export default function FormBaseLayout({ children, loading=false }) {
         <Box flex={1} sx={{ width: "100%"}}>
             {loading && <LoadingPage/> ||
             <Card
-            variant="outlined"
+            variant="plain"
             sx={{
                 maxHeight: 'max-content',
                 //maxWidth: '100%',

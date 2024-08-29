@@ -4,6 +4,7 @@ import createCache from '@emotion/cache';
 import i18n from './i18n';
 import stylisRTLPlugin from 'stylis-plugin-rtl';
 import { prefixer } from 'stylis';
+import { BorderColor } from '@mui/icons-material';
 
 const cacheRtl = createCache({
   key: 'joyrtl',
@@ -25,6 +26,20 @@ const theme = extendTheme({
           width: { xs: 1, sm: 1, md: 1 },
         }
       }
+    },
+    JoyAutocomplete: {
+      styleOverrides: {
+        root: {
+          border: "none",
+        }
+      }
+    },
+    JoyInput: {
+      styleOverrides: {
+        root: {
+          border: "none",
+        },
+      },
     },
   },
   fontFamily: {

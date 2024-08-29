@@ -292,7 +292,7 @@ export default function SubscriptionForm() {
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
         <Divider sx={{ gridColumn: '1/-1' }} />
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <Table variant="outlined">
+          <Table variant="plain">
             <tbody>
             <tr>
               <th style={{ width:80 }}>{t("Subtotal")}</th>
