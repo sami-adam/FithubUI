@@ -10,12 +10,12 @@ export default function UserCreatedPage() {
   const { t } = useTranslation();
 
   return (
-    <main>
+    <main style={{ width: "100%" }}>
       <CssBaseline />
       <div style={{ paddingInlineStart: 80, paddingBlockStart: 30 }} dir={i18n.dir()}>
         <Sheet
           sx={{
-            width: 300,
+            width: "50%",
             mx: 'auto',
             my: 6,
             py: 3,
@@ -33,7 +33,7 @@ export default function UserCreatedPage() {
             <Typography level="h1" component="h1">FitHub</Typography>
           </div>
           <div>
-            <Typography level="h4" component="h1">
+            <Typography level="h4" component="h1" color='success'>
               <b>{t("Account Created!")}</b>
             </Typography>
             <Typography level="body-sm">

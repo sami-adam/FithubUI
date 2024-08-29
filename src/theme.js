@@ -49,7 +49,10 @@ const theme = extendTheme({
     JoySelect: {
       styleOverrides: {
         root: {
-          border: "none",
+          borderTop: "none",
+          borderLeft: "none",
+          borderRight: "none",
+          backgroundColor: "var(--palette-primary-solidBg)",
         },
       },
     },

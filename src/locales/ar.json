@@ -235,7 +235,10 @@
       "Already have an account?": "هل لديك حساب؟",
       "Sign Up": "تسجيل",
       "Phone Number": "رقم الهاتف",
-      "Optional": "اختياري"
+      "Optional": "اختياري",
+      "Account Created!": "تم إنشاء الحساب!",
+      "Your account has been successfully created.": "تم إنشاء حسابك بنجاح.",
+      "Go to Login": "الذهاب لتسجيل الدخول"
     }
   }
   
