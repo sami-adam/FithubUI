@@ -290,7 +290,8 @@ export default function SubscriptionForm() {
         </FormControl>
 
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
-        <Divider sx={{ gridColumn: '1/-1' }} />
+        {/* <Divider sx={{ gridColumn: '1/-1' }} /> */}
+        <br/>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <Table variant="plain">
             <tbody>
