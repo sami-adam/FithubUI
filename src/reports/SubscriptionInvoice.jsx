@@ -109,12 +109,12 @@ const encodeInvoiceDataToBase64 = (invoiceData) => {
 export default function SubscriptionInvoice ({ subscription }) {
   const theme = useTheme();
   const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const [logoUrl, setLogoUrl] = useState('https://www.pngitem.com/pimgs/m/146-1468479_invoice-icon-png-transparent-png.png');
   const primaryMainColor = theme.palette.primary.main;
   const token = localStorage.getItem('token');
   console.log(primaryMainColor);
   const invoiceData = encodeInvoiceDataToBase64({"sellerName": "Fit Hub", "vatNumber": "326543231113243", 
     "timestamp": new Date().toISOString(), "totalWithVAT": subscription.totalAmount, "vatTotal": subscription.totalAmount * 0.15});
-  console.log(invoiceData);
   useEffect(() => {
     async function generateQrCode() {
       const response = await fetch(`${process.env.REACT_APP_BASE_URL}/qr-code?text=${invoiceData}&width=300&height=300`,
@@ -136,6 +136,9 @@ export default function SubscriptionInvoice ({ subscription }) {
   return (
   <Document>
     <Page size="A4" style={styles.page}>
+      <View>
+      <Image src={logoUrl} style={{ width: 100, height: 100 }} alt="Logo" />
+      </View>
       <View style={styles.section}>
         <Text style={styles.title}>Invoice</Text>
         <Text style={styles.address}>2321, Hittin, Riyadh, Saudi Arabia</Text>
@@ -144,7 +147,7 @@ export default function SubscriptionInvoice ({ subscription }) {
       <View style={[styles.section, { display: "flex", flexDirection: "row", justifyContent: "space-between" }]}>
         <View>
           <Text style={[styles.header, {color:"#3e3f40"}]}>Bill To:</Text>
-          <Text style={styles.address}>{subscription.firstName + " " + subscription.lastName}</Text>
+          <Text style={styles.address}>{subscription.member.firstName + " " + subscription.member.lastName}</Text>
           <Text style={styles.address}>{"Riyadh, Saudi"}</Text>
         </View>
         <View>
@@ -193,7 +196,7 @@ export default function SubscriptionInvoice ({ subscription }) {
         </View>
       </View>
       <View style={styles.footer}>
-        <Text>Thank you for your business!</Text>
+        <Text>Thank you for your subscription!</Text>
       </View>
     </Page>
   </Document>

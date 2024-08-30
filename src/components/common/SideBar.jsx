@@ -128,7 +128,7 @@ export default function Sidebar({children}) {
       />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' , justifyContent:"space-between"}}>
         <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
+          <img src='/logonbg.png' alt="logo" style={{width: "35px", height: "35px"}}/>
         </IconButton>
         <Typography level="title-lg">FitHub</Typography>
         <DarkMode sx={{ ml: 'auto' }} />
