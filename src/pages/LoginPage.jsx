@@ -89,7 +89,7 @@ export default function LoginPage() {
         </FormControl>
         <Button sx={{ mt: 1 /* margin top */}} onClick={handleLogin} type='button'>{t("Log in")}</Button>
         <Typography
-          endDecorator={<Link href="/sign-up">{t("Sign up")}</Link>}
+          endDecorator={<Link href="/signup">{t("Sign up")}</Link>}
           fontSize="sm"
           sx={{ alignSelf: 'center' }}
         >

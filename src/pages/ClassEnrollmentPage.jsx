@@ -27,12 +27,12 @@ export default function ClassEnrollmentPage({ defaultSearch="" }) {
 
     const columns = [
         {"name": "id", "label": "Reference", "width": 140},
-        {"name": "member", "label": "Member", "sort": true, "width": 120},
+        {"name": "member", "label": "Member", "sort": true, "width": 250, "special": "person"},
         {"name": "fitnessClass", "label": "Fitness Class", "sort": true, "width": 120},
         {"name": "classSchedule", "label": "Class Schedule", "width": 120},
         {"name": "startDate" , "label": "Start Date", "width": 120},
         {"name": "endDate", "label": "End Date", "width": 120},
-        {"name": "instructor", "label": "Instructor", "width": 300, "special": "person"},
+        {"name": "instructor", "label": "Instructor", "width": 120},
         {"name": "price", "label": "Price", "width": 120, "special": "amount"},
         {"name": "status", "label": "Status", "width": 120, "special": "status"}
     ]
