@@ -5,7 +5,7 @@ import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
-import { Autocomplete, Box, Table } from '@mui/joy';
+import { Box, Table } from '@mui/joy';
 import { useEffect, useRef, useState } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -16,7 +16,7 @@ import { BsSave } from "react-icons/bs";
 import useMemberStore from '../../state/memberState';
 import useProductStore from '../../state/productState';
 import useSubscriptionStore from '../../state/subscriptionState';
-import { ButtonDatePicker } from '../common/Fields';
+import { ButtonDatePicker, ManyToOneField } from '../common/Fields';
 import dayjs from 'dayjs';
 import { Add, Person } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
@@ -221,21 +221,11 @@ export default function SubscriptionForm() {
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel><Typography level='h5' startDecorator={<Person sx={{ fontSize: 18}}/>}>{t("Member")}</Typography></FormLabel>
-          <Autocomplete 
-          options={members} getOptionLabel={(option) => option.firstName + " " + option.lastName}
-          value={member} 
-          onChange={(event, newValue) => setMember(newValue)}
-          disabled={mode === 'view'}
-           />
+          <ManyToOneField options={members} optionsFields={["firstName", "lastName"]} value={member} setValue={setMember} mode={mode} url={"/members"}/>
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel><Typography level='h5' startDecorator={<CalendarMonthIcon sx={{ fontSize: 18}}/>}>{t("Subscription")}</Typography></FormLabel>
-          <Autocomplete 
-          options={products} 
-          getOptionLabel={(option) => option.name}
-          value={product} onChange={(event, newValue) => setProduct(newValue)}
-          disabled={mode === 'view'}
-          />
+          <ManyToOneField options={products} optionsFields={["name"]} value={product} setValue={setProduct} mode={mode} url={"/products"}/>
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel><Typography level='h5' startDecorator={<Grid3x3Icon sx={{ fontSize: 18}}/>}>{t("Quantity")}</Typography></FormLabel>

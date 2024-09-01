@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { DeleteOutlined } from "@ant-design/icons";
 import FormBaseLayout from "../common/FormBaseLayout";
+import { ManyToOneField } from "../common/Fields";
 
 
 export default function TransactionForm() {
@@ -157,12 +158,7 @@ export default function TransactionForm() {
         </div>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel>{t("Journal")}</FormLabel>
-          <Autocomplete 
-          options={journals} 
-          getOptionLabel={(option) => option.name}
-          value={journal} onChange={(event, newValue) => setJournal(newValue)}
-          disabled={mode === 'view'}
-          />
+          <ManyToOneField options={journals} optionsFields={["name"]} value={journal} setValue={setJournal} mode={mode} url="/journals"/>
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Description")}</FormLabel>

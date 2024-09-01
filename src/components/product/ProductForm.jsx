@@ -3,7 +3,7 @@ import useProductStore from '../../state/productState';
 import useProductCategoryStore from '../../state/productCategoryState';
 import useTaxStore from '../../state/taxState';
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Textarea, Typography } from '@mui/joy';
+import { Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Textarea, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
 import ImageIcon from '@mui/icons-material/Image';
 import { NumericFormat } from 'react-number-format';
@@ -12,6 +12,7 @@ import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import FormBaseLayout from '../common/FormBaseLayout';
+import { ManyToOneField } from '../common/Fields';
 
 export default function ProductForm() {
     const location = useLocation();
@@ -131,12 +132,7 @@ export default function ProductForm() {
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Category")}</FormLabel>
-          <Autocomplete 
-          options={productCategories} getOptionLabel={(option) => option.name}
-          value={category} 
-          onChange={(event, newValue) => setCategory(newValue)}
-          disabled={mode === 'view'}
-           />
+          <ManyToOneField options={productCategories} optionsFields={["name"]} value={category} setValue={setCategory} mode={mode} url="/product-categories" />
         </FormControl>
         
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
@@ -153,12 +149,7 @@ export default function ProductForm() {
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Tax")}</FormLabel>
-          <Autocomplete 
-          options={taxes} 
-          getOptionLabel={(option) => option.name}
-          value={tax} onChange={(event, newValue) => setTax(newValue)}
-          disabled={mode === 'view'}
-          />
+          <ManyToOneField options={taxes} optionsFields={["name"]} value={tax} setValue={setTax} mode={mode} url="/taxes" />
         </FormControl>
         
         <FormControl></FormControl>

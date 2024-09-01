@@ -2,7 +2,7 @@ import useClassScheduleStore from '../../state/classScheduleState';
 import useFitnessClassStore from '../../state/fitnessClassState';
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
+import { Box, Button, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
@@ -17,6 +17,7 @@ import CoPresentIcon from '@mui/icons-material/CoPresent';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import FormBaseLayout from '../common/FormBaseLayout';
+import { ManyToOneField } from '../common/Fields';
 
 export default function ClassScheduleForm() {
     const location = useLocation();
@@ -145,21 +146,11 @@ export default function ClassScheduleForm() {
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel><Typography level='h5' startDecorator={<CollectionsBookmarkIcon sx={{ fontSize: 18}}/>}>{t("Fitness Class")}</Typography></FormLabel>
-          <Autocomplete 
-          options={fitnessClasses} getOptionLabel={(option) => option.name}
-          value={fitnessClass} 
-          onChange={(event, newValue) => setFitnessClass(newValue)}
-          disabled={mode === 'view'}
-           />
+          <ManyToOneField options={fitnessClasses} optionsFields={["name"]} value={fitnessClass} setValue={setFitnessClass} mode={mode} url='/fitness-classes' />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel><Typography level='h5' startDecorator={<CoPresentIcon sx={{ fontSize: 18}}/>}>{t("Instructor")}</Typography></FormLabel>
-          <Autocomplete 
-          options={instructors} 
-          getOptionLabel={(option) => option.name}
-          value={instructor} onChange={(event, newValue) => setInstructor(newValue)}
-          disabled={mode === 'view'}
-          />
+          <ManyToOneField options={instructors} optionsFields={["name"]} value={instructor} setValue={setInstructor} mode={mode} url='/employees' />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>

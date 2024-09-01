@@ -1,14 +1,15 @@
 import * as React from 'react';
 
-import { Input } from '@mui/joy';
+import { Autocomplete, Input } from '@mui/joy';
 import { DatePicker } from '@mui/x-date-pickers';
 import { FaRegCalendarAlt } from "react-icons/fa";
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import ReactQuill from 'react-quill';
-import { Box, Button, Typography, IconButton } from '@mui/joy';
+import { Box, Button, Typography, IconButton, Link } from '@mui/joy';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import dayjs from 'dayjs';
+import { Link as RouterLink } from 'react-router-dom';
 
 function ButtonField(props) {
   const {
@@ -163,3 +164,30 @@ export function OneToManyField({ defaultItems = [{ id: Date.now(), name: '' }] }
     </Box>
   );
 };
+
+export function ManyToOneField({options=[], optionsFields=["name"], value, setValue, mode, url}){
+  return (
+    <>
+    <Autocomplete 
+      options={options} getOptionLabel={(option) => optionsFields.map(field => option[field]).join(' ')}
+      value={value} 
+      onChange={(event, newValue) => setValue(newValue)}
+      disabled={mode === 'view'} 
+      onClick={() => console.log('clicked')} 
+      sx={{ display: mode === 'view' ? 'none' : 'flex' }}
+        />
+    <Link component={RouterLink} to={`${url}/${value?.id}`} 
+    sx={{ textDecoration: 'none', display: mode === 'view' ? 'flex' : 'none', 
+    boxShadow: "1px 1px 1px 1px rgba(0, 0, 0, 0.1)", px:1, borderRadius:5,
+    height: 35, alignItems: 'center',
+    '&:hover': {
+      backgroundColor: 'background.level1',
+      color: 'primary',
+      textDecoration: 'none',
+    }
+    }}>
+      <Typography sx={{ display: mode === 'view' ? 'flex' : 'none'}} color='primary'>{value ? optionsFields.map(field => value[field]).join(' ') : ""}</Typography>
+    </Link>
+    </>
+  );
+}

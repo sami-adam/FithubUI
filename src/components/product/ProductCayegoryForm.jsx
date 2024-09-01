@@ -12,6 +12,7 @@ import { BsSave } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
 import { FaTags } from "react-icons/fa";
 import FormBaseLayout from '../common/FormBaseLayout';
+import { ManyToOneField } from '../common/Fields';
 
 export default function ProductCategoryForm() {
     const location = useLocation();
@@ -132,12 +133,7 @@ export default function ProductCategoryForm() {
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Income Account")}</FormLabel>
-          <Autocomplete 
-          options={accounts} 
-          getOptionLabel={(account) => account.code + ' - ' + account.name}
-          value={incomeAccount} onChange={(event, newValue) => setIncomeAccount(newValue)}
-          disabled={mode === 'view'}
-          />
+          <ManyToOneField options={accounts} optionsFields={["code", "name"]} value={incomeAccount} setValue={setIncomeAccount} mode={mode} url="/accounts" />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
@@ -147,12 +143,7 @@ export default function ProductCategoryForm() {
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Expense Account")}</FormLabel>
-          <Autocomplete 
-          options={accounts} 
-          getOptionLabel={(account) => account.code + ' - ' + account.name}
-          value={expenseAccount} onChange={(event, newValue) => setExpenseAccount(newValue)}
-          disabled={mode === 'view'}
-          />
+          <ManyToOneField options={accounts} optionsFields={["code", "name"]} value={expenseAccount} setValue={setExpenseAccount} mode={mode} url="/accounts" />
         </FormControl>
 
 

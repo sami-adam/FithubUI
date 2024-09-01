@@ -2,7 +2,7 @@ import { useLocation, useParams } from "react-router-dom";
 import useJournalStore from "../../state/journalState";
 import useAccountStore from "../../state/accountState";
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
+import { Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
 import { Add } from '@mui/icons-material';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
@@ -10,6 +10,7 @@ import { BsSave } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
 import FormBaseLayout from "../common/FormBaseLayout";
+import { ManyToOneField } from "../common/Fields";
 
 
 export default function JournalForm() {
@@ -150,12 +151,7 @@ export default function JournalForm() {
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel>{t("Account")}</FormLabel>
-          <Autocomplete  
-            options={accounts} getOptionLabel={(option) => `${option.code} - ${option.name}`}
-            value={account} 
-            onChange={(event, newValue) => setAccount(newValue)}
-            disabled={mode === 'view'}
-           />
+           <ManyToOneField options={accounts} optionsFields={["code", "name"]} value={account} setValue={setAccount} mode={mode} url="/accounts" />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
