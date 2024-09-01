@@ -31,7 +31,7 @@ import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import { FormBackButton } from '../common/Buttons';
 import FormBaseLayout from '../common/FormBaseLayout';
-import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
+import { FaMoneyBills } from "react-icons/fa6";
 
 export default function SubscriptionForm() {
   const location = useLocation();
@@ -340,7 +340,7 @@ export default function SubscriptionForm() {
             </tr>
             <tr>
               <td colSpan={2}>
-              <Button variant='outlined' color='primary' sx={{ borderColor: "divider", display: (mode == 'add' || transaction)? "none": "flex" }} startDecorator={<SettingsSuggestIcon sx={{ fontSize: 24 }}/>} onClick={handelAccountTransactionCreation}>{t("Generate Transaction")}</Button>
+              <Button variant='outlined' color='primary' sx={{ borderColor: "divider", display: (mode == 'add' || transaction)? "none": "flex" }} startDecorator={<FaMoneyBills fontSize={18}/>} onClick={handelAccountTransactionCreation}>{t("Generate Transaction")}</Button>
               <div style={{ display:"flex", flexDirection: "row" }}>
                 <Typography variant="body2">{t("Transaction")}</Typography>
                 <Box width={"4%"}/>

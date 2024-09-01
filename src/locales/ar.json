@@ -238,7 +238,10 @@
       "Optional": "اختياري",
       "Account Created!": "تم إنشاء الحساب!",
       "Your account has been successfully created.": "تم إنشاء حسابك بنجاح.",
-      "Go to Login": "الذهاب لتسجيل الدخول"
+      "Go to Login": "الذهاب لتسجيل الدخول",
+      "Class Enrollment": "تسجيل الفصل",
+      "Class Schedule": "جدول الفصل",
+      "Class Enrollments": "تسجيلات الفصول"
     }
   }
   

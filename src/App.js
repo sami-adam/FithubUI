@@ -41,6 +41,7 @@ import ClassScheduleForm from './components/fitnessClass/ClassScheduleForm';
 import NotFoundPage from './pages/NotFoundPage';
 import SignUpPage from './pages/SignUpPage';
 import UserCreatedPage from './pages/UserCreatedPage';
+import ClassEnrollmentPage from './pages/ClassEnrollmentPage';
 //const joyTheme = extendJoyTheme();
 
 
@@ -87,6 +88,7 @@ function App() {
           <Route path="/class-schedules" element={<ClassSchedulePage/>} />
           <Route path="/class-schedule-form" element={<ClassScheduleForm/>} />
           <Route path="/class-schedules/:id" element={<ClassScheduleForm/>} />
+          <Route path="/class-enrollments" element={<ClassEnrollmentPage/>} />
           <Route path="/support" element={<SupportPage/>} />
           <Route path="/accounts" element={<AccountPage/>} />
           <Route path="/account-form" element={<AccountForm/>} />

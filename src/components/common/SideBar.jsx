@@ -43,6 +43,7 @@ import { useTranslation } from 'react-i18next';
 import { MenuToggler } from './Menus';
 import DatasetIcon from '@mui/icons-material/Dataset';
 import { BsCalendar3 } from "react-icons/bs";
+import { FaRegCalendarCheck } from "react-icons/fa";
 
 export default function Sidebar({children}) {
   //const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
@@ -183,6 +184,14 @@ export default function Sidebar({children}) {
               <BsCalendar3 fontSize={18}/>
               <ListItemContent>
                 <Typography level="title-sm">{t("Class Schedules")}</Typography>
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton role="menuitem" onClick={() => navigate("/class-enrollments")} selected={window.location.pathname.includes("class-enrollment")}>
+              <FaRegCalendarCheck fontSize={20}/>
+              <ListItemContent>
+                <Typography level="title-sm">{t("Class Enrollments")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
