@@ -3,21 +3,26 @@ import axios from "axios";
 
 const useSubscriptionStore = create((set) => ({
     subscriptions: [],
+    totalPages: 0,
+    pageSize: 0,
+    currentPage: 0,
     token: localStorage.getItem("token"),
     baseURL: process.env.REACT_APP_BASE_URL,
     signInUrl: process.env.REACT_APP_LOGIN_PAGE_URL,
-    fetchSubscriptions: async () => {
+    setCurrentPage: (page) => {
+        set({ currentPage: page });
+        useSubscriptionStore.getState().fetchSubscriptions(page);
+    },
+    fetchSubscriptions: async (currentPage=0) => {
         try {
-            const response = await axios.get(useSubscriptionStore.getState().baseURL + "/subscriptions", {
+            const response = await axios.get(useSubscriptionStore.getState().baseURL + `/subscriptions?page=${currentPage}&size=10&sort=reference,asc`, {
                 headers: {
                     Authorization: "Bearer " + useSubscriptionStore.getState().token,
                 },
             });
-            set({ subscriptions: response.data });
+            set({ subscriptions: response.data.content, totalPages: response.data.page.totalPages, pageSize: response.data.page.size, currentPage: response.data.page.number });
         } catch (error) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            window.location.replace(useSubscriptionStore.getState().signInUrl);
+            console.error("Error fetching subscriptions", error);
         }
     },
     fetchSubscription: async (id) => {

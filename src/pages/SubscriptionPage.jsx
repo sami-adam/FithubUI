@@ -10,6 +10,7 @@ export default function SubscriptionPage({ defaultSearch="" }) {
     const [products, fetchProducts] = useProductStore((state) => [state.products, state.fetchProducts]);
     const searchSubscriptions = useSubscriptionStore((state) => state.searchSubscriptions);
     const exportExcel = useSubscriptionStore((state) => state.exportExcel);
+    const [totalPages, pageSize, currentPage, setCurrentPage] = useSubscriptionStore((state) => [state.totalPages, state.pageSize, state.currentPage, state.setCurrentPage]);
     
     const location = useLocation();
 
@@ -81,7 +82,7 @@ export default function SubscriptionPage({ defaultSearch="" }) {
     
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={filters} pageTitle="Subscriptions" formUrl="/subscription-form" setSearch={setSearch} excelExport={handleExport}/>
+            <DataTable columns={columns} rows={rows} selectionFilters={filters} pageTitle="Subscriptions" formUrl="/subscription-form" setSearch={setSearch} excelExport={handleExport} pages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
             <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/subscription-form" setSearch={setSearch}/>
         </div>
     );

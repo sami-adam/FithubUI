@@ -118,7 +118,7 @@ function RowMenu() {
   );
 }
 
-export default function DataTable({columns, rows, selectionFilters, pageTitle="", formUrl="", setSearch, excelExport}) {
+export default function DataTable({columns, rows, selectionFilters, pageTitle="", formUrl="", setSearch, excelExport, pages=1, currentPage=0, setCurrentPage}) {
   const [order, setOrder] = React.useState('desc');
   const [selected, setSelected] = React.useState([]);
   const [open, setOpen] = React.useState(false);
@@ -430,14 +430,16 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
         </Button>
 
         <Box sx={{ flex: 1 }} />
-        {['1', '2', '3', '…', '8', '9', '10'].map((page) => (
+        {Array.from({length: pages}, (x, i) => i).map((page) => (
           <IconButton
             key={page}
             size="sm"
-            variant={Number(page) ? 'outlined' : 'plain'}
-            color="neutral"
+            //variant={Number(page) ? 'outlined' : 'plain'}
+            variant= {page === currentPage ? 'outlined' : 'contained'}
+            color={page === currentPage ? 'primary': 'neutral'} 
+            onClick={() => setCurrentPage(page)}
           >
-            {page}
+            {page + 1}
           </IconButton>
         ))}
         <Box sx={{ flex: 1 }} />
