@@ -425,6 +425,8 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           variant="outlined"
           color="neutral"
           startDecorator={<KeyboardArrowLeftIcon />}
+          disabled={currentPage === 0}
+          onClick={() => setCurrentPage(currentPage - 1)}
         >
           {t("Previous")}
         </Button>
@@ -449,6 +451,8 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           variant="outlined"
           color="neutral"
           endDecorator={<KeyboardArrowRightIcon />}
+          disabled={currentPage === pages - 1}
+          onClick={() => setCurrentPage(currentPage + 1)}
         >
           {t("Next")}
         </Button>
