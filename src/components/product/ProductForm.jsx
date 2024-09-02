@@ -13,6 +13,7 @@ import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import FormBaseLayout from '../common/FormBaseLayout';
 import { ManyToOneField } from '../common/Fields';
+import { SnackbarCustom } from '../common/Common';
 
 export default function ProductForm() {
     const location = useLocation();
@@ -39,6 +40,8 @@ export default function ProductForm() {
     const [fetchData, setFetchData] = useState(true);
 
     const {t} = useTranslation();
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
     useEffect(() => {
         if(mode === 'add'){
@@ -79,6 +82,8 @@ export default function ProductForm() {
             durationType: durationType
         });
         setMode('view');
+        setSnack({type: 'success', title: 'Success', message: 'Product updated successfully'});
+        setOpenSnackbar(true);
     }
 
     const handleAdd = () => {
@@ -92,6 +97,8 @@ export default function ProductForm() {
             durationType: durationType
         });
         setMode('view');
+        setSnack({type: 'success', title: 'Success', message: 'Product added successfully'});
+        setOpenSnackbar(true);
     }
 
     const handelDelete = () => {
@@ -99,11 +106,14 @@ export default function ProductForm() {
         if(confirm){
         deleteProduct(product.id);
         window.history.back();
+        setSnack({type: 'success', title: 'Success', message: 'Product deleted successfully'});
+        setOpenSnackbar(true);
         }
     }
 
     return (
       <FormBaseLayout loading={loading}>
+      <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
       {/* <Divider inset="none" /> */}
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
         <Typography level="title-lg">

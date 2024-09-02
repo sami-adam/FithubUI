@@ -18,6 +18,7 @@ import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import FormBaseLayout from '../common/FormBaseLayout';
 import { ManyToOneField } from '../common/Fields';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 
 export default function ClassScheduleForm() {
     const location = useLocation();
@@ -27,6 +28,7 @@ export default function ClassScheduleForm() {
     const addClassSchedule = useClassScheduleStore((state) => state.addClassSchedule);
     const deleteClassSchedule = useClassScheduleStore((state) => state.deleteClassSchedule);
     const fetchClassSchedule = useClassScheduleStore((state) => state.fetchClassSchedule);
+    const enrollMember = useClassScheduleStore((state) => state.enrollMember);
     const [classSchedule, setClassSchedule] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -112,6 +114,17 @@ export default function ClassScheduleForm() {
             window.history.back();
         }
     }
+    const handleEnroll = () => {
+      const respose = enrollMember(classSchedule && classSchedule.id);
+      if(respose){
+          setSnack({type: 'success', title: 'Success', message: 'Member enrolled successfully'});
+          setOpenSnackbar(true);
+      }
+      else{
+          setSnack({type: 'error', title: 'Error', message: 'Error enrolling member'});
+          setOpenSnackbar(true);
+      }
+    }
 
     return (
       <FormBaseLayout loading={loading}>
@@ -136,6 +149,13 @@ export default function ClassScheduleForm() {
         
       </div>
       {/* <Divider inset="none" /> */}
+      <Button variant='soft' onClick={handleEnroll} startDecorator={<LibraryAddIcon />}
+      sx={{
+        display: mode === 'view' && classSchedule && classSchedule.status === 'NEW'? 'flex': 'none',
+        width: '10%',
+        }}>
+        {t("ENROLL")}
+      </Button>
       <CardContent
         sx={{
           display: 'grid',

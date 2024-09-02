@@ -15,12 +15,13 @@ export default function ProductPage() {
 
 
     return (
-        <div style={{paddingInlineStart:5}}>
+        <div style={{paddingInlineStart:5, width:"100%"}}>
         <Box
             sx={{
                 display: 'flex',
                 mb: 1,
                 gap: 1,
+                px: 1,
                 flexDirection: { xs: 'column', sm: 'row' },
                 alignItems: { xs: 'start', sm: 'center' },
                 flexWrap: 'wrap',
@@ -34,7 +35,7 @@ export default function ProductPage() {
             </Typography>
             <AddNewButton title="Product" formUrl={"/product-form"} />
         </Box>
-        <div style={{marginTop:"20px"}}>
+        <div style={{marginTop:"20px", width:"95%"}}>
             
 
             <Grid

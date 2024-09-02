@@ -87,6 +87,18 @@ const useClassScheduleStore = create((set) => ({
         } catch (error) {
             console.error("Error fetching class schedules", error);
         }
+    },
+    enrollMember: async (classScheduleId) => {
+        try {
+            const response = await axios.post(`${useClassScheduleStore.getState().baseURL}/class-schedule/enroll/${classScheduleId}`, {}, {
+                headers: {
+                    "Authorization": "Bearer " + useClassScheduleStore.getState().token,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error enrolling member", error);
+        }
     }
 }));
 
