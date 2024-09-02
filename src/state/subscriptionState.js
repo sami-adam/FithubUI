@@ -96,7 +96,7 @@ const useSubscriptionStore = create((set) => ({
                     "Authorization": "Bearer " + useSubscriptionStore.getState().token,
                 },
             });
-            set({ subscriptions: response.data });
+            set({ subscriptions: response.data.content, totalPages: response.data.page.totalPages, pageSize: response.data.page.size, currentPage: response.data.page.number });
         } catch (error) {
             console.error("Error searching subscriptions", error);
         }
