@@ -1,6 +1,7 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import useMemberStore from '../../state/memberState';
 import useSubscriptionStore from '../../state/subscriptionState';
+import useClassEnrollmentStore from '../../state/classEnrollment';
 import useAttachmentStore from '../../state/attachmentState';
 import { useEffect, useState } from 'react';
 import { Box, Button, CardContent, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormLabel, Input, Modal, ModalDialog, Radio, Typography } from '@mui/joy';
@@ -52,7 +53,9 @@ export default function MemberForm() {
     const navigate = useNavigate();
     
     const getMemberSubscriptions = useSubscriptionStore((state) => state.getMemberSubscriptions);
+    const getMemberClassEnrollments = useClassEnrollmentStore((state) => state.getMemberClassEnrollments);
     const [memberSubscriptionsCount, setMemberSubscriptionsCount] = useState(0);
+    const [memberClassEnrollmentsCount, setMemberClassEnrollmentsCount] = useState(0);
 
     useEffect(() => {
         if(mode === 'add'){
@@ -74,6 +77,8 @@ export default function MemberForm() {
         async function fetchData(){
             const subscriptions = await getMemberSubscriptions(id);
             setMemberSubscriptionsCount(subscriptions.length);
+            const classEnrollments = await getMemberClassEnrollments(id);
+            setMemberClassEnrollmentsCount(classEnrollments.length);
             setFetchData(false);
         }
         if(fetchData){
@@ -126,14 +131,25 @@ export default function MemberForm() {
         <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
         <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
         <div style={{ paddingTop: 16}}>
-            {member &&
-            <Button variant="soft" 
+            {member && 
+            <div style={{display:"flex", flexDirection:"row"}}>
+            <Button variant="soft"  sx={{mx: 1}}
                 startDecorator={<FaCalendarAlt/>} 
                 endDecorator={<Typography fontSize="small" >{memberSubscriptionsCount}</Typography>}
-                onClick={() => navigate(`/subscriptions/member/${member.id}`, {state: {search: member.identificationNumber}})}
+                onClick={() => navigate(`/subscriptions/member/${member.id}`)}
                 >
                     <Typography fontSize="small">{t("SUBSCRIPTIONS")}</Typography>
-            </Button>}
+            </Button>
+
+            <Button variant="soft"
+                startDecorator={<FaCalendarAlt/>}
+                endDecorator={<Typography fontSize="small" >{memberClassEnrollmentsCount}</Typography>}
+                onClick={() => navigate(`/class-enrollments/member/${member.id}`)}
+                >
+                    <Typography fontSize="small">{t("CLASS ENROLLMENTS")}</Typography>
+            </Button>
+            </div>
+            }
         </div>
         <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
             <Typography level="title-lg">

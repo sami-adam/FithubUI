@@ -90,6 +90,7 @@ function App() {
           <Route path="/class-schedule-form" element={<ClassScheduleForm/>} />
           <Route path="/class-schedules/:id" element={<ClassScheduleForm/>} />
           <Route path="/class-enrollments" element={<ClassEnrollmentPage/>} />
+          <Route path="/class-enrollments/member/:id" element={<ClassEnrollmentPage/>} />
           <Route path="/support" element={<SupportPage/>} />
           <Route path="/accounts" element={<AccountPage/>} />
           <Route path="/account-form" element={<AccountForm/>} />

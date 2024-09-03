@@ -3,10 +3,11 @@ import useClassEnrollmentStore from "../state/classEnrollment";
 import DataTable from "../components/common/DataTable";
 import DataList from "../components/common/DataList";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 export default function ClassEnrollmentPage({ defaultSearch="" }) {
     const [classEnrollments, fetchClassEnrollments] = useClassEnrollmentStore((state) => [state.classEnrollments, state.fetchClassEnrollments]);
+    const getMemberClassEnrollments = useClassEnrollmentStore((state) => state.getMemberClassEnrollments);
     const searchClassEnrollments = useClassEnrollmentStore((state) => state.searchClassEnrollments);
 
     const location = useLocation();
@@ -16,9 +17,15 @@ export default function ClassEnrollmentPage({ defaultSearch="" }) {
     const [search, setSearch] = useState(defaultSearch);
     const {t} = useTranslation();
 
+    const {id} = useParams();
     useEffect(() => {
         if (search === "" && defaultSearch === "") {
-            fetchClassEnrollments();
+            if(window.location.pathname.includes("/class-enrollments/member/")) {
+                getMemberClassEnrollments(id);
+            }
+            else {
+                fetchClassEnrollments();
+            }
         }
         if (search !== "") {
             searchClassEnrollments(search);

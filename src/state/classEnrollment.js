@@ -82,11 +82,25 @@ const useClassEnrollmentStore = create((set) => ({
                     "Authorization": "Bearer " + useClassEnrollmentStore.getState().token,
                 },
             });
+            set({ classEnrollments: response.data });
             return response.data;
         } catch (error) {
             console.error("Error searching classEnrollments", error);
         }
     },
+    getMemberClassEnrollments: async (memberId) => {
+        try {
+            const response = await axios.get(`${useClassEnrollmentStore.getState().baseURL}/class-enrollments/member/${memberId}`, {
+                headers: {
+                    "Authorization": "Bearer " + useClassEnrollmentStore.getState().token,
+                },
+            });
+            set({ classEnrollments: response.data });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching member classEnrollments", error);
+        }
+    }
 }));
 
 export default useClassEnrollmentStore;
