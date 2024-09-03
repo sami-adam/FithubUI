@@ -65,6 +65,7 @@ function App() {
           <Route  path="/subscriptions" element={<SubscriptionPage />} />
           <Route  path="/subscription-form" element={<SubscriptionForm />} />
           <Route path="/subscriptions/:id" element={<SubscriptionForm />} />
+          <Route path="/subscriptions/member/:id" element={<SubscriptionPage />} />
           <Route path="/members" element={<MemberPage/>} />
           <Route path="/member-form" element={<MemberForm/>} />
           <Route path="/members/:id" element={<MemberForm/>} />

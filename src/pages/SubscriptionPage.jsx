@@ -3,7 +3,7 @@ import DataTable from "../components/common/DataTable";
 import useSubscriptionStore from "../state/subscriptionState";
 import useProductStore from "../state/productState";
 import DataList from "../components/common/DataList";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 export default function SubscriptionPage({ defaultSearch="" }) {
     const [subscriptions, fetchSubscriptions] = useSubscriptionStore((state) => [state.subscriptions, state.fetchSubscriptions]);
@@ -11,16 +11,22 @@ export default function SubscriptionPage({ defaultSearch="" }) {
     const searchSubscriptions = useSubscriptionStore((state) => state.searchSubscriptions);
     const exportExcel = useSubscriptionStore((state) => state.exportExcel);
     const [totalPages, pageSize, currentPage, setCurrentPage] = useSubscriptionStore((state) => [state.totalPages, state.pageSize, state.currentPage, state.setCurrentPage]);
-    
+    const getMemberSubscriptions = useSubscriptionStore((state) => state.getMemberSubscriptions);
     const location = useLocation();
 
     if (location.state && location.state.search) {
         defaultSearch = location.state.search;
     }
     const [search, setSearch] = useState(defaultSearch);
+    const { id } = useParams();
     useEffect(() => {
         if (search === "" && defaultSearch === "") {
-            fetchSubscriptions();
+            if(window.location.pathname.includes("/subscriptions/member/")) {
+                getMemberSubscriptions(id);
+            }
+            else {
+                fetchSubscriptions();
+            }
         }
         if (search !== "") {
             searchSubscriptions(search);

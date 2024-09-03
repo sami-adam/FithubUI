@@ -102,6 +102,19 @@ const useSubscriptionStore = create((set) => ({
         }
 
     },
+    getMemberSubscriptions: async (id) => {
+        try {
+            const response = await axios.get(`${useSubscriptionStore.getState().baseURL}/subscriptions/member/${id}`, {
+                headers: {
+                    "Authorization": "Bearer " + useSubscriptionStore.getState().token,
+                },
+            });
+            set({ subscriptions: response.data });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching member subscriptions", error);
+        }
+    },
     exportExcel: async (ids) => {
         try {
             const response = await axios.get(`${useSubscriptionStore.getState().baseURL}/subscriptions/excel/${ids}`, {

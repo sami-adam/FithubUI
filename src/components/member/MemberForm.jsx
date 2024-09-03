@@ -29,7 +29,6 @@ export default function MemberForm() {
     const addMember = useMemberStore((state) => state.addMember);
     const deleteMember = useMemberStore((state) => state.deleteMember);
     const fetchAttachment = useAttachmentStore((state) => state.fetchAttachment);
-    const [subscriptions, fetchSubscriptions] = useSubscriptionStore((state) => [state.subscriptions, state.fetchSubscriptions]);
     const fetchMember = useMemberStore((state) => state.fetchMember);
     const [member, setMember] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -52,7 +51,8 @@ export default function MemberForm() {
 
     const navigate = useNavigate();
     
-    const memberSubscriptions = member&&subscriptions.filter(subscription => subscription.member.id === member.id);
+    const getMemberSubscriptions = useSubscriptionStore((state) => state.getMemberSubscriptions);
+    const [memberSubscriptionsCount, setMemberSubscriptionsCount] = useState(0);
 
     useEffect(() => {
         if(mode === 'add'){
@@ -72,13 +72,14 @@ export default function MemberForm() {
             setGender(gender=>gender||member.gender);
         }
         async function fetchData(){
-            fetchSubscriptions();
+            const subscriptions = await getMemberSubscriptions(id);
+            setMemberSubscriptionsCount(subscriptions.length);
             setFetchData(false);
         }
         if(fetchData){
             fetchData();
         }
-    }, [mode, member, fetchData, fetchSubscriptions, fetchAttachment, fetchMember, id]);
+    }, [mode, member, fetchData, getMemberSubscriptions, fetchAttachment, fetchMember, id]);
 
     const handleSave = () => {
         updateMember({
@@ -128,8 +129,8 @@ export default function MemberForm() {
             {member &&
             <Button variant="soft" 
                 startDecorator={<FaCalendarAlt/>} 
-                endDecorator={<Typography fontSize="small" >{memberSubscriptions.length}</Typography>}
-                onClick={() => navigate("/subscriptions", {state: {search: member.identificationNumber}})}
+                endDecorator={<Typography fontSize="small" >{memberSubscriptionsCount}</Typography>}
+                onClick={() => navigate(`/subscriptions/member/${member.id}`, {state: {search: member.identificationNumber}})}
                 >
                     <Typography fontSize="small">{t("SUBSCRIPTIONS")}</Typography>
             </Button>}
