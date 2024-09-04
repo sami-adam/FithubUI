@@ -1,5 +1,5 @@
 // theme.js
-import { extendTheme } from '@mui/joy';
+import { colors, extendTheme } from '@mui/joy';
 import createCache from '@emotion/cache';
 import i18n from './i18n';
 import stylisRTLPlugin from 'stylis-plugin-rtl';
@@ -26,35 +26,46 @@ const theme = extendTheme({
         }
       }
     },
-    JoyAutocomplete: {
+    // JoyAutocomplete: {
+    //   styleOverrides: {
+    //     root: {
+    //       borderTop: "none",
+    //       borderLeft: "none",
+    //       borderRight: "none",
+    //       backgroundColor: "var(--palette-primary-solidBg)",
+    //     }
+    //   }
+    // },
+    // JoyInput: {
+    //   styleOverrides: {
+    //     root: {
+    //       borderTop: "none",
+    //       borderLeft: "none",
+    //       borderRight: "none",
+    //       backgroundColor: "var(--palette-primary-solidBg)",
+    //     },
+    //   },
+    // },
+    // JoySelect: {
+    //   styleOverrides: {
+    //     root: {
+    //       borderTop: "none",
+    //       borderLeft: "none",
+    //       borderRight: "none",
+    //       backgroundColor: "var(--palette-primary-solidBg)",
+    //     },
+    //   },
+    // },
+    JoyButton: {
       styleOverrides: {
         root: {
-          borderTop: "none",
-          borderLeft: "none",
-          borderRight: "none",
+          boxShadow: "0px 0px 1px 1px rgba(0, 0, 0, 0.1)",
           backgroundColor: "var(--palette-primary-solidBg)",
+          ':hover': {
+            transition: "ease-in-out 0.2s",
+          },
         }
       }
-    },
-    JoyInput: {
-      styleOverrides: {
-        root: {
-          borderTop: "none",
-          borderLeft: "none",
-          borderRight: "none",
-          backgroundColor: "var(--palette-primary-solidBg)",
-        },
-      },
-    },
-    JoySelect: {
-      styleOverrides: {
-        root: {
-          borderTop: "none",
-          borderLeft: "none",
-          borderRight: "none",
-          backgroundColor: "var(--palette-primary-solidBg)",
-        },
-      },
     },
     JoyFormLabel: {
       styleOverrides: {

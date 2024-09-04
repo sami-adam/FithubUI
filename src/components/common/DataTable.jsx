@@ -183,7 +183,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
   return (
     <>
     {(loading && <LoadingPage />) ||
-    <React.Fragment>
+    <div style={{ width: "90%", justifyContent: "center"}}>
         {error && <SnackbarCustom type={error.type} message={error.message} open={openError} setOpen={setOpenError} />}
         <Box
             sx={{
@@ -274,27 +274,28 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
         className="DataTableContainer"
         variant="outlined"
         sx={{
-          display: { xs: 'none', sm: 'initial' },
+          display: { xs: 'none', sm: 'flex' },
           width: '100%',
           borderRadius: 'sm',
           flexShrink: 1,
           overflow: 'auto',
           minHeight: 0,
           mx: 1,
-          backgroundColor: "blue"
         }}
       >
-        <Table
+        <Table className="table-auto table-striped"
           aria-labelledby="tableTitle"
           stickyHeader
           hoverRow 
-          //variant="outlined"
+          variant="outlined"
           sx={{
             '--TableCell-headBackground': "paper",//'var(--joy-palette-background-level1)',
             '--Table-headerUnderlineThickness': '1px',
             '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)',
             '--TableCell-paddingY': '4px',
             '--TableCell-paddingX': '8px',
+            paddingBottom: 2,
+            borderColor: 'divider',
           }}
         >
           <colgroup>
@@ -309,6 +310,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                 <Button onClick={handleExport} size="sm" variant="contained" color="primary" 
                   startDecorator={<SiMicrosoftexcel fontSize={18} color={primaryColor}/>} sx={{
                     ':hover': {backgroundColor: "primary", opacity: 0.8},
+                    mx:1, my:1
                     }}>
                     <Typography level="body-sm">{t("Export")}</Typography>
                 </Button>
@@ -392,7 +394,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                     {column.special === "status" ? <StatusChip status={row[column.name]} /> :
                     column.special === "person"? <PersonBox person={{"name": row.name, "email": row.email, "image": row.image}}/>: 
                     column.special === "amount"? <Typography level="body-sm">{row[column.name] && row[column.name].toLocaleString()} {t("SAR")}</Typography>:
-                    column.name === "id" || column === columns[0] ? <Typography level="body-sm"><Button variant='outlined' sx={{ border: "none" }} onClick={()=>navigate(`${window.location.pathname}/${row.objectId}`)}>{row[column.name]}</Button></Typography>:
+                    column.name === "id" || column === columns[0] ? <Typography level="body-sm"><Button variant='outlined' sx={{ border: "none", marginTop:1 }} onClick={()=>navigate(`${window.location.pathname}/${row.objectId}`)}>{row[column.name]}</Button></Typography>:
                     <Typography level="body-sm">{row[column.name]}</Typography>}
                 </td>))}
                 
@@ -458,7 +460,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           {t("Next")}
         </Button>
       </Box>
-    </React.Fragment>
+    </div>
     }
     </>
   );
@@ -466,8 +468,20 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
 
 function StatusChip({ status }) {
   const {t} = useTranslation();
+  const colors = {
+    NEW: 'neutral',
+    DRAFT: 'neutral',
+    PAID: 'primary',
+    POSTED: 'primary',
+    ACTIVE: 'success',
+    SENT: 'success',
+    EXPIRED: 'danger',
+    FAILED: 'danger',
+    CANCELLED: 'warning',
+    EXPIRING: 'warning',
+    };
     return (
-        <Chip
+        <Chip className="border-2 shadow-sm" sx={{ borderColor: colors[status]}}
             variant="soft"
             size="sm"
             startDecorator={

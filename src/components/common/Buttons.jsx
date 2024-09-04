@@ -9,7 +9,7 @@ export default function AddNewButton({ title, formUrl }){
     const navogate = useNavigate();
     const {t} = useTranslation();
     return (
-        <Button variant="solid"
+        <Button variant="solid" className='shadow-inner'
             sx={{ backgroundColor: theme.colorSchemes.dark.palette.common.black, color: theme.palette.primary.light, 
                 '&:hover': { backgroundColor: theme.palette.primary.dark },
                 '&:active': { backgroundColor: theme.palette.primary.dark, opacity: 0.8 },

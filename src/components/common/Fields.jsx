@@ -176,13 +176,18 @@ export function ManyToOneField({options=[], optionsFields=["name"], value, setVa
       onClick={() => console.log('clicked')} 
       sx={{ display: mode === 'view' ? 'none' : 'flex' }}
         />
-    <Link component={RouterLink} to={`${url}/${value?.id}`} 
+    <Link component={RouterLink} to={`${url}/${value?.id}`} variant='outlined' style={{ color: "primary.solidBg"}}
     sx={{ textDecoration: 'none', display: mode === 'view' ? 'flex' : 'none', 
-    boxShadow: "1px 1px 1px 1px rgba(0, 0, 0, 0.1)", px:1, borderRadius:5,
+    //boxShadow: "1px 1px 1px 1px rgba(0, 0, 0, 0.1)", px:1, borderRadius:5,
+    px: 2, py: 0.5,
+    borderColor: "divider",
+    borderRadius: 8,
     height: 35, alignItems: 'center',
+    backgroundColor: 'background.level0',
+    color: 'primary.solidBg',
     '&:hover': {
       backgroundColor: 'background.level1',
-      color: 'primary',
+      color: 'primary.solidBg',
       textDecoration: 'none',
     }
     }}>

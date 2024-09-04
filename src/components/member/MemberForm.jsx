@@ -76,9 +76,9 @@ export default function MemberForm() {
         }
         async function fetchData(){
             const subscriptions = await getMemberSubscriptions(id);
-            setMemberSubscriptionsCount(subscriptions.length);
+            setMemberSubscriptionsCount(subscriptions && subscriptions.length);
             const classEnrollments = await getMemberClassEnrollments(id);
-            setMemberClassEnrollmentsCount(classEnrollments.length);
+            setMemberClassEnrollmentsCount(classEnrollments && classEnrollments.length);
             setFetchData(false);
         }
         if(fetchData){
@@ -133,7 +133,7 @@ export default function MemberForm() {
         <div style={{ paddingTop: 16}}>
             {member && 
             <div style={{display:"flex", flexDirection:"row"}}>
-            <Button variant="soft"  sx={{mx: 1}}
+            <Button variant="soft"  sx={{mx: 1}} className='shadow-inner'
                 startDecorator={<FaCalendarAlt/>} 
                 endDecorator={<Typography fontSize="small" >{memberSubscriptionsCount}</Typography>}
                 onClick={() => navigate(`/subscriptions/member/${member.id}`)}
@@ -141,7 +141,7 @@ export default function MemberForm() {
                     <Typography fontSize="small">{t("SUBSCRIPTIONS")}</Typography>
             </Button>
 
-            <Button variant="soft"
+            <Button variant="soft" className='shadow-inner' sx={{mx: 1}}
                 startDecorator={<FaCalendarAlt/>}
                 endDecorator={<Typography fontSize="small" >{memberClassEnrollmentsCount}</Typography>}
                 onClick={() => navigate(`/class-enrollments/member/${member.id}`)}
@@ -156,12 +156,12 @@ export default function MemberForm() {
                 {t("Member Information")}
             </Typography>
             <div style={{ display: "flex", flexDirection:"row"}}>
-                <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-                <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
+                <Button variant='soft' className='shadow-inner' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
+                <Button variant='soft' className='shadow-inner' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
                 <Box flexGrow={1} width={4}/>
-                <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-                <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-                <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
+                <Button variant='soft' className='shadow-inner' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
+                <Button variant='soft' className='shadow-inner' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+                <Button variant='soft' className='shadow-inner' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
             </div>
         </div>
         {/* <Divider inset="none" /> */}
