@@ -281,6 +281,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           overflow: 'auto',
           minHeight: 0,
           mx: 1,
+          backgroundColor: "blue"
         }}
       >
         <Table
