@@ -13,10 +13,10 @@ const LoadingPage = () => {
         left: "50%",
       }}
     >
-      <LinearProgress />
-      <Typography variant="h5" sx={{ mt: 2 }}>
+      <LinearProgress sx={{ width: 80}}/>
+      {/* <Typography variant="h5" sx={{ mt: 2 }}>
         {t("Loading...")}
-      </Typography>
+      </Typography> */}
     </Box>
   );
 };

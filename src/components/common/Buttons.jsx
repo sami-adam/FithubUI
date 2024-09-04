@@ -25,7 +25,18 @@ export default function AddNewButton({ title, formUrl }){
 export function FormBackButton(){
     return (
         <>
-        <Button variant='soft' sx={{ position: "absolute", top:1, right:1}} onClick={() => window.history.back()}>
+        <Button variant='soft' sx={{ position: "absolute", top:1, right:1, margin:0.5}} onClick={() => window.history.back()}>
+            <ArrowBackIcon sx={{ fontSize:24 }}/>
+        </Button>
+        <br/>
+        </>
+    )
+}
+
+export function TableBackButton(){
+    return (
+        <>
+        <Button variant='soft' sx={{ position: "absolute", top:1, right:1, margin:0.5}} onClick={() => window.history.back()}>
             <ArrowBackIcon sx={{ fontSize:24 }}/>
         </Button>
         <br/>

@@ -36,7 +36,7 @@ import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import SyncDisabledIcon from '@mui/icons-material/SyncDisabled';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 //import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-import AddNewButton from './Buttons';
+import AddNewButton, { TableBackButton } from './Buttons';
 import { useNavigate } from 'react-router-dom';
 //import { useTranslation } from 'react-i18next';
 //import { IoInformationCircle } from "react-icons/io5";
@@ -283,6 +283,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
           mx: 1,
         }}
       >
+        <TableBackButton />
         <Table className="table-auto table-striped"
           aria-labelledby="tableTitle"
           stickyHeader
