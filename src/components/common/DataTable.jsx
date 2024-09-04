@@ -505,7 +505,7 @@ function StatusChip({ status }) {
 function PersonBox({person}){
     return (
     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', wordBreak:"break-all", width:190 }}>
-    <Avatar size="sm">{(person.image && <img src={person.image} alt="Profile" style={{width: 30, height: 30, borderRadius: 50}}/>) ||person.name[0]}</Avatar>
+    <Avatar size="sm" className="w-12 h-12 rounded-full border-2 border-white shadow-lg">{(person.image && <img className='w-12 h-12 rounded-full border-2 border-white shadow-lg' src={person.image} alt="Profile" style={{width: 30, height: 30, borderRadius: 50}}/>) ||person.name[0]}</Avatar>
     <div>
         <Typography level="body-xs">{person.name}</Typography>
         <a onClick={(e) => e.stopPropagation()} href={`mailto:${person.email}`}>
