@@ -183,7 +183,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
   return (
     <>
     {(loading && <LoadingPage />) ||
-    <div style={{ width: "90%", justifyContent: "center"}}>
+    <div style={{ width: "95%", justifyContent: "center"}}>
         {error && <SnackbarCustom type={error.type} message={error.message} open={openError} setOpen={setOpenError} />}
         <Box
             sx={{
