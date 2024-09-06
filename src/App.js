@@ -42,6 +42,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import SignUpPage from './pages/SignUpPage';
 import UserCreatedPage from './pages/UserCreatedPage';
 import ClassEnrollmentPage from './pages/ClassEnrollmentPage';
+import Dashboard from './pages/Dashboard';
 //const joyTheme = extendJoyTheme();
 
 
@@ -102,6 +103,7 @@ function App() {
           <Route path="/journals" element={<JournalPage/>} />
           <Route path="/journal-form" element={<JournalForm/>} />
           <Route path="/journals/:id" element={<JournalForm/>} />
+          <Route path="/dashboard" element={<Dashboard/>} />
           <Route path="/notifications" element={<NotificationPage/>} />
           <Route path="/404" element={<NotFoundPage/>} />
         </Routes>

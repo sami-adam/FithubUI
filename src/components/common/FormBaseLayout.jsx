@@ -19,16 +19,36 @@ export default function FormBaseLayout({ children, loading=false }) {
                 overflow: 'auto',
                 resize: 'vertical',
                 width: { xs: "90%", md: "70%" },
-                mt: { xs: 10, md: 4 },
-                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.1)",
+                mt: { xs: 10, md: 1 },
+                boxShadow: "0px 0px 2px 0px rgba(0,0,0,0.1)",
                 backgroundColor: theme.palette.mode == "light" ? "white" : "black",
                 
                 }}>
-                <FormBackButton/>
                 {children}
             </Card>
             }
         </Box>
 
+    )
+}
+
+export function FormHeader({ children }) {
+    return (
+        <Box
+        sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mx: 'auto',
+            px: 1,
+            borderBottom: '1px solid',
+            border: "none",
+            width: { xs: "90%", md: "70%" },
+            mt: { xs: 10, md: 4 },
+            }}>
+            <FormBackButton/>
+            {children}
+        </Box>
     )
 }
