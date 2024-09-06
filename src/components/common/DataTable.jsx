@@ -47,6 +47,7 @@ import { SnackbarCustom } from './Common';
 import SyncProblemIcon from '@mui/icons-material/SyncProblem';
 import { useTranslation } from 'react-i18next';
 import LoadingPage from './LaodingPage';
+import NoRecords from './NoRecords';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -370,6 +371,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
               
             </tr>
           </thead>
+          {rows.length > 0 &&
           <tbody>
             {stableSort(rows, getComparator(order, sortField)).map((row) => (
               <tr key={row.id}>
@@ -410,6 +412,15 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
               </tr>
             ))}
           </tbody>
+          ||
+          <tbody>
+            <tr>
+              <td colSpan={columns.length + 2}>
+                <NoRecords />
+              </td>
+            </tr>
+          </tbody>
+          }
         </Table>
       </Sheet>
       <Box

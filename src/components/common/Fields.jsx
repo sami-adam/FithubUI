@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Autocomplete, Input } from '@mui/joy';
+import { Autocomplete, Input, useTheme } from '@mui/joy';
 import { DatePicker } from '@mui/x-date-pickers';
 import { FaRegCalendarAlt } from "react-icons/fa";
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
@@ -166,6 +166,7 @@ export function OneToManyField({ defaultItems = [{ id: Date.now(), name: '' }] }
 };
 
 export function ManyToOneField({options=[], optionsFields=["name"], value, setValue, mode, url}){
+  const theme = useTheme();
   return (
     <>
     <Autocomplete 
@@ -183,7 +184,7 @@ export function ManyToOneField({options=[], optionsFields=["name"], value, setVa
     borderColor: "divider",
     borderRadius: 8,
     height: 35, alignItems: 'center',
-    backgroundColor: 'background.level0',
+    backgroundColor: theme.palette.mode === 'light' ? '#fbfcfe' : '#0b0d0f',
     color: 'primary.solidBg',
     '&:hover': {
       backgroundColor: 'background.level1',
@@ -191,7 +192,7 @@ export function ManyToOneField({options=[], optionsFields=["name"], value, setVa
       textDecoration: 'none',
     }
     }}>
-      <Typography sx={{ display: mode === 'view' ? 'flex' : 'none'}} color='primary'>{value ? optionsFields.map(field => value[field]).join(' ') : ""}</Typography>
+      <Typography variant='soft' sx={{ display: mode === 'view' ? 'flex' : 'none'}} color='gray'>{value ? optionsFields.map(field => value[field]).join(' ') : ""}</Typography>
     </Link>
     </>
   );

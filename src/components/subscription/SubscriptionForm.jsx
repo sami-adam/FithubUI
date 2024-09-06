@@ -30,7 +30,7 @@ import Grid3x3Icon from '@mui/icons-material/Grid3x3';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import { FormBackButton } from '../common/Buttons';
-import FormBaseLayout from '../common/FormBaseLayout';
+import FormBaseLayout, { FormFooter, FormHeader } from '../common/FormBaseLayout';
 import { FaMoneyBills } from "react-icons/fa6";
 
 export default function SubscriptionForm() {
@@ -178,9 +178,9 @@ export default function SubscriptionForm() {
   }
 
   return (
-    <FormBaseLayout loading={loading}>
-      <br/>
-      <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />
+    <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
+    <FormHeader>
+    <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />
       <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
       {/* <Divider inset="none" /> */}
       <div style={{paddingTop:16}}>
@@ -211,6 +211,8 @@ export default function SubscriptionForm() {
         
       </div>
       {/* <Divider inset="none" /> */}
+    </FormHeader>
+    <FormBaseLayout loading={loading}>
       <CardContent
         sx={{
           display: 'grid',
@@ -279,72 +281,9 @@ export default function SubscriptionForm() {
           </LocalizationProvider>
         </FormControl>
 
-        <Box height={8} sx={{ gridColumn: '1/-1' }} />
         {/* <Divider sx={{ gridColumn: '1/-1' }} /> */}
-        <br/>
-        <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <Table variant="plain">
-            <tbody>
-            <tr>
-              <th style={{ width:80 }}>{t("Subtotal")}</th>
-              <td style={{ border: "none" }}>
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
-                  <Typography variant="body2" paddingInlineEnd={1.5}>{t("SAR")}</Typography>
-                  <Typography variant="body2">{subtotal&&subtotal.toLocaleString()}</Typography>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th>{t("Taxes")}</th>
-              <td style={{ border: "none" }}>
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
-                    <Typography variant="body2" paddingInlineEnd={1.5}>{t("SAR")}</Typography>
-                    <Typography variant="body2">{tax}</Typography>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th>{t("Discount")}</th>
-              <td style={{ border: "none" }}>
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
-                    <Typography variant="body2" paddingInlineEnd={1.5}>{t("SAR")}</Typography>
-                    <NumericFormat
-                      value={discount}
-                      thousandSeparator
-                      customInput={Input} 
-                      sx={{ border: 'none' }}
-                      onChange={(e) => setDiscount(e.target.value.replace(',', ''))}
-                      disabled={mode === 'view'}
-                    />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th>{t("Total")}</th>
-              <td style={{ border: "none" }}>
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center"}}>
-                    <Typography variant="body2" paddingInlineEnd={1.5}>{t("SAR")}</Typography>
-                    <Typography variant="body2">{total&&total.toLocaleString()}</Typography>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={2}>
-              <Button variant='outlined' color='primary' sx={{ borderColor: "divider", display: (mode == 'add' || transaction)? "none": "flex" }} startDecorator={<FaMoneyBills fontSize={18}/>} onClick={handelAccountTransactionCreation}>{t("Generate Transaction")}</Button>
-              <div style={{ display:"flex", flexDirection: "row" }}>
-                <Typography variant="body2">{t("Transaction")}</Typography>
-                <Box width={"4%"}/>
-                <Link to={`/transactions/${transaction && transaction.id}`} style={{ textDecoration: 'none', display: transaction ? "flex": "none"}}>
-                  <Typography sx={{ display: transaction ? "flex": "none", fontWeight: "bold"}}> {transaction && transaction.reference}</Typography>
-                </Link>
-              </div>
-              </td>
-            </tr>
-            </tbody>
-          </Table>
-        </FormControl>
-
-        <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
+        
+        {/* <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
             <Table>
               <tbody>
                 <tr>
@@ -354,8 +293,65 @@ export default function SubscriptionForm() {
             </Table>
         </FormControl>
       
-        <Box height={8} sx={{ gridColumn: '1/-1' }} />
+        <Box height={8} sx={{ gridColumn: '1/-1' }} /> */}
       </CardContent>
     </FormBaseLayout>
+    <FormFooter>
+    <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
+    <Table variant="outlined" sx={{ borderRadius: 8, borderColor: "divider", width: '100%', mt: 2 }}>
+        <tbody>
+          {[
+            { label: "Subtotal", value: subtotal && subtotal.toLocaleString() },
+            { label: "Taxes", value: tax },
+            { label: "Discount", component: (
+              <NumericFormat
+                value={discount}
+                thousandSeparator
+                customInput={Input} 
+                sx={{fontSize: 'inherit' }}
+                onChange={(e) => setDiscount(e.target.value.replace(',', ''))}
+                disabled={mode === 'view'}
+              />
+            )},
+            { label: "Total", value: total && total.toLocaleString() }
+          ].map(({ label, value, component }, index) => (
+            <tr key={index}>
+              <td style={{ width: 120, padding: '8px 16px', border: "none"}}>{t(label)}</td>
+              <td style={{ border: "none", padding: '8px 16px' }}>
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                  <Typography variant="body2" sx={{ paddingInlineEnd: 1.5 }}>{t("SAR")}</Typography>
+                  {component || <Typography variant="body2">{value}</Typography>}
+                </div>
+              </td>
+            </tr>
+          ))}
+          <tr>
+            <td colSpan={2} style={{ padding: '16px 16px', textAlign: 'center' }}>
+              <Button
+                variant='outlined'
+                color='primary'
+                sx={{ borderColor: "divider", display: (mode === 'add' || transaction) ? "none" : "flex" }}
+                startDecorator={<FaMoneyBills fontSize={18} />}
+                onClick={handelAccountTransactionCreation}
+              >
+                {t("Generate Transaction")}
+              </Button>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: 'center', alignItems: 'center', marginTop: '8px' }}>
+                <Typography variant="body2">{t("Transaction")}</Typography>
+                <Box width={"4%"} />
+                {transaction && (
+                  <Link to={`/transactions/${transaction.id}`} style={{ textDecoration: 'none' }}>
+                    <Typography sx={{ fontWeight: "bold", marginLeft: 1 }}>{transaction.reference}</Typography>
+                  </Link>
+                )}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </Table>
+
+        </FormControl>
+    </FormFooter>
+    </div>
   );
 }
