@@ -37,9 +37,9 @@ export function FormHeader({ children }) {
         <Box
         sx={{
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: 'column',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            //alignItems: 'center',
             mx: 'auto',
             px: 1,
             borderBottom: '1px solid',

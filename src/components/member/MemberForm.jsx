@@ -19,7 +19,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import FormBaseLayout from '../common/FormBaseLayout';
+import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -126,45 +126,48 @@ export default function MemberForm() {
     }
 
     return (
-        <FormBaseLayout loading={loading}>
-        {/* <Divider inset="none" /> */}
-        <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
-        <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-        <div style={{ paddingTop: 16}}>
-            {member && 
-            <div style={{display:"flex", flexDirection:"row"}}>
-            <Button variant="soft"  sx={{mx: 1}} className='shadow-inner'
-                startDecorator={<FaCalendarAlt/>} 
-                endDecorator={<Typography fontSize="small" >{memberSubscriptionsCount}</Typography>}
-                onClick={() => navigate(`/subscriptions/member/${member.id}`)}
-                >
-                    <Typography fontSize="small">{t("SUBSCRIPTIONS")}</Typography>
-            </Button>
+        <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
+        <FormHeader>
+            {/* <Divider inset="none" /> */}
+            <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
+            <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
+            <div style={{ paddingTop: 16}}>
+                {member && 
+                <div style={{display:"flex", flexDirection:"row"}}>
+                <Button variant="soft"  sx={{mx: 1}} className='shadow-inner'
+                    startDecorator={<FaCalendarAlt/>} 
+                    endDecorator={<Typography fontSize="small" >{memberSubscriptionsCount}</Typography>}
+                    onClick={() => navigate(`/subscriptions/member/${member.id}`)}
+                    >
+                        <Typography fontSize="small">{t("SUBSCRIPTIONS")}</Typography>
+                </Button>
 
-            <Button variant="soft" className='shadow-inner' sx={{mx: 1}}
-                startDecorator={<FaCalendarAlt/>}
-                endDecorator={<Typography fontSize="small" >{memberClassEnrollmentsCount}</Typography>}
-                onClick={() => navigate(`/class-enrollments/member/${member.id}`)}
-                >
-                    <Typography fontSize="small">{t("CLASS ENROLLMENTS")}</Typography>
-            </Button>
+                <Button variant="soft" className='shadow-inner' sx={{mx: 1}}
+                    startDecorator={<FaCalendarAlt/>}
+                    endDecorator={<Typography fontSize="small" >{memberClassEnrollmentsCount}</Typography>}
+                    onClick={() => navigate(`/class-enrollments/member/${member.id}`)}
+                    >
+                        <Typography fontSize="small">{t("CLASS ENROLLMENTS")}</Typography>
+                </Button>
+                </div>
+                }
             </div>
-            }
-        </div>
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
-            <Typography level="title-lg">
-                {t("Member Information")}
-            </Typography>
-            <div style={{ display: "flex", flexDirection:"row"}}>
-                <Button variant='soft' className='shadow-inner' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-                <Button variant='soft' className='shadow-inner' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-                <Box flexGrow={1} width={4}/>
-                <Button variant='soft' className='shadow-inner' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-                <Button variant='soft' className='shadow-inner' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-                <Button variant='soft' className='shadow-inner' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
+            <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
+                <Typography level="title-lg">
+                    {t("Member Information")}
+                </Typography>
+                <div style={{ display: "flex", flexDirection:"row"}}>
+                    <Button variant='soft' className='shadow-inner' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
+                    <Button variant='soft' className='shadow-inner' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
+                    <Box flexGrow={1} width={4}/>
+                    <Button variant='soft' className='shadow-inner' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
+                    <Button variant='soft' className='shadow-inner' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+                    <Button variant='soft' className='shadow-inner' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
+                </div>
             </div>
-        </div>
-        {/* <Divider inset="none" /> */}
+            {/* <Divider inset="none" /> */}
+        </FormHeader>
+        <FormBaseLayout loading={loading}>
         <CardContent
             sx={{
             display: 'grid',
@@ -232,6 +235,7 @@ export default function MemberForm() {
             </>
             }
         </FormBaseLayout>
+        </div>
     )
 
 }
