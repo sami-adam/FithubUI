@@ -47,6 +47,7 @@ export function FormHeader({ children, loading=false }) {
                 //alignItems: 'center',
                 mx: 'auto',
                 px: 1,
+                pb: 1,
                 borderBottom: '1px solid',
                 border: "none",
                 width: { xs: "90%", md: "70%" },

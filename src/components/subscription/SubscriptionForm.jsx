@@ -191,7 +191,7 @@ export default function SubscriptionForm() {
       <FormBackButton/>
       <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
         <div style={{display:"flex", flexDirection:"row"}}>
-          <Typography level="title-md" >
+          <Typography level="title-md" sx={{ fontWeight: "bold", color: "primary"}}>
           {(subscription&&subscription.reference)|| t("New Subscription")}
           </Typography>
           {subscription && 
