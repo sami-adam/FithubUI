@@ -127,7 +127,7 @@ export default function MemberForm() {
 
     return (
         <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-        <FormHeader>
+        <FormHeader loading={loading}>
             {/* <Divider inset="none" /> */}
             <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
             <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />

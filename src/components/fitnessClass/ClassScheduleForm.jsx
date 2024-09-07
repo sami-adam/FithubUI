@@ -16,7 +16,7 @@ import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
 import EventIcon from '@mui/icons-material/Event';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import FormBaseLayout from '../common/FormBaseLayout';
+import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
 import { ManyToOneField } from '../common/Fields';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 
@@ -127,35 +127,39 @@ export default function ClassScheduleForm() {
     }
 
     return (
+      <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
+        <FormHeader loading={loading}>
+        <HorozontalStepper stages={stages} currentStage={(stages.indexOf(classSchedule&&classSchedule.status)||0)} />
+        <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
+        {/* <Divider inset="none" /> */}
+        <Button variant='soft' onClick={handleEnroll} startDecorator={<LibraryAddIcon />}
+        sx={{
+          display: classSchedule && classSchedule.status === 'NEW'? 'flex': 'none',
+          width: '10%',
+          mt: 4
+          }}>
+          {t("ENROLL")}
+        </Button>
+        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
+          <div style={{display:"flex", flexDirection:"row"}}>
+            <Typography level="title-md">
+            {(classSchedule&&classSchedule.reference)|| t("New Class Schedule")}
+            </Typography>
+          
+          </div>
+          <div style={{ display: "flex", flexDirection:"row"}}>
+            <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
+            <Button variant='soft' startDecorator={<BsSave fontSize={20}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
+            <Box flexGrow={1} width={4}/>
+            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
+            <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view' && classSchedule? 'none': 'none'}}>{t("DELETE")}</Button>
+          </div>
+          
+        </div>
+        {/* <Divider inset="none" /> */}
+        </FormHeader>
       <FormBaseLayout loading={loading}>
-      <HorozontalStepper stages={stages} currentStage={(stages.indexOf(classSchedule&&classSchedule.status)||0)} />
-      <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
-      {/* <Divider inset="none" /> */}
-      <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
-        <div style={{display:"flex", flexDirection:"row"}}>
-          <Typography level="title-md">
-          {(classSchedule&&classSchedule.reference)|| t("New Class Schedule")}
-          </Typography>
-        
-        </div>
-        <div style={{ display: "flex", flexDirection:"row"}}>
-          <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-          <Button variant='soft' startDecorator={<BsSave fontSize={20}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-          <Box flexGrow={1} width={4}/>
-          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-          <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view' && classSchedule? 'none': 'none'}}>{t("DELETE")}</Button>
-        </div>
-        
-      </div>
-      {/* <Divider inset="none" /> */}
-      <Button variant='soft' onClick={handleEnroll} startDecorator={<LibraryAddIcon />}
-      sx={{
-        display: mode === 'view' && classSchedule && classSchedule.status === 'NEW'? 'flex': 'none',
-        width: '10%',
-        }}>
-        {t("ENROLL")}
-      </Button>
       <CardContent
         sx={{
           display: 'grid',
@@ -239,6 +243,7 @@ export default function ClassScheduleForm() {
         </CardContent>
 
       </FormBaseLayout>
+      </div>
     );
 
 }

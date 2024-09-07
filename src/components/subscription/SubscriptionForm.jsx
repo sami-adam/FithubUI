@@ -179,7 +179,7 @@ export default function SubscriptionForm() {
 
   return (
     <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-    <FormHeader>
+    <FormHeader loading={loading}>
     <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />
       <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
       {/* <Divider inset="none" /> */}
@@ -296,7 +296,7 @@ export default function SubscriptionForm() {
         <Box height={8} sx={{ gridColumn: '1/-1' }} /> */}
       </CardContent>
     </FormBaseLayout>
-    <FormFooter>
+    <FormFooter loading={loading}>
     <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
     <Table variant="outlined" sx={{ borderRadius: 8, borderColor: "divider", width: '100%', mt: 2 }}>
         <tbody>

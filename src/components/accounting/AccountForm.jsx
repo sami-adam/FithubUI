@@ -9,7 +9,7 @@ import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
 import { SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
-import FormBaseLayout from "../common/FormBaseLayout";
+import FormBaseLayout, { FormHeader } from "../common/FormBaseLayout";
 
 
 export default function AccountForm() {
@@ -93,23 +93,26 @@ export default function AccountForm() {
     }
 
     return (
-      <FormBaseLayout loading={loading}>
-      {/* <Divider inset="none" /> */}
-      <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-      <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-        <Typography level="title-lg" startDecorator={<BiNews />}>
-            {t("Account Information")}
-        </Typography>
-        <div style={{ display: "flex", flexDirection:"row"}}>
-          <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-          <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-          <Box flexGrow={1} width={4}/>
-          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-          <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
+      <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
+      <FormHeader loading={loading}>
+        {/* <Divider inset="none" /> */}
+        <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
+        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
+          <Typography level="title-lg" startDecorator={<BiNews />}>
+              {t("Account Information")}
+          </Typography>
+          <div style={{ display: "flex", flexDirection:"row"}}>
+            <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
+            <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
+            <Box flexGrow={1} width={4}/>
+            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
+            <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
+          </div>
         </div>
-      </div>
-      {/* <Divider inset="none" /> */}
+        {/* <Divider inset="none" /> */}
+      </FormHeader>
+      <FormBaseLayout loading={loading}>
       <CardContent
         sx={{
           display: 'grid',
@@ -147,5 +150,6 @@ export default function AccountForm() {
         </CardContent>
         <Box height={8} sx={{ gridColumn: '1/-1' }} />
         </FormBaseLayout>
+      </div>
     )
 }
