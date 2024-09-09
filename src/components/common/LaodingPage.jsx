@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { LinearProgress } from '@mui/joy';
+import { LinearProgress, CircularProgress } from '@mui/joy';
 
 const LoadingPage = () => {
   const { t } = useTranslation();
@@ -22,3 +22,20 @@ const LoadingPage = () => {
 };
 
 export default LoadingPage;
+
+
+const CircularLoadingPage = () => {
+  return (
+    <Box
+      sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+      }}
+    >
+      <CircularProgress sx={{ width: 80}}/>
+    </Box>
+  );
+}
+
+export { CircularLoadingPage };

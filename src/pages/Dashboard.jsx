@@ -1,84 +1,43 @@
+import Chart from "chart.js/auto";
+import { CategoryScale } from "chart.js";
+import { Data } from "../utils/Data";
 import { useEffect, useState } from "react";
-import { PieChart } from "../components/dashboard/PieCharts";
+import PieChart from "../components/dashboard/PieChart";
+import { BarChart } from "../components/dashboard/BarChart";
 import useDashboardStore from "../state/dashboardState";
-import { Box, Grid, Typography } from "@mui/joy";
+import { Box, Card, Grid, Typography } from "@mui/joy";
 import { useTranslation } from "react-i18next";
+import LoadingPage, { CircularLoadingPage } from "../components/common/LaodingPage";
 
+Chart.register(CategoryScale);
 export default function Dashboard() {
-    const getSubscriptionsByProduct = useDashboardStore((state) => state.getSubscriptionsByProduct);
-    const [subscriptionsByProduct, setSubscriptionsByProduct] = useState([["Product", "Subscriptions"]]);
-    const [fetchData, setFetchData] = useState(true);
-    const {t} = useTranslation();
+    const [chartData, setChartData] = useState({
+        labels: Data.map((data) => data.year), 
+        datasets: [
+          {
+            label: "Users Gained ",
+            data: Data.map((data) => data.userGain),
+            backgroundColor: [
+              "rgba(75,192,192,1)",
+              "#ecf0f1",
+              "#50AF95",
+              "#f3ba2f",
+              "#2a71d0"
+            ],
+            borderColor: "black",
+            borderWidth: 2
+          }
+        ]
+      });
 
-    useEffect(() => {
-        async function fetchData() {
-            const data = await getSubscriptionsByProduct();
-            var localSubscriptionData = [["Product", "Subscriptions"]];
-            for(var productId in data) {
-                var nameSplit = data[productId].name.split(" ");
-                localSubscriptionData.push([nameSplit[1] + " " + nameSplit[2], data[productId].subscriptionCount]);
-            }
-            setSubscriptionsByProduct(localSubscriptionData);
-        }
-        if (fetchData) {
-            fetchData();
-            setFetchData(false);
-        }
-    }, [getSubscriptionsByProduct, fetchData]);
-    const options = { legend: 'none', pieSliceText: 'label', title: "Subscriptions By Product"};
     return (
-        <div style={{paddingInlineStart:5, width:"100%"}}>
-        <Box
-            sx={{
-                display: 'flex',
-                mb: 1,
-                gap: 1,
-                px: 1,
-                flexDirection: { xs: 'column', sm: 'row' },
-                alignItems: { xs: 'start', sm: 'center' },
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
-                pt: { xs: 8, sm: 5 },
-                pl: { xs: 6, sm: 8 },
-            }}
-            >
-            <Typography level="h2" component="h1">
-                {t("Subscription Types")}
-            </Typography>
-        </Box>
-        <div style={{marginTop:"20px", width:"95%"}}>
-            
-
-            <Grid
-                container
-                spacing={{ xs: 1, md: 1 }}
-                columns={{ xs: 2, sm: 8, md: 16 }}
-                sx={{ flexGrow: 1 , pl:{xs:8, md:"auto"}}}>
-                    <Grid xs={2} sm={4} md={4}>
-                        <Box sx={{display: "flex", justifyContent: "center", backgroundColor: "gray"}}>
-                            <PieChart data={subscriptionsByProduct} options={options} width="100%" height="300px" />
-                        </Box>
-                    </Grid>
-
-                    <Grid xs={2} sm={4} md={4}>
-                        <Box sx={{display: "flex", justifyContent: "center", backgroundColor: "gray"}}>
-                            <PieChart data={subscriptionsByProduct} options={options} width="100%" height="300px" />
-                        </Box>
-                    </Grid>
-
-                    <Grid xs={2} sm={4} md={4}>
-                        <Box sx={{display: "flex", justifyContent: "center", backgroundColor: "gray"}}>
-                            <PieChart data={subscriptionsByProduct} options={options} width="100%" height="300px" />
-                        </Box>
-                    </Grid>
-
-                    <Grid xs={2} sm={4} md={4}>
-                        <Box sx={{display: "flex", justifyContent: "center", backgroundColor: "gray"}}>
-                            <PieChart data={subscriptionsByProduct} options={options} width="100%" height="300px" />
-                        </Box>
-                    </Grid>
-            </Grid>
-        </div>
+        <div style={{ width: "100%", display: "flex", flexDirection: "row", alignItems:"baseline"}}>
+            <Card sx={{ width: "25%", height:"15%" }}>
+                <PieChart chartData={chartData} />
+            </Card>
+            <Card sx={{ width: "45%" }}>
+                <BarChart chartData={chartData}/>
+            </Card>
         </div>
     );
     }
