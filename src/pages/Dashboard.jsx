@@ -3,6 +3,7 @@ import { CategoryScale } from "chart.js";
 import { Data } from "../utils/Data";
 import { useEffect, useState } from "react";
 import PieChart from "../components/dashboard/PieChart";
+import LineChart from "../components/dashboard/LineChart";
 import { BarChart } from "../components/dashboard/BarChart";
 import useDashboardStore from "../state/dashboardState";
 import { Box, Card, Grid, Typography } from "@mui/joy";
@@ -31,13 +32,20 @@ export default function Dashboard() {
       });
 
     return (
-        <div style={{ width: "100%", display: "flex", flexDirection: "row", alignItems:"baseline"}}>
-            <Card sx={{ width: "25%", height:"15%" }}>
+        <div style={{ width: "100%"}}>
+          <div style={{width:"100%"}}>
+            <Card sx={{ width: "25%", height:"15%", gridColumn: { xs: '1/-1', md: '1/1' }}}>
                 <PieChart chartData={chartData} />
             </Card>
-            <Card sx={{ width: "45%" }}>
+          </div>
+          <div style={{width:"100%", display: "flex", flexDirection: "row", alignItems:"baseline"}}>
+            <Card sx={{ width: "45%", gridColumn: { xs: '1/-1', md: '1/2' } }}>
                 <BarChart chartData={chartData}/>
             </Card>
+            <Card sx={{ width: "45%", gridColumn: { xs: '1/-1', md: '2/2' }}}>
+              <LineChart chartData={chartData} />
+            </Card>
+          </div>
         </div>
     );
     }
