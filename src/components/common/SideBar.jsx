@@ -44,6 +44,21 @@ import { MenuToggler } from './Menus';
 import DatasetIcon from '@mui/icons-material/Dataset';
 import { BsCalendar3 } from "react-icons/bs";
 import { FaRegCalendarCheck } from "react-icons/fa";
+import FitbitIcon from '@mui/icons-material/Fitbit';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import ContactsIcon from '@mui/icons-material/Contacts';
+import CalculateIcon from '@mui/icons-material/Calculate';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import EmailIcon from '@mui/icons-material/Email';
+import StorageIcon from '@mui/icons-material/Storage';
+import InsertChartIcon from '@mui/icons-material/InsertChart';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import WebStoriesIcon from '@mui/icons-material/WebStories';
+import ClassIcon from '@mui/icons-material/Class';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 export default function Sidebar({children}) {
   //const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
@@ -157,93 +172,93 @@ export default function Sidebar({children}) {
         >
           <ListItem>
             <ListItemButton onClick={() => navigate("/home")} selected={"/home" === window.location.pathname}>
-              <HomeRoundedIcon sx={{ fontSize: 24}} />
+              <HomeRoundedIcon sx={{ fontSize: 18}} />
               <ListItemContent>
-                <Typography level="title-sm">{t("Home")}</Typography>
+                <Typography level="body-sm">{t("Home")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton onClick={() => navigate("/dashboard")} selected={"/dashboard" === window.location.pathname}>
-              <SpaceDashboardIcon sx={{ fontSize: 24}} />
+              <InsertChartIcon sx={{ fontSize: 18}} />
               <ListItemContent>
-                <Typography level="title-sm">{t("Dashboard")}</Typography>
+                <Typography level="body-sm">{t("Dashboard")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton role="menuitem" onClick={() => navigate("/subscriptions")} selected={window.location.pathname.includes("subscription")}>
-              <CalendarMonthIcon sx={{ fontSize: 24}} />
+              <CalendarMonthIcon sx={{ fontSize: 18}} />
               <ListItemContent>
-                <Typography level="title-sm">{t("Subscriptions")}</Typography>
+                <Typography level="body-sm">{t("Subscriptions")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton role="menuitem" onClick={() => navigate("/class-schedules")} selected={window.location.pathname.includes("class-schedule")}>
-              <BsCalendar3 fontSize={18}/>
+              <FitbitIcon sx={{ fontSize: 18}}/>
               <ListItemContent>
-                <Typography level="title-sm">{t("Class Schedules")}</Typography>
+                <Typography level="body-sm">{t("Class Schedules")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton role="menuitem" onClick={() => navigate("/class-enrollments")} selected={window.location.pathname.includes("class-enrollment")}>
-              <FaRegCalendarCheck fontSize={20}/>
+              <EventAvailableIcon  sx={{ fontSize: 18}}/>
               <ListItemContent>
-                <Typography level="title-sm">{t("Class Enrollments")}</Typography>
+                <Typography level="body-sm">{t("Class Enrollments")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton role="menuitem" onClick={() => navigate("/employees")} selected={window.location.pathname.includes("employee")}>
-              <BsFillPersonVcardFill fontSize={18}/>
+              <ContactsIcon  sx={{ fontSize: 18}}/>
               <ListItemContent>
-                <Typography level="title-sm">{t("Employees")}</Typography>
+                <Typography level="body-sm">{t("Employees")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton role="menuitem" onClick={() => navigate("/members")} selected={window.location.pathname.includes("member")}>
-              <GroupsIcon />
+              <GroupsIcon sx={{ fontSize: 18}} />
               <ListItemContent>
-                <Typography level="title-sm">{t("Members")}</Typography>
+                <Typography level="body-sm">{t("Members")}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
           <ListItem nested>
-            <ListSubheader>{t("Accounting")}</ListSubheader>
-            <MenuToggler mainMenu={t("Accounting")} icon={<FaMoneyCheckDollar fontSize={18}/>}>
+            <ListSubheader><Typography level="body-sm">{t("Accounting")}</Typography></ListSubheader>
+            <MenuToggler mainMenu={t("Accounting")} icon={<CalculateIcon sx={{ fontSize: 18}}/>}>
             <List>
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/transactions")} selected={window.location.pathname.includes("transaction")}>
-                  <GrTransaction />
+                  <ReceiptIcon sx={{ fontSize: 18}}/>
                   <ListItemContent>
-                    <Typography level="title-sm">{t("Transactions")}</Typography>
+                    <Typography level="body-sm">{t("Transactions")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/entries")} selected={window.location.pathname.includes("entr")}>
-                  <FaMoneyBills />
+                  <PaymentsIcon sx={{ fontSize: 18}}/>
                   <ListItemContent>
-                    <Typography level="title-sm">{t("Entries")}</Typography>
+                    <Typography level="body-sm">{t("Entries")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/accounts")} selected={window.location.pathname.includes("account")}>
-                  <MdOutlineMoney />
+                  <LocalAtmIcon sx={{ fontSize: 18}}/>
                   <ListItemContent>
-                    <Typography level="title-sm">{t("Accounts")}</Typography>
+                    <Typography level="body-sm">{t("Accounts")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/journals")} selected={window.location.pathname.includes("journal")}>
-                  <MdOutlineMoney />
+                  <ReceiptLongIcon sx={{ fontSize: 18}}/>
                   <ListItemContent>
-                    <Typography level="title-sm">{t("Journals")}</Typography>
+                    <Typography level="body-sm">{t("Journals")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
@@ -254,9 +269,9 @@ export default function Sidebar({children}) {
           </ListItem>
           <ListItem>
             <ListItemButton  onClick={() => navigate("/emails")} selected={window.location.pathname.includes("email")}>
-              <QuestionAnswerRoundedIcon />
+              <EmailIcon sx={{ fontSize: 18}}/>
               <ListItemContent>
-                <Typography level="title-sm">{t("Emails")}</Typography>
+                <Typography level="body-sm">{t("Emails")}</Typography>
               </ListItemContent>
               <Chip size="sm" color="primary" variant="solid">
                 {14}
@@ -264,48 +279,48 @@ export default function Sidebar({children}) {
             </ListItemButton>
           </ListItem>
           <ListItem nested>
-            <ListSubheader>{t("Master Data")}</ListSubheader>
-            <MenuToggler mainMenu={"Master Data"} icon={<DatasetIcon/>}>
+            <ListSubheader><Typography level="body-sm">{t("Master Data")}</Typography></ListSubheader>
+            <MenuToggler mainMenu={"Master Data"} icon={<StorageIcon sx={{ fontSize: 18}}/>}>
             <List>
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/fitness-classes")} selected={window.location.pathname.includes("fitness-class")}>
-                  <SiFitbit fontSize={18}/>
+                  <FitbitIcon sx={{ fontSize: 18}}/>
                   <ListItemContent>
-                    <Typography level="title-sm">{t("Fitness Classes")}</Typography>
+                    <Typography level="body-sm">{t("Fitness Classes")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/products")} selected={window.location.pathname.includes("products") || window.location.pathname.includes("product-form")}>
-                  <BiNews />
+                  <LibraryBooksIcon sx={{ fontSize: 18}}/>
                   <ListItemContent>
-                    <Typography level="title-sm">{t("Subscription Types")}</Typography>
+                    <Typography level="body-sm">{t("Subscription Types")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/product-categories")} selected={window.location.pathname.includes("categ")}>
-                  <BiNews />
+                  <WebStoriesIcon sx={{ fontSize: 18}}/>
                   <ListItemContent>
-                    <Typography level="title-sm">{t("SUB Categories")}</Typography>
+                    <Typography level="body-sm">{t("SUB Categories")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
 
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/benefits")} selected={window.location.pathname.includes("benefit")}>
-                  <BiNews />
+                  <ClassIcon sx={{ fontSize: 18}}/>
                   <ListItemContent>
-                    <Typography level="title-sm">{t("Benefits")}</Typography>
+                    <Typography level="body-sm">{t("Benefits")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
 
               <ListItem>
                 <ListItemButton role="menuitem" onClick={() => navigate("/users")} selected={window.location.pathname.includes("user")}>
-                  <FaUsersRectangle />
+                  <AccountBoxIcon sx={{ fontSize: 18}}/>
                   <ListItemContent>
-                    <Typography level="title-sm">{t("Users")}</Typography>
+                    <Typography level="body-sm">{t("Users")}</Typography>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
@@ -329,15 +344,15 @@ export default function Sidebar({children}) {
         >
           <ListItem>
             <ListItemButton onClick={() => navigate("/support")} selected={"/support" === window.location.pathname}>
-              <SupportRoundedIcon />
-              {t("Support")}
+              <SupportRoundedIcon sx={{ fontSize: 18}} />
+              <Typography level="body-sm">{t("Support")}</Typography>
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton onClick={() => navigate("/notifications")} selected={"/notifications" === window.location.pathname}>
-              <NotificationsIcon />
+              <NotificationsIcon sx={{ fontSize: 18}} />
               <ListItemContent>
-                {t("Notifications")}
+              <Typography level="body-sm">{t("Notifications")}</Typography>
               </ListItemContent>
               <Chip size="sm" color="primary" variant="solid">
                   {unreadNotifcations.length}
@@ -347,8 +362,8 @@ export default function Sidebar({children}) {
           </ListItem>
           <ListItem>
             <ListItemButton>
-              <SettingsRoundedIcon />
-              {t("Settings")}
+              <SettingsRoundedIcon sx={{ fontSize: 18}} />
+              <Typography level="body-sm">{t("Settings")}</Typography>
             </ListItemButton>
           </ListItem>
         </List>
@@ -367,7 +382,7 @@ export default function Sidebar({children}) {
           <Typography level="body-xs">{user.email}</Typography>
         </Box>
         <IconButton size="sm" variant="plain" color="neutral" onClick={handleLogout}>
-          <LogoutRoundedIcon />
+          <LogoutRoundedIcon sx={{ fontSize: 18 }} />
         </IconButton>
       </Box>
     </Sheet>}
