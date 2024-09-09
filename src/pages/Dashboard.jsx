@@ -33,17 +33,26 @@ export default function Dashboard() {
 
     return (
         <div style={{ width: "100%"}}>
-          <div style={{width:"100%"}}>
-            <Card sx={{ width: "25%", height:"15%", gridColumn: { xs: '1/-1', md: '1/1' }}}>
-                <PieChart chartData={chartData} />
+          <div style={{width:"100%", display: "flex", flexDirection: "row", alignItems:"baseline"}}>
+            <Card sx={{ width: "45%", m: 1}}>
+                <BarChart chartData={chartData}/>
+            </Card>
+            <Card sx={{ width: "45%", m: 1 }}>
+              <LineChart chartData={chartData} />
             </Card>
           </div>
           <div style={{width:"100%", display: "flex", flexDirection: "row", alignItems:"baseline"}}>
-            <Card sx={{ width: "45%", gridColumn: { xs: '1/-1', md: '1/2' } }}>
-                <BarChart chartData={chartData}/>
+            <Card sx={{ width: "22%", height:"15%", m:1 }}>
+                <PieChart chartData={chartData} />
             </Card>
-            <Card sx={{ width: "45%", gridColumn: { xs: '1/-1', md: '2/2' }}}>
-              <LineChart chartData={chartData} />
+            <Card sx={{ width: "22%", height:"15%", m:1 }}>
+                <PieChart chartData={chartData} />
+            </Card>
+            <Card sx={{ width: "22%", height:"15%", m:1 }}>
+                <PieChart chartData={chartData} />
+            </Card>
+            <Card sx={{ width: "22%", height:"15%", m:1 }}>
+                <PieChart chartData={chartData} />
             </Card>
           </div>
         </div>
