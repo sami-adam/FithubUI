@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Typography, useTheme } from '@mui/joy';
+import { AspectRatio, Box, Button, Typography, useTheme } from '@mui/joy';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 
 export default function Carousel({ items, duration = 3000 }) {
@@ -38,12 +38,13 @@ export default function Carousel({ items, duration = 3000 }) {
           >
             {item.title}
           </Typography>
-          
+          <AspectRatio ratio={17 / 9}>
           <img
             src={item.image}
             alt={item.title}
             style={{ width: '100%', height: 155.5, objectFit:"revert-layer",borderRadius: 5 }}
           />
+          </AspectRatio>
           
         </Box>
       ))}
