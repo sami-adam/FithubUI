@@ -79,19 +79,19 @@ export default function EmployeeForm() {
     const validateInputs = () => {
         var validationMessages = [];
         if(!name){
-          validationMessages.push("Name is required!");
+          validationMessages.push("Please enter a name!");
         }
         if(!identificationNumber){
-          validationMessages.push("Identification Number is required!");
+          validationMessages.push("Please enter a vaild identification number!");
         }
         if(!email){
-          validationMessages.push("Email is required!");
+          validationMessages.push("Please enter an email!");
         }
         if(!phone){
-          validationMessages.push("Phone is required!");
+          validationMessages.push("Please enter phone number!");
         }
         if(!employeeType){
-          validationMessages.push("Employee Type is required!");
+          validationMessages.push("Please select employee type!");
         }
         if(validationMessages.length > 0){
           validationMessages.forEach((message) => {
@@ -161,26 +161,26 @@ export default function EmployeeForm() {
         }}
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel><Typography level='body-sm' startDecorator={<Person sx={{ fontSize: 18}}/>}>{t("Name")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<Person sx={{ fontSize: 18}}/>} endDecorator="*">{t("Full Name")}</Typography></FormLabel>
           <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel><Typography level='body-sm' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>}>{t("ID Number")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>} endDecorator="*">{t("ID Number")}</Typography></FormLabel>
           <Input value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel><Typography level='body-sm' startDecorator={<Email sx={{ fontSize: 18}}/>}>{t("Email")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<Email sx={{ fontSize: 18}}/>} endDecorator="*">{t("Email")}</Typography></FormLabel>
           <Input value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel><Typography level='body-sm' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>}>{t("Phone")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>} endDecorator="*">{t("Phone")}</Typography></FormLabel>
           <Input value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel><Typography level='body-sm' startDecorator={<LibraryAddCheckIcon sx={{ fontSize: 18}}/>}>{t("Employee Type")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<LibraryAddCheckIcon sx={{ fontSize: 18}}/>} endDecorator="*">{t("Employee Type")}</Typography></FormLabel>
           <Select 
               value={employeeType} 
               placeholder={t("Select Employee Type")}
