@@ -95,7 +95,7 @@ export default function EmployeeForm() {
         }
         if(validationMessages.length > 0){
           validationMessages.forEach((message) => {
-            toast.error(message, {position: "top-center"});
+            toast.error(message, {position: "top-center", autoClose: Math.random() * 5000});
           });
           return false;
         }
