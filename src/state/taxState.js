@@ -74,6 +74,18 @@ const useTaxStore = create((set) => ({
             console.error("Error deleting tax", error);
         }
     },
+    searchTaxes: async (search) => {
+        try {
+            const response = await axios.get(useTaxStore.getState().baseURL + `/taxes/search/${search}`, {
+                headers: {
+                    "Authorization": "Bearer " + useTaxStore.getState().token,
+                },
+            });
+            set({ taxes: response.data });
+        } catch (error) {
+            console.error("Error searching taxes", error);
+        }
+    }
 }));
 
 export default useTaxStore;

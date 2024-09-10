@@ -44,6 +44,8 @@ import UserCreatedPage from './pages/UserCreatedPage';
 import ClassEnrollmentPage from './pages/ClassEnrollmentPage';
 import Dashboard from './pages/Dashboard';
 import ClassEnrollmentForm from './components/fitnessClass/ClassEnrollmentForm';
+import TaxPage from './pages/TaxPage';
+import TaxForm from './components/accounting/TaxForm';
 //const joyTheme = extendJoyTheme();
 
 
@@ -105,6 +107,8 @@ function App() {
           <Route path="/journals" element={<JournalPage/>} />
           <Route path="/journal-form" element={<JournalForm/>} />
           <Route path="/journals/:id" element={<JournalForm/>} />
+          <Route path="/taxes" element={<TaxPage/>} />
+          <Route path="/taxes/:id" element={<TaxForm/>} />
           <Route path="/dashboard" element={<Dashboard/>} />
           <Route path="/notifications" element={<NotificationPage/>} />
           <Route path="/404" element={<NotFoundPage/>} />

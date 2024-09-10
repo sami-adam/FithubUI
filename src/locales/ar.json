@@ -247,7 +247,12 @@
       "Product added successfully": "تمت إضافة الاشتراك بنجاح",
       "Product updated successfully": "تم تحديث الاشتراك بنجاح",
       "CLASS ENROLLMENTS": "تسجيلات الفصول",
-      "A list of all": "قائمة بجميع"
+      "A list of all": "قائمة بجميع",
+      "Enrollment Information": "معلومات التسجيل",
+      "Rate": "النسبة",
+      "Active": "نشط",
+      "Tax Added": "تمت إضافة الضريبة",
+      "Tax updated successfully": "تم تحديث الضريبة بنجاح"
     }
   }
   

@@ -59,6 +59,7 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import WebStoriesIcon from '@mui/icons-material/WebStories';
 import ClassIcon from '@mui/icons-material/Class';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import MoneyOffIcon from '@mui/icons-material/MoneyOff';
 
 export default function Sidebar({children}) {
   //const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
@@ -262,6 +263,16 @@ export default function Sidebar({children}) {
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
+
+              <ListItem>
+                <ListItemButton role="menuitem" onClick={() => navigate("/taxes")} selected={window.location.pathname.includes("taxes")}>
+                  <MoneyOffIcon sx={{ fontSize: 18}}/>
+                  <ListItemContent>
+                    <Typography level="body-sm">{t("Taxes")}</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+              
             </List>
             </MenuToggler>
           </ListItem>
