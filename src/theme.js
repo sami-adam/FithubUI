@@ -23,39 +23,31 @@ const theme = extendTheme({
           backgroundColor: "common.white",
           border: "1px solid common.white",
           width: { xs: 1, sm: 1, md: 1 },
+          boxShadow: "none"
         }
       }
     },
-    // JoyAutocomplete: {
-    //   styleOverrides: {
-    //     root: {
-    //       borderTop: "none",
-    //       borderLeft: "none",
-    //       borderRight: "none",
-    //       backgroundColor: "var(--palette-primary-solidBg)",
-    //     }
-    //   }
-    // },
-    // JoyInput: {
-    //   styleOverrides: {
-    //     root: {
-    //       borderTop: "none",
-    //       borderLeft: "none",
-    //       borderRight: "none",
-    //       backgroundColor: "var(--palette-primary-solidBg)",
-    //     },
-    //   },
-    // },
-    // JoySelect: {
-    //   styleOverrides: {
-    //     root: {
-    //       borderTop: "none",
-    //       borderLeft: "none",
-    //       borderRight: "none",
-    //       backgroundColor: "var(--palette-primary-solidBg)",
-    //     },
-    //   },
-    // },
+    JoyAutocomplete: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none",
+        }
+      }
+    },
+    JoyInput: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none"
+        },
+      },
+    },
+    JoySelect: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none"
+        },
+      },
+    },
     JoyButton: {
       styleOverrides: {
         root: {
