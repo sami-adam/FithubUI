@@ -1,12 +1,12 @@
 import useEmployeeStore from '../../state/employeeState';
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
+import { Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Typography, useTheme } from '@mui/joy';
 import { Add, Email, Person } from '@mui/icons-material';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
-import { AlertCustom, SnackbarCustom } from '../common/Common';
+import { AlertCustom, Required, SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
 import BadgeIcon from '@mui/icons-material/Badge';
 import ContactsIcon from '@mui/icons-material/Contacts';
@@ -15,6 +15,7 @@ import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
 import { toast } from 'react-toastify';
 import { position } from 'stylis';
+import Swal from 'sweetalert2';
 
 export default function EmployeeForm() {
     const location = useLocation();
@@ -41,6 +42,7 @@ export default function EmployeeForm() {
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
     const {t} = useTranslation();
+    const theme = useTheme();
 
     useEffect(() => {
         if(mode === 'add'){
@@ -123,13 +125,29 @@ export default function EmployeeForm() {
     }
 
     const handelDelete = () => {
-        const confirm = window.confirm("Are you sure you want to delete this subscription?");
-        if(confirm){
-            deleteEmployee(employee.id);
-            window.history.back();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        color: theme.palette.mode === 'dark' ? "white" : "black",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: theme.palette.primary.main,
+        cancelButtonColor: theme.palette.mode === 'dark' ? "brown" : "brown",
+        confirmButtonText: "Yes, delete it!",
+        background: theme.palette.mode === 'dark' ? 'black' : '#fff',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteEmployee(id);
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+          });
+          window.history.back();
         }
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Employee deleted successfully'});
+      });
+        // setOpenSnackbar(true);
+        // setSnack({type: 'success', title: 'Success', message: 'Employee deleted successfully'});
     }
 
     return (
@@ -147,7 +165,7 @@ export default function EmployeeForm() {
             <Box flexGrow={1} width={4}/>
             <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
             <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
+            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("DELETE")}</Button>
           </div>
         </div>
         {/* <Divider inset="none" /> */}
@@ -162,26 +180,26 @@ export default function EmployeeForm() {
         }}
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel><Typography level='body-sm' startDecorator={<Person sx={{ fontSize: 18}}/>} endDecorator="*">{t("Full Name")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<Person sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Full Name")}</Typography></FormLabel>
           <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel><Typography level='body-sm' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>} endDecorator="*">{t("ID Number")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("ID Number")}</Typography></FormLabel>
           <Input value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel><Typography level='body-sm' startDecorator={<Email sx={{ fontSize: 18}}/>} endDecorator="*">{t("Email")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<Email sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Email")}</Typography></FormLabel>
           <Input value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel><Typography level='body-sm' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>} endDecorator="*">{t("Phone")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Phone")}</Typography></FormLabel>
           <Input value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel><Typography level='body-sm' startDecorator={<LibraryAddCheckIcon sx={{ fontSize: 18}}/>} endDecorator="*">{t("Employee Type")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<LibraryAddCheckIcon sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Employee Type")}</Typography></FormLabel>
           <Select 
               value={employeeType} 
               placeholder={t("Select Employee Type")}

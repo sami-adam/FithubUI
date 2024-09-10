@@ -212,3 +212,9 @@ export function DocumentSnackbar({document, fileName, title, open, setOpen}) {
     </div>
   );
 }
+
+export function Required(){
+  return (
+    <Typography level="body-sm" color="danger" sx={{display: "inline"}}>*</Typography>
+  )
+}
