@@ -43,6 +43,7 @@ import SignUpPage from './pages/SignUpPage';
 import UserCreatedPage from './pages/UserCreatedPage';
 import ClassEnrollmentPage from './pages/ClassEnrollmentPage';
 import Dashboard from './pages/Dashboard';
+import ClassEnrollmentForm from './components/fitnessClass/ClassEnrollmentForm';
 //const joyTheme = extendJoyTheme();
 
 
@@ -91,6 +92,7 @@ function App() {
           <Route path="/class-schedule-form" element={<ClassScheduleForm/>} />
           <Route path="/class-schedules/:id" element={<ClassScheduleForm/>} />
           <Route path="/class-enrollments" element={<ClassEnrollmentPage/>} />
+          <Route path="/class-enrollments/:id" element={<ClassEnrollmentForm/>} />
           <Route path="/class-enrollments/member/:id" element={<ClassEnrollmentPage/>} />
           <Route path="/support" element={<SupportPage/>} />
           <Route path="/accounts" element={<AccountPage/>} />

@@ -176,21 +176,21 @@ export default function MemberForm() {
             }}
         >
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-                <FormLabel><Typography level='h5' startDecorator={<CheckBoxOutlineBlankIcon sx={{ fontSize: 18}}/>}>{t("First Name")}</Typography></FormLabel>
+                <FormLabel><Typography level='body-sm' startDecorator={<CheckBoxOutlineBlankIcon sx={{ fontSize: 18}}/>}>{t("First Name")}</Typography></FormLabel>
                 <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-                <FormLabel><Typography level='h5' startDecorator={<CheckBoxOutlineBlankIcon sx={{ fontSize: 18}}/>}>{t("Last Name")}</Typography></FormLabel>
+                <FormLabel><Typography level='body-sm' startDecorator={<CheckBoxOutlineBlankIcon sx={{ fontSize: 18}}/>}>{t("Last Name")}</Typography></FormLabel>
                 <Input value={lastName} onChange={(e) => setLastName(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-                <FormLabel><Typography level='h5' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>}>{t("ID Number")}</Typography></FormLabel>
+                <FormLabel><Typography level='body-sm' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>}>{t("ID Number")}</Typography></FormLabel>
                 <Input value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-                <FormLabel><Typography level='h5' startDecorator={<RadioButtonCheckedIcon sx={{ fontSize: 18}}/>}>{t("Gender")}</Typography></FormLabel>
+                <FormLabel><Typography level='body-sm' startDecorator={<RadioButtonCheckedIcon sx={{ fontSize: 18}}/>}>{t("Gender")}</Typography></FormLabel>
                 <Box sx={{ display: 'flex', gap: 2 }}>
                     <Radio 
                         checked={gender === "MALE"}
@@ -214,12 +214,12 @@ export default function MemberForm() {
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-            <FormLabel><Typography level='h5' startDecorator={<Email sx={{ fontSize: 18}}/>}>{t("Email")}</Typography></FormLabel>
+            <FormLabel><Typography level='body-sm' startDecorator={<Email sx={{ fontSize: 18}}/>}>{t("Email")}</Typography></FormLabel>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-            <FormLabel><Typography level='h5' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>}>{t("Phone")}</Typography></FormLabel>
+            <FormLabel><Typography level='body-sm' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>}>{t("Phone")}</Typography></FormLabel>
             <Input value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
