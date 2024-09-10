@@ -94,8 +94,9 @@ export default function EmployeeForm() {
           validationMessages.push("Please select employee type!");
         }
         if(validationMessages.length > 0){
+          var duration = 3;
           validationMessages.forEach((message) => {
-            toast.error(message, {position: "top-center", autoClose: Math.random() * 5000});
+            toast.error(message, {position: "top-center", autoClose: (duration += 1) * 1000});
           });
           return false;
         }
