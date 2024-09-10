@@ -6,13 +6,15 @@ import { Add, Email, Person } from '@mui/icons-material';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
-import { SnackbarCustom } from '../common/Common';
+import { AlertCustom, SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
 import BadgeIcon from '@mui/icons-material/Badge';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
+import { toast } from 'react-toastify';
+import { position } from 'stylis';
 
 export default function EmployeeForm() {
     const location = useLocation();
@@ -74,7 +76,38 @@ export default function EmployeeForm() {
         setSnack({type: 'success', title: 'Success', message: 'Employee updated successfully'});
     }
 
+    const validateInputs = () => {
+        var validationMessages = [];
+        if(!name){
+          validationMessages.push("Name is required!");
+        }
+        if(!identificationNumber){
+          validationMessages.push("Identification Number is required!");
+        }
+        if(!email){
+          validationMessages.push("Email is required!");
+        }
+        if(!phone){
+          validationMessages.push("Phone is required!");
+        }
+        if(!employeeType){
+          validationMessages.push("Employee Type is required!");
+        }
+        if(validationMessages.length > 0){
+          validationMessages.forEach((message) => {
+            toast.error(message, {position: "top-center"});
+          });
+          return false;
+        }
+        return true;
+      }
+
+
     const handleAdd = () => {
+        const validInputs = validateInputs();
+        if(!validInputs){
+          return;
+        }
         addEmployee({
             name: name,
             identificationNumber: identificationNumber,
@@ -128,26 +161,26 @@ export default function EmployeeForm() {
         }}
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel><Typography level='h5' startDecorator={<Person sx={{ fontSize: 18}}/>}>{t("Name")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<Person sx={{ fontSize: 18}}/>}>{t("Name")}</Typography></FormLabel>
           <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel><Typography level='h5' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>}>{t("ID Number")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>}>{t("ID Number")}</Typography></FormLabel>
           <Input value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel><Typography level='h5' startDecorator={<Email sx={{ fontSize: 18}}/>}>{t("Email")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<Email sx={{ fontSize: 18}}/>}>{t("Email")}</Typography></FormLabel>
           <Input value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-          <FormLabel><Typography level='h5' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>}>{t("Phone")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>}>{t("Phone")}</Typography></FormLabel>
           <Input value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-          <FormLabel><Typography level='h5' startDecorator={<LibraryAddCheckIcon sx={{ fontSize: 18}}/>}>{t("Employee Type")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<LibraryAddCheckIcon sx={{ fontSize: 18}}/>}>{t("Employee Type")}</Typography></FormLabel>
           <Select 
               value={employeeType} 
               placeholder={t("Select Employee Type")}
@@ -161,7 +194,7 @@ export default function EmployeeForm() {
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
-          <FormLabel><Typography level='h5' startDecorator={<LocationOnIcon sx={{ fontSize: 18}}/>}>{t("Address")}</Typography></FormLabel>
+          <FormLabel><Typography level='body-sm' startDecorator={<LocationOnIcon sx={{ fontSize: 18}}/>}>{t("Address")}</Typography></FormLabel>
           <Input type="search" value={address} onChange={(e) => setAddress(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 

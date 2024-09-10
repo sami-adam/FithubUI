@@ -3,12 +3,15 @@ import { FormBackButton } from "./Buttons";
 import LoadingPage from "./LaodingPage";
 import backgroundImage from '../../assets/background.jpg';
 import backgroundImageDark from '../../assets/backgrounddm.jpg';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 
 
 export default function FormBaseLayout({ children, loading=false }) {
     const theme = useTheme();
     return (
+        <>
         <Box flex={1} sx={{ width: "100%"}}>
             {loading && <LoadingPage/> ||
             <Card
@@ -30,6 +33,8 @@ export default function FormBaseLayout({ children, loading=false }) {
             </Card>
             }
         </Box>
+        <ToastContainer autoClose={3000}/>
+        </>
 
     )
 }

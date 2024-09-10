@@ -75,6 +75,7 @@ export function AlertCustom({ type, title, message}) {
   const {color, icon} = types[type];
 
   return (
+    <div role="alert">
     <Box sx={{ display: 'flex', gap: 2, width: '100%', flexDirection: 'column' }}>
         <Alert
             key={title}
@@ -96,6 +97,7 @@ export function AlertCustom({ type, title, message}) {
             </div>
         </Alert>
     </Box>
+    </div>
   );
 }
 
