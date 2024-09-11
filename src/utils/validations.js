@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 
 
 export const validateEmail = (email) => {
@@ -19,4 +20,28 @@ export const validateName = (name) => {
     // Name should not be empty and not contain any numbers or special characters
     const re = /^[a-zA-Z ]+$/;
     return re.test(name);
+}
+
+export const validateInputs = (inputs=[]) => {
+    var messages = [];
+    inputs.forEach((input) => {
+        if(input.type === "name"){
+            !validateName(input.value) && messages.push(input.message || "Please enter a valid name");
+        }
+        if(input.type === "email"){
+            !validateEmail(input.value) && messages.push(input.message || "Please enter a valid email");
+        }
+        if(input.type === "phone"){
+            !validatePhone(input.value) && messages.push(input.message || "Please enter a valid phone number");
+        }
+        if(input.type === "id"){
+            !validateIdentificationNumber(input.value) && messages.push(input.message || "Please enter a valid ID number");
+        }
+    });
+    if (messages.length > 0){
+        var duration = 3;
+        messages.forEach((msg) => toast.error(msg, {position: "top-center", autoClose: duration++ * 1000}));
+        return false;
+    }
+    return true;
 }

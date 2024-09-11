@@ -6,7 +6,7 @@ import useAttachmentStore from '../../state/attachmentState';
 import { useEffect, useState } from 'react';
 import { Box, Button, CardContent, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormLabel, Input, Modal, ModalDialog, Radio, Typography } from '@mui/joy';
 import { Add, Email } from '@mui/icons-material';
-import { HorozontalStepper, SnackbarCustom } from '../common/Common';
+import { HorozontalStepper, Required, SnackbarCustom } from '../common/Common';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
@@ -20,6 +20,9 @@ import ContactsIcon from '@mui/icons-material/Contacts';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
+import Swal from 'sweetalert2';
+import { validateEmail, validateIdentificationNumber, validateInputs, validateName, validatePhone } from '../../utils/validations';
+import { toast } from 'react-toastify';
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -31,6 +34,7 @@ export default function MemberForm() {
     const deleteMember = useMemberStore((state) => state.deleteMember);
     const fetchAttachment = useAttachmentStore((state) => state.fetchAttachment);
     const fetchMember = useMemberStore((state) => state.fetchMember);
+    const error = useMemberStore((state) => state.error);
     const [member, setMember] = useState(null);
     const [loading, setLoading] = useState(true);
     const [fetchData, setFetchData] = useState(true);
@@ -58,6 +62,13 @@ export default function MemberForm() {
     const [memberClassEnrollmentsCount, setMemberClassEnrollmentsCount] = useState(0);
 
     useEffect(() => {
+        if(error){
+            Swal.fire({
+                title: t(error.message),
+                text: t(error.details),
+                icon: "error",
+            });
+        }
         if(mode === 'add'){
             setLoading(false);
           }
@@ -87,6 +98,12 @@ export default function MemberForm() {
     }, [mode, member, fetchData, getMemberSubscriptions, fetchAttachment, fetchMember, id]);
 
     const handleSave = () => {
+        const validInputs = validateInputs([{"type": "name", "value": firstName}, 
+            {"type": "name", "value": lastName}, {"type": "id", "value": identificationNumber}, 
+            {"type": "email", "value": email}, {"type": "phone", "value": phone}]);
+        if(!validInputs){
+            return;
+        }
         updateMember({
             id: member.id,
             firstName: firstName,
@@ -96,12 +113,27 @@ export default function MemberForm() {
             phone: phone,
             gender: gender,
         });
+        if(error){
+            Swal.fire({
+                title: t(error.message),
+                text: t(error.details),
+                icon: "error",
+                confirmButtonText: t("OK"),
+            });
+            return
+        }
         setMode('view');
         setOpenSnackbar(true);
         setSnack({type: 'success', title: 'Success', message: 'Member updated successfully'});
     }
 
     const handleAdd = () => {
+        const validInputs = validateInputs([{"type": "name", "value": firstName}, 
+            {"type": "name", "value": lastName}, {"type": "id", "value": identificationNumber}, 
+            {"type": "email", "value": email}, {"type": "phone", "value": phone}]);
+        if(!validInputs){
+            return;
+        }
         addMember({
             firstName: firstName,
             lastName: lastName,
@@ -110,6 +142,15 @@ export default function MemberForm() {
             phone: phone,
             gender: gender
         });
+        if(error){
+            Swal.fire({
+                title: t(error.message),
+                text: t(error.details),
+                icon: "error",
+                confirmButtonText: t("OK"),
+            });
+            return
+        }
         setMode('view');
         setOpenSnackbar(true);
         setSnack({type: 'success', title: 'Success', message: 'Member added successfully'});
@@ -121,51 +162,24 @@ export default function MemberForm() {
             deleteMember(member.id);
             window.history.back();
         }
+        if(error){
+            Swal.fire({
+                title: t(error.message),
+                text: t(error.details),
+                icon: "error",
+                confirmButtonText: t("OK"),
+            });
+            return
+        }
         setOpenSnackbar(true);
         setSnack({type: 'success', title: 'Success', message: 'Member deleted successfully'});
     }
 
     return (
         <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-        <FormHeader loading={loading}>
-            {/* <Divider inset="none" /> */}
+        <FormHeader loading={loading} mode={mode} setMode={setMode} handleSave={handleSave} handleAdd={handleAdd} handelDelete={handleDelete}>
             <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
             <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-            <div style={{ paddingTop: 16}}>
-                {member && 
-                <div style={{display:"flex", flexDirection:"row"}}>
-                <Button variant="soft"  sx={{mx: 1}} className='shadow-inner'
-                    startDecorator={<FaCalendarAlt/>} 
-                    endDecorator={<Typography fontSize="small" >{memberSubscriptionsCount}</Typography>}
-                    onClick={() => navigate(`/subscriptions/member/${member.id}`)}
-                    >
-                        <Typography fontSize="small">{t("SUBSCRIPTIONS")}</Typography>
-                </Button>
-
-                <Button variant="soft" className='shadow-inner' sx={{mx: 1}}
-                    startDecorator={<FaCalendarAlt/>}
-                    endDecorator={<Typography fontSize="small" >{memberClassEnrollmentsCount}</Typography>}
-                    onClick={() => navigate(`/class-enrollments/member/${member.id}`)}
-                    >
-                        <Typography fontSize="small">{t("CLASS ENROLLMENTS")}</Typography>
-                </Button>
-                </div>
-                }
-            </div>
-            <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
-                <Typography level="title-lg">
-                    {t("Member Information")}
-                </Typography>
-                <div style={{ display: "flex", flexDirection:"row"}}>
-                    <Button variant='soft' className='shadow-inner' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-                    <Button variant='soft' className='shadow-inner' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-                    <Box flexGrow={1} width={4}/>
-                    <Button variant='soft' className='shadow-inner' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-                    <Button variant='soft' className='shadow-inner' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-                    <Button variant='soft' className='shadow-inner' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
-                </div>
-            </div>
-            {/* <Divider inset="none" /> */}
         </FormHeader>
         <FormBaseLayout loading={loading}>
         <CardContent
@@ -176,21 +190,21 @@ export default function MemberForm() {
             }}
         >
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-                <FormLabel><Typography level='body-sm' startDecorator={<CheckBoxOutlineBlankIcon sx={{ fontSize: 18}}/>}>{t("First Name")}</Typography></FormLabel>
-                <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} disabled={mode === 'view'} />
+                <FormLabel><Typography level='body-sm' startDecorator={<CheckBoxOutlineBlankIcon sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("First Name")}</Typography></FormLabel>
+                <Input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-                <FormLabel><Typography level='body-sm' startDecorator={<CheckBoxOutlineBlankIcon sx={{ fontSize: 18}}/>}>{t("Last Name")}</Typography></FormLabel>
-                <Input value={lastName} onChange={(e) => setLastName(e.target.value)} disabled={mode === 'view'} />
+                <FormLabel><Typography level='body-sm' startDecorator={<CheckBoxOutlineBlankIcon sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Last Name")}</Typography></FormLabel>
+                <Input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-                <FormLabel><Typography level='body-sm' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>}>{t("ID Number")}</Typography></FormLabel>
-                <Input value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
+                <FormLabel><Typography level='body-sm' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("ID Number")}</Typography></FormLabel>
+                <Input type="number" value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-                <FormLabel><Typography level='body-sm' startDecorator={<RadioButtonCheckedIcon sx={{ fontSize: 18}}/>}>{t("Gender")}</Typography></FormLabel>
+                <FormLabel><Typography level='body-sm' startDecorator={<RadioButtonCheckedIcon sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Gender")}</Typography></FormLabel>
                 <Box sx={{ display: 'flex', gap: 2 }}>
                     <Radio 
                         checked={gender === "MALE"}
@@ -214,13 +228,13 @@ export default function MemberForm() {
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-            <FormLabel><Typography level='body-sm' startDecorator={<Email sx={{ fontSize: 18}}/>}>{t("Email")}</Typography></FormLabel>
+            <FormLabel><Typography level='body-sm' startDecorator={<Email sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Email")}</Typography></FormLabel>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-            <FormLabel><Typography level='body-sm' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>}>{t("Phone")}</Typography></FormLabel>
-            <Input value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
+            <FormLabel><Typography level='body-sm' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Phone")}</Typography></FormLabel>
+            <Input type="number" value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
             </FormControl>
 
             </CardContent>

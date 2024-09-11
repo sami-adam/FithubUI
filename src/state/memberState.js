@@ -6,6 +6,7 @@ const useMemberStore = create((set) => ({
     token: localStorage.getItem("token"),
     baseURL: process.env.REACT_APP_BASE_URL,
     signInUrl: process.env.REACT_APP_SIGN_IN_URL,
+    error: null,
     fetchMembers: async () => {
         try {
             const response = await axios.get(useMemberStore.getState().baseURL + "/members", {
@@ -15,11 +16,12 @@ const useMemberStore = create((set) => ({
             });
             set({ members: response.data });
         } catch (error) {
-            if (error.response.status === 403) {
+            if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useMemberStore.getState().signInUrl;
+                set({ error: { message: "Session expired, Please sign in again!", details: error } });
             } else {
-                console.error("Error fetching products", error);
+                set({ error: { message: "Error fetching members!", details: error } });
             }
         }
     },
@@ -32,7 +34,7 @@ const useMemberStore = create((set) => ({
             });
             return response.data;
         } catch (error) {
-            console.error("Error fetching member", error);
+            set({ error: { message: "Error fetching member!", details: error } });
         }
     },
     addMember: async (member) => {
@@ -44,7 +46,7 @@ const useMemberStore = create((set) => ({
             });
             set((state) => ({ members: [...state.members, response.data] }));
         } catch (error) {
-            console.error("Error adding member", error);
+            set({ error: { message: "Error adding member!", details: error } });
         }
     },
     updateMember: async (member) => {
@@ -58,7 +60,7 @@ const useMemberStore = create((set) => ({
                 members: state.members.map((m) => (m.id === member.id ? response.data : m)),
             }));
         } catch (error) {
-            console.error("Error updating member", error);
+            set({ error: { message: "Error updating member!", details: error } });
         }
     },
     deleteMember: async (id) => {
@@ -70,7 +72,7 @@ const useMemberStore = create((set) => ({
             });
             set((state) => ({ members: state.members.filter((m) => m.id !== id) }));
         } catch (error) {
-            console.error("Error deleting member", error);
+            set({ error: { message: "Error deleting member!", details: error } });
         }
     },
     searchMembers: async (search) => {
@@ -82,7 +84,7 @@ const useMemberStore = create((set) => ({
             });
             set({ members: response.data });
         } catch (error) {
-            console.error("Error searching members", error);
+            set({ error: { message: "Error searching members!", details: error } });
         }
     },
     uploadProfilePicture: async (id, file) => {
@@ -100,7 +102,7 @@ const useMemberStore = create((set) => ({
             }));
             return response.data;
         } catch (error) {
-            alert("Error uploading profile picture");
+            set({ error: { message: "Error uploading profile picture!", details: error } });
         }
     },
     deleteProfilePicture: async (id) => {
@@ -114,7 +116,7 @@ const useMemberStore = create((set) => ({
                 members: state.members.map((m) => (m.id === id ? response.data : m)),
             }));
         } catch (error) {
-            alert("Error deleting profile picture");
+            set({ error: { message: "Error deleting profile picture!", details: error } });
         }
     }
 }))

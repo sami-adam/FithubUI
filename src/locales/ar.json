@@ -263,7 +263,11 @@
       "Yes, delete it!": "نعم، احذفه!",
       "Deleted!": "تم الحذف!",
       "Employee profile has been deleted.": "تم حذف ملف الموظف.",
-      "OK": "حسنا"
+      "OK": "حسنا",
+      "Error fetching members!": "خطأ في جلب المشتركين!",
+      "AxiosError: Network Error": "AxiosError: خطأ في الشبكة",
+      "Error fetching member!": "خطأ في جلب المشترك!",
+      "Error adding member!": "خطأ في إضافة المشترك!"
     }
   }
   
