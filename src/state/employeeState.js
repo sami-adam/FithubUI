@@ -3,6 +3,7 @@ import axios from "axios";
 
 const useEmployeeStore = create((set) => ({
     employees: [],
+    error: null,
     token: localStorage.getItem("token"),
     baseURL: process.env.REACT_APP_BASE_URL,
     signInUrl: process.env.REACT_APP_SIGN_IN_URL,
@@ -15,11 +16,12 @@ const useEmployeeStore = create((set) => ({
             });
             set({ employees: response.data });
         } catch (error) {
-            if (error.response.status === 403) {
+            if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useEmployeeStore.getState().signInUrl;
+                set({ error: "Unauthorized access" });
             } else {
-                console.error("Error fetching employees", error);
+                set({ error: "Error fetching employees!"});
             }
         }
     },
@@ -32,7 +34,7 @@ const useEmployeeStore = create((set) => ({
             });
             return response.data;
         } catch (error) {
-            console.error("Error fetching employee", error);
+            set({ error: "Error fetching employee, make sure you are logged in!"});
         }
     },
     addEmployee: async (employee) => {
@@ -44,7 +46,7 @@ const useEmployeeStore = create((set) => ({
             });
             set((state) => ({ employees: [...state.employees, response.data] }));
         } catch (error) {
-            console.error("Error adding employee", error);
+            set({ error: "Error adding employee, make sure you are logged in!" });
         }
     },
     updateEmployee: async (employee) => {
@@ -58,7 +60,7 @@ const useEmployeeStore = create((set) => ({
                 employees: state.employees.map((m) => (m.id === employee.id ? response.data : m)),
             }));
         } catch (error) {
-            console.error("Error updating employee", error);
+            set({ error: "Error updating employee, make sure you are logged in!" });
         }
     },
     deleteEmployee: async (id) => {
@@ -70,7 +72,7 @@ const useEmployeeStore = create((set) => ({
             });
             set((state) => ({ employees: state.employees.filter((m) => m.id !== id) }));
         } catch (error) {
-            console.error("Error deleting employee", error);
+            set({ error: "Error deleting employee, make sure you are logged in!"});
         }
     },
     searchEmployees: async (search) => {
@@ -82,7 +84,7 @@ const useEmployeeStore = create((set) => ({
             });
             set({ employees: response.data });
         } catch (error) {
-            console.error("Error searching employees", error);
+            set({ error: "Error searching employees!" });
         }
     },
 }));

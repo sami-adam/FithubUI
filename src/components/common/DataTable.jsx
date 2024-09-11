@@ -48,6 +48,7 @@ import SyncProblemIcon from '@mui/icons-material/SyncProblem';
 import { useTranslation } from 'react-i18next';
 import LoadingPage from './LaodingPage';
 import NoRecords from './NoRecords';
+import { ToastContainer } from 'react-toastify';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -185,6 +186,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
     <>
     {(loading && <LoadingPage />) ||
     <div style={{ width: "95%", justifyContent: "center"}}>
+        <ToastContainer autoClose={3000}/>
         {error && <SnackbarCustom type={error.type} message={error.message} open={openError} setOpen={setOpenError} />}
         <Box
             sx={{

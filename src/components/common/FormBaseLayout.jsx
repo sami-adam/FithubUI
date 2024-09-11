@@ -1,10 +1,15 @@
-import { Box, Card, useTheme } from "@mui/joy";
+import { Box, Button, Card, Typography, useTheme } from "@mui/joy";
 import { FormBackButton } from "./Buttons";
 import LoadingPage from "./LaodingPage";
 import backgroundImage from '../../assets/background.jpg';
 import backgroundImageDark from '../../assets/backgrounddm.jpg';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next";
+import { BiEdit } from "react-icons/bi";
+import { BsSave } from "react-icons/bs";
+import { IoTrashBinOutline } from "react-icons/io5";
+import { Add } from "@mui/icons-material";
 
 
 
@@ -39,8 +44,9 @@ export default function FormBaseLayout({ children, loading=false }) {
     )
 }
 
-export function FormHeader({ children, loading=false }) {
+export function FormHeader({ children, loading=false, mode, setMode, handleSave, handleAdd, handelDelete }) {
     const theme = useTheme();
+    const {t} = useTranslation();
     return (
         <Box flex={1} sx={{ width: "100%"}}>
         {loading && <LoadingPage/> || 
@@ -61,6 +67,19 @@ export function FormHeader({ children, loading=false }) {
                 }}>
                 <FormBackButton/>
                 {children}
+                <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16, width:"100%"}}>
+                <Typography level="title-lg">
+                    {t("Employee Information")}
+                </Typography>
+                <div style={{ display: "flex", flexDirection:"row"}}>
+                    <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
+                    <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
+                    <Box flexGrow={1} width={4}/>
+                    <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
+                    <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
+                    <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("DELETE")}</Button>
+                </div>
+                </div>
             </Box>
         }
         </Box>

@@ -253,7 +253,17 @@
       "Active": "نشط",
       "Tax Added": "تمت إضافة الضريبة",
       "Tax updated successfully": "تم تحديث الضريبة بنجاح",
-      "Employee added successfully": "تمت إضافة الموظف بنجاح"
+      "Employee added successfully": "تمت إضافة الموظف بنجاح",
+      "Error": "خطأ",
+      "Error adding employee, make sure you are logged in!": "خطأ في إضافة الموظف، تأكد من تسجيل الدخول!",
+      "Error fetching employees!": "خطأ في جلب الموظفين!",
+      "Error fetching employee, make sure you are logged in!": "خطأ في جلب الموظف، تأكد من تسجيل الدخول!",
+      "Are you sure?": "هل أنت متأكد؟",
+      "You won't be able to revert this!": "لن تتمكن من التراجع عن هذا!",
+      "Yes, delete it!": "نعم، احذفه!",
+      "Deleted!": "تم الحذف!",
+      "Employee profile has been deleted.": "تم حذف ملف الموظف.",
+      "OK": "حسنا"
     }
   }
   

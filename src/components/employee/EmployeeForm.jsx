@@ -1,12 +1,9 @@
 import useEmployeeStore from '../../state/employeeState';
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Typography, useTheme } from '@mui/joy';
-import { Add, Email, Person } from '@mui/icons-material';
-import { BiEdit } from "react-icons/bi";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { BsSave } from "react-icons/bs";
-import { AlertCustom, Required, SnackbarCustom } from '../common/Common';
+import { Box, CardContent, FormControl, FormLabel, Input, Option, Select, Typography, useTheme } from '@mui/joy';
+import { Email, Person } from '@mui/icons-material';
+import { Required, SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
 import BadgeIcon from '@mui/icons-material/Badge';
 import ContactsIcon from '@mui/icons-material/Contacts';
@@ -14,8 +11,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
 import { toast } from 'react-toastify';
-import { position } from 'stylis';
 import Swal from 'sweetalert2';
+import { validateEmail, validateIdentificationNumber, validateName, validatePhone } from '../../utils/validations';
 
 export default function EmployeeForm() {
     const location = useLocation();
@@ -26,6 +23,7 @@ export default function EmployeeForm() {
     const addEmployee = useEmployeeStore((state) => state.addEmployee);
     const deleteEmployee = useEmployeeStore((state) => state.deleteEmployee);
     const fetchEmployee = useEmployeeStore((state) => state.fetchEmployee);
+    const error = useEmployeeStore((state) => state.error);
     const [employee, setEmployee] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -45,6 +43,13 @@ export default function EmployeeForm() {
     const theme = useTheme();
 
     useEffect(() => {
+        if(error){
+          Swal.fire({
+            title: t("Error"),
+            text: t(error),
+            icon: "error",
+          });
+        }
         if(mode === 'add'){
           setLoading(false);
         }
@@ -61,9 +66,13 @@ export default function EmployeeForm() {
             setAddress(address=>address||employee.address);
             setEmployeeType(employeeType=>employeeType||employee.employeeType);
         }
-      }, [mode, employee, id, fetchEmployee]);
+      }, [mode, employee, id, fetchEmployee, error]);
 
     const handleSave = () => {
+        const validInputs = validateInputs();
+        if(!validInputs){
+          return;
+        }
         updateEmployee({
             id: employee.id,
             name: name,
@@ -73,36 +82,32 @@ export default function EmployeeForm() {
             address: address,
             employeeType: employeeType
         });
+        if(error){
+          Swal.fire({
+            title: t("Error"),
+            text: t(error),
+            icon: "error",
+            confirmButtonText: t("OK"),
+          });
+          return;
+        }
         setMode('view');
         setOpenSnackbar(true);
         setSnack({type: 'success', title: 'Success', message: 'Employee updated successfully'});
     }
 
     const validateInputs = () => {
-        var validationMessages = [];
-        if(!name){
-          validationMessages.push("Please enter a name!");
-        }
-        if(!identificationNumber){
-          validationMessages.push("Please enter a vaild identification number!");
-        }
-        if(!email){
-          validationMessages.push("Please enter an email!");
-        }
-        if(!phone){
-          validationMessages.push("Please enter phone number!");
-        }
-        if(!employeeType){
-          validationMessages.push("Please select employee type!");
-        }
-        if(validationMessages.length > 0){
-          var duration = 3;
-          validationMessages.forEach((message) => {
-            toast.error(message, {position: "top-center", autoClose: (duration += 1) * 1000});
-          });
-          return false;
-        }
-        return true;
+      const message = [];
+      !validateName(name) && message.push(t("Please enter a valid name"));
+      !validateIdentificationNumber(identificationNumber) && message.push(t("Please enter a valid ID number"));
+      !validateEmail(email) && message.push(t("Please enter a valid email"));
+      !validatePhone(phone) && message.push(t("Please enter a valid phone number"));
+      var duration = 3;
+      if(message.length > 0){
+        message.forEach((msg) => toast.error(msg, {position: "top-center", autoClose: (duration ++) * 1000}));
+        return false;
+      }
+      return true;
       }
 
 
@@ -119,6 +124,15 @@ export default function EmployeeForm() {
             address: address,
             employeeType: employeeType
         });
+        if(error){
+          Swal.fire({
+            title: t("Error"),
+            text: t(error),
+            icon: "error",
+            confirmButtonText: t("OK"),
+          });
+          return;
+        }
         setMode('view');
         setOpenSnackbar(true);
         setSnack({type: 'success', title: 'Success', message: 'Employee added successfully'});
@@ -126,21 +140,31 @@ export default function EmployeeForm() {
 
     const handelDelete = () => {
       Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: t("Are you sure?"),
+        text: t("You won't be able to revert this!"),
         color: theme.palette.mode === 'dark' ? "white" : "black",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: theme.palette.primary.main,
         cancelButtonColor: theme.palette.mode === 'dark' ? "brown" : "brown",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: t("Yes, delete it!"),
+        cancelButtonText: t("Cancel"),
         background: theme.palette.mode === 'dark' ? 'black' : '#fff',
       }).then((result) => {
         if (result.isConfirmed) {
           deleteEmployee(id);
+          if(error){
+            Swal.fire({
+              title: t("Error"),
+              text: t(error),
+              icon: "error",
+              confirmButtonText: t("OK"),
+            });
+            return;
+          }
           Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
+            title: t("Deleted!"),
+            text: t("Employee profile has been deleted."),
             icon: "success"
           });
           window.history.back();
@@ -152,23 +176,8 @@ export default function EmployeeForm() {
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-      <FormHeader>
-        {/* <Divider inset="none" /> */}
+      <FormHeader loading={loading} mode={mode} setMode={setMode} handleSave={handleSave} handleAdd={handleAdd} handelDelete={handelDelete}>
         <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16, width:"100%"}}>
-          <Typography level="title-lg">
-              {t("Employee Information")}
-          </Typography>
-          <div style={{ display: "flex", flexDirection:"row"}}>
-            <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-            <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-            <Box flexGrow={1} width={4}/>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-            <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("DELETE")}</Button>
-          </div>
-        </div>
-        {/* <Divider inset="none" /> */}
       </FormHeader>
 
       <FormBaseLayout loading={loading}>
@@ -181,21 +190,21 @@ export default function EmployeeForm() {
       >
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel><Typography level='body-sm' startDecorator={<Person sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Full Name")}</Typography></FormLabel>
-          <Input value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
+          <Input type="text" value={name} onChange={(e) => setName(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel><Typography level='body-sm' startDecorator={<BadgeIcon sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("ID Number")}</Typography></FormLabel>
-          <Input value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
+          <Input type="number" value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
           <FormLabel><Typography level='body-sm' startDecorator={<Email sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Email")}</Typography></FormLabel>
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
+          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
           <FormLabel><Typography level='body-sm' startDecorator={<ContactsIcon sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Phone")}</Typography></FormLabel>
-          <Input value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
+          <Input type="number" value={phone} onChange={(e) => setPhone(e.target.value)} disabled={mode === 'view'} />
         </FormControl>
 
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
