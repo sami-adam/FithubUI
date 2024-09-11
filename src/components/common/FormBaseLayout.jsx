@@ -1,5 +1,5 @@
 import { Box, Button, Card, Typography, useTheme } from "@mui/joy";
-import { FormBackButton } from "./Buttons";
+import { DeleteButton, FormBackButton } from "./Buttons";
 import LoadingPage from "./LaodingPage";
 import backgroundImage from '../../assets/background.jpg';
 import backgroundImageDark from '../../assets/backgrounddm.jpg';
@@ -44,7 +44,7 @@ export default function FormBaseLayout({ children, loading=false }) {
     )
 }
 
-export function FormHeader({ children, loading=false, title="", mode, setMode, handleSave, handleAdd, handelDelete }) {
+export function FormHeader({ children, loading=false, title="", mode, setMode, handleSave, handleAdd, deleteMethod, deleteMessage, error }) {
     const theme = useTheme();
     const {t} = useTranslation();
     return (
@@ -77,7 +77,7 @@ export function FormHeader({ children, loading=false, title="", mode, setMode, h
                     <Box flexGrow={1} width={4}/>
                     <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
                     <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-                    <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("DELETE")}</Button>
+                    <DeleteButton deleteMethod={deleteMethod} mode={mode} message={deleteMessage || t("Deleted successfully!")} error={error}/>
                 </div>
                 </div>
             </Box>

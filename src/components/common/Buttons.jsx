@@ -1,8 +1,10 @@
 import Add from '@mui/icons-material/Add';
 import { Button, useTheme } from '@mui/joy';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { IoTrashBinOutline } from 'react-icons/io5';
+import Swal from 'sweetalert2';
 
 export default function AddNewButton({ title, formUrl }){
     const theme = useTheme();
@@ -42,4 +44,48 @@ export function TableBackButton(){
         <br/>
         </>
     )
+}
+
+export function DeleteButton({deleteMethod, ids=[], mode, error, message}){
+    const theme = useTheme();
+    const {t} = useTranslation();
+    const {id} = useParams();
+    const handelDelete = () => {
+        Swal.fire({
+          title: t("Are you sure?"),
+          text: t("You won't be able to revert this!"),
+          color: theme.palette.mode === 'dark' ? "white" : "black",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: theme.palette.primary.main,
+          cancelButtonColor: theme.palette.mode === 'dark' ? "brown" : "brown",
+          confirmButtonText: t("Yes, delete it!"),
+          cancelButtonText: t("Cancel"),
+          background: theme.palette.mode === 'dark' ? 'black' : '#fff',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            deleteMethod(id);
+            if(error){
+              Swal.fire({
+                title: t("Error"),
+                text: t(error),
+                icon: "error",
+                confirmButtonText: t("OK"),
+              });
+              return;
+            }
+            Swal.fire({
+              title: t("Deleted!"),
+              text: t(message),
+              icon: "success"
+            });
+            window.history.back();
+          }
+        });
+          // setOpenSnackbar(true);
+          // setSnack({type: 'success', title: 'Success', message: 'Employee deleted successfully'});
+      }
+    return (
+        <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("DELETE")}</Button>
+    );
 }
