@@ -38,13 +38,13 @@ export default function FormBaseLayout({ children, loading=false }) {
             </Card>
             }
         </Box>
-        <ToastContainer autoClose={3000}/>
+        <ToastContainer autoClose={3000} theme={theme.palette.mode}/>
         </>
 
     )
 }
 
-export function FormHeader({ children, loading=false, mode, setMode, handleSave, handleAdd, handelDelete }) {
+export function FormHeader({ children, loading=false, title="", mode, setMode, handleSave, handleAdd, handelDelete }) {
     const theme = useTheme();
     const {t} = useTranslation();
     return (
@@ -69,7 +69,7 @@ export function FormHeader({ children, loading=false, mode, setMode, handleSave,
                 {children}
                 <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16, width:"100%"}}>
                 <Typography level="title-lg">
-                    {t("Employee Information")}
+                    {t(title)}
                 </Typography>
                 <div style={{ display: "flex", flexDirection:"row"}}>
                     <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>

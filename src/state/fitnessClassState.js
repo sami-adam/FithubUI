@@ -15,7 +15,7 @@ const useFitnessClassStore = create((set) => ({
             });
             set({ fitnessClasses: response.data });
         } catch (error) {
-            if (error.response.status === 403) {
+            if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useFitnessClassStore.getState().signInUrl;
             } else {

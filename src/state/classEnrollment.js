@@ -3,9 +3,11 @@ import axios from "axios";
 
 const useClassEnrollmentStore = create((set) => ({
     classEnrollments: [],
+    classEnrollment: null,
     token: localStorage.getItem("token"),
     baseURL: process.env.REACT_APP_BASE_URL,
     signInUrl: process.env.REACT_APP_SIGN_IN_URL,
+    error: null,
     fetchClassEnrollments: async () => {
         try {
             const response = await axios.get(useClassEnrollmentStore.getState().baseURL + "/class-enrollments", {
@@ -18,8 +20,9 @@ const useClassEnrollmentStore = create((set) => ({
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useClassEnrollmentStore.getState().signInUrl;
+                set({ error: { message: "Please sign in", details: error.response.data } });
             } else {
-                console.error("Error fetching classEnrollments", error);
+                set({ error: { message: "Error fetching class enrollments!", details: error } });
             }
         }
     },
@@ -32,7 +35,7 @@ const useClassEnrollmentStore = create((set) => ({
             });
             return response.data;
         } catch (error) {
-            console.error("Error fetching classEnrollment", error);
+            set({ error: { message: "Error fetching class enrollment!", details: error } });
         }
     },
     addClassEnrollment: async (classEnrollment) => {
@@ -43,8 +46,10 @@ const useClassEnrollmentStore = create((set) => ({
                 },
             });
             set((state) => ({ classEnrollments: [...state.classEnrollments, response.data] }));
+            set({ classEnrollment: response.data });
         } catch (error) {
-            console.error("Error adding classEnrollment", error);
+            console.log(error);
+            set({ error: { message: "Error adding class enrollment!", details: error } });
         }
     },
     updateClassEnrollment: async (classEnrollment) => {
@@ -57,8 +62,9 @@ const useClassEnrollmentStore = create((set) => ({
             set((state) => ({
                 classEnrollments: state.classEnrollments.map((b) => (b.id === classEnrollment.id ? response.data : b)),
             }));
+            set({ classEnrollment: response.data });
         } catch (error) {
-            console.error("Error updating classEnrollment", error);
+            set({ error: { message: "Error updating class enrollment!", details: error } });
         }
     },
     deleteClassEnrollment: async (id) => {
@@ -72,7 +78,7 @@ const useClassEnrollmentStore = create((set) => ({
                 classEnrollments: state.classEnrollments.filter((b) => b.id !== id),
             }));
         } catch (error) {
-            console.error("Error deleting classEnrollment", error);
+            set({ error: { message: "Error deleting class enrollment!", details: error } });
         }
     },
     searchClassEnrollments: async (search) => {
@@ -85,7 +91,7 @@ const useClassEnrollmentStore = create((set) => ({
             set({ classEnrollments: response.data });
             return response.data;
         } catch (error) {
-            console.error("Error searching classEnrollments", error);
+            set({ error: { message: "Error searching class enrollments!", details: error } });
         }
     },
     getMemberClassEnrollments: async (memberId) => {
@@ -98,7 +104,7 @@ const useClassEnrollmentStore = create((set) => ({
             set({ classEnrollments: response.data });
             return response.data;
         } catch (error) {
-            console.error("Error fetching member classEnrollments", error);
+            set({ error: { message: "Error fetching class enrollments!", details: error } });
         }
     }
 }));

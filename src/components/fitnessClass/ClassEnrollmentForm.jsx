@@ -5,7 +5,7 @@ import useFitnessClassStore from "../../state/fitnessClassState";
 import useClassScheduleStore from "../../state/classScheduleState";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { HorozontalStepper, SnackbarCustom } from "../common/Common";
+import { HorozontalStepper, Required, SnackbarCustom } from "../common/Common";
 import { FormBackButton } from "../common/Buttons";
 import { Box, Button, CardContent, FormControl, FormLabel, Table, Typography } from "@mui/joy";
 import FormBaseLayout, { FormFooter, FormHeader } from "../common/FormBaseLayout";
@@ -21,6 +21,8 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import Swal from "sweetalert2";
+import { validateInputs } from "../../utils/validations";
 
 const stages = ["NEW", "PAID", "ACTIVE", "EXPIRED", "CANCELLED"];
 export default function ClassEnrollmentForm(){
@@ -35,6 +37,8 @@ export default function ClassEnrollmentForm(){
     const addClassEnrollment = useClassEnrollmentStore((state) => state.addClassEnrollment);
     const deleteClassEnrollment = useClassEnrollmentStore((state) => state.deleteClassEnrollment);
     const fetchClassEnrollment = useClassEnrollmentStore((state) => state.fetchClassEnrollment);
+    const savedClassEnrollment = useClassEnrollmentStore((state) => state.classEnrollment);
+    const error = useClassEnrollmentStore((state) => state.error);
     const [classEnrollment, setClassEnrollment] = useState(null);
     const [loading, setLoading] = useState(true);
     const [fetchData, setFetchData] = useState(true);
@@ -56,10 +60,19 @@ export default function ClassEnrollmentForm(){
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
 
     useEffect(() => {
+        if(error){
+            Swal.fire({
+                title: t(error.message),
+                text: t(error.details),
+                icon: "error",
+                confirmButtonText: t("OK")
+            });
+            useClassEnrollmentStore.setState({error: null});
+        }
         if(mode === 'add'){
           setLoading(false);
         }
-        if(id && mode !== 'add' && !classEnrollment){
+        if(id && mode !== 'add' && !classEnrollment && id !== 'new'){
           fetchClassEnrollment(id).then((data) => {
             setClassEnrollment(data);
             setLoading(false);
@@ -90,23 +103,55 @@ export default function ClassEnrollmentForm(){
     }, [mode, id, classEnrollment, fetchData, fetchMembers, fetchFitnessClasses, fetchClassSchedules, fetchClassEnrollment]);
 
     const handleSave = () => {
+        const validInputs = validateInputs([
+            { type: "other", value: member, message: "Please select a member" },
+            { type: "other", value: fitnessClass, message: "Please select a fitness class" },
+            { type: "other", value: classSchedule, message: "Please select a class schedule" }
+        ]);
+        if(!validInputs){
+            return;
+        }
         updateClassEnrollment({
             id: classEnrollment.id,
             member: member && {"id": member.id},
             fitnessClass: fitnessClass && {"id": fitnessClass.id},
             classSchedule: classSchedule && {"id": classSchedule.id},
         });
+        if(error){
+            Swal.fire({
+                title: t(error.message),
+                text: t(error.details),
+                icon: "error",
+            });
+            return;
+        }
         setMode('view');
         setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('success'), message: t('classEnrollmentUpdated')});
+        setSnack({type: 'success', title: t('success'), message: t('Class enrollment has been updated!')});
     }
 
-    const handleAdd = () => {
-        addClassEnrollment({
+    const handleAdd = async () => {
+        const validInputs = validateInputs([
+            { type: "other", value: member, message: "Please select a member" },
+            { type: "other", value: fitnessClass, message: "Please select a fitness class" },
+            { type: "other", value: classSchedule, message: "Please select a class schedule" }
+        ]);
+        if(!validInputs){
+            return;
+        }
+        await addClassEnrollment({
             member: member && {"id": member.id},
             fitnessClass: fitnessClass && {"id": fitnessClass.id},
             classSchedule: classSchedule && {"id": classSchedule.id},
         });
+        if(error){
+            Swal.fire({
+                title: t(error.message),
+                text: t(error.details),
+                icon: "error",
+            });
+            return;
+        }
         setMode('view');
         setOpenSnackbar(true);
         setSnack({type: 'success', title: t('success'), message: t('classEnrollmentAdded')});
@@ -124,25 +169,9 @@ export default function ClassEnrollmentForm(){
 
     return (
         <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-        <FormHeader loading={loading}>
-            {/* <Divider inset="none" /> */}
+        <FormHeader loading={loading} title="Enrollment Information" mode={mode} setMode={setMode} handleSave={handleSave} handleAdd={handleAdd} handelDelete={handleDelete}>
             <HorozontalStepper stages={stages} currentStage={(stages.indexOf(classEnrollment&&classEnrollment.status)||0)} />
             <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-            <FormBackButton/>
-
-            <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:0}}>
-                <Typography level="title-lg">
-                    {t("Enrollment Information")}
-                </Typography>
-                <div style={{ display: "flex", flexDirection:"row"}}>
-                    <Button variant='soft' className='shadow-inner' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-                    <Button variant='soft' className='shadow-inner' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-                    <Box flexGrow={1} width={4}/>
-                    <Button variant='soft' className='shadow-inner' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-                    <Button variant='soft' className='shadow-inner' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-                    <Button variant='soft' className='shadow-inner' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
-                </div>
-            </div>
         </FormHeader>
         <FormBaseLayout loading={loading}>
         <CardContent
@@ -153,17 +182,17 @@ export default function ClassEnrollmentForm(){
             gap: 1.5,
             }}>
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-                <FormLabel><Typography level='body-sm' startDecorator={<Person sx={{ fontSize: 18}}/>}>{t("Member")}</Typography></FormLabel>
+                <FormLabel><Typography level='body-sm' startDecorator={<Person sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Member")}</Typography></FormLabel>
                 <ManyToOneField options={members} optionsFields={["firstName", "lastName"]} value={member} setValue={setMember} mode={mode} url={"/members"}/>
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
-                <FormLabel><Typography level='body-sm' startDecorator={<Fitbit sx={{ fontSize: 18}}/>}>{t("Fitness Class")}</Typography></FormLabel>
+                <FormLabel><Typography level='body-sm' startDecorator={<Fitbit sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Fitness Class")}</Typography></FormLabel>
                 <ManyToOneField options={fitnessClasses} optionsFields={["name"]} value={fitnessClass} setValue={setFitnessClass} mode={mode} url={"/fitness-classes"}/>
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
-                <FormLabel><Typography level='body-sm' startDecorator={<Fitbit sx={{ fontSize: 18}}/>}>{t("Class Schedule")}</Typography></FormLabel>
+                <FormLabel><Typography level='body-sm' startDecorator={<Fitbit sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Class Schedule")}</Typography></FormLabel>
                 <ManyToOneField options={classSchedules} optionsFields={["reference"]} value={classSchedule} setValue={setClassSchedule} mode={mode} url={"/class-schedules"}/>
             </FormControl>
 

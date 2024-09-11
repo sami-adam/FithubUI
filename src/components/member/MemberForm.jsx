@@ -68,11 +68,12 @@ export default function MemberForm() {
                 text: t(error.details),
                 icon: "error",
             });
+            useMemberStore.setState({error: null});
         }
         if(mode === 'add'){
             setLoading(false);
           }
-        if(id && mode !== 'add' && !member){
+        if(id && mode !== 'add' && !member && id !== 'new'){
             fetchMember(id).then((member) => {
                 setMember(member);
             }).finally(() => setLoading(false));
@@ -177,7 +178,7 @@ export default function MemberForm() {
 
     return (
         <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-        <FormHeader loading={loading} mode={mode} setMode={setMode} handleSave={handleSave} handleAdd={handleAdd} handelDelete={handleDelete}>
+        <FormHeader loading={loading} title="Member Details" mode={mode} setMode={setMode} handleSave={handleSave} handleAdd={handleAdd} handelDelete={handleDelete}>
             <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
             <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
         </FormHeader>

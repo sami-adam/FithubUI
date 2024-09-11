@@ -43,17 +43,10 @@ export default function EmployeeForm() {
     const theme = useTheme();
 
     useEffect(() => {
-        if(error){
-          Swal.fire({
-            title: t("Error"),
-            text: t(error),
-            icon: "error",
-          });
-        }
         if(mode === 'add'){
           setLoading(false);
         }
-        if(id && mode !== 'add' && !employee){
+        if(id && mode !== 'add' && !employee && id !== 'new'){
             fetchEmployee(id).then((data) => {
                 setEmployee(data);
             }).finally(()=> setLoading(false)) 
@@ -66,7 +59,7 @@ export default function EmployeeForm() {
             setAddress(address=>address||employee.address);
             setEmployeeType(employeeType=>employeeType||employee.employeeType);
         }
-      }, [mode, employee, id, fetchEmployee, error]);
+      }, [mode, employee, id, fetchEmployee]);
 
     const handleSave = () => {
         const validInputs = validateInputs();
@@ -176,7 +169,7 @@ export default function EmployeeForm() {
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-      <FormHeader loading={loading} mode={mode} setMode={setMode} handleSave={handleSave} handleAdd={handleAdd} handelDelete={handelDelete}>
+      <FormHeader loading={loading} title="Employee Information" mode={mode} setMode={setMode} handleSave={handleSave} handleAdd={handleAdd} handelDelete={handelDelete}>
         <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
       </FormHeader>
 

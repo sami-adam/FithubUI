@@ -15,7 +15,7 @@ const useAccountStore = create((set) => ({
             });
             set({ accounts: response.data });
         } catch (error) {
-            if (error.response.status === 403) {
+            if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useAccountStore.getState().signInUrl;
             } else {
@@ -32,11 +32,11 @@ const useAccountStore = create((set) => ({
             });
             return response.data;
         } catch (error) {
-            if (error.response.status === 403) {
+            if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useAccountStore.getState().signInUrl;
             }
-            if (error.response.status === 404) {
+            if (error.response && error.response.status === 404) {
                 window.location.href = "/404";
             }
         }

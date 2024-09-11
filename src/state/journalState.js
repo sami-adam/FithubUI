@@ -15,7 +15,7 @@ const useJournalStore = create((set) => ({
             });
             set({ journals: response.data });
         } catch (error) {
-            if (error.response.status === 403) {
+            if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useJournalStore.getState().signInUrl;
             } else {

@@ -16,7 +16,7 @@ const useTaxStore = create((set) => ({
             set({ taxes: response.data });
         } catch (error) {
             // Navigate to the sign in page if the token is invalid
-            if (error.response.status === 403) {
+            if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useTaxStore.getState().signInUrl;
             } else {

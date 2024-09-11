@@ -267,7 +267,15 @@
       "Error fetching members!": "خطأ في جلب المشتركين!",
       "AxiosError: Network Error": "AxiosError: خطأ في الشبكة",
       "Error fetching member!": "خطأ في جلب المشترك!",
-      "Error adding member!": "خطأ في إضافة المشترك!"
+      "Error adding member!": "خطأ في إضافة المشترك!",
+      "Error fetching class enrollment!": "خطأ في جلب تسجيل الفصل!",
+      "AxiosError: Request failed with status code 403": "الرجاء تسجيل الدخول للمتابعة",
+      "Error adding class enrollment!": "خطأ في إضافة تسجيل الفصل!",
+      "AxiosError: Request failed with status code 500": "يوجد خطأ في الخادم",
+      "Error fetching class enrollments!": "خطأ في جلب تسجيلات الفصول!",
+      "classEnrollmentAdded": "تمت إضافة تسجيل الفصل",
+      "Class enrollment has been updated!": "تم تحديث تسجيل الفصل!",
+      "DELETE": "حذف"
     }
   }
   

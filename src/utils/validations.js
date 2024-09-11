@@ -37,6 +37,11 @@ export const validateInputs = (inputs=[]) => {
         if(input.type === "id"){
             !validateIdentificationNumber(input.value) && messages.push(input.message || "Please enter a valid ID number");
         }
+        if(input.type === "other"){
+            if(!input.value){
+                messages.push(input.message || "Please enter a valid value");
+            }
+        }
     });
     if (messages.length > 0){
         var duration = 3;
