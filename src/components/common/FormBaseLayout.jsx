@@ -61,7 +61,6 @@ export function FormHeader({ children, loading=false, title="", mode, setMode, u
             return;
         }
         const res = await addMethod(addFields);
-        console.log(res);
         if(res && res.error){
             setError(res.error);
             Swal.fire({

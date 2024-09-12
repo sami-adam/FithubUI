@@ -21,7 +21,7 @@ const useAccountStore = create((set) => ({
                 window.location.href = useAccountStore.getState().signInUrl;
                 return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             } else {
-                return { success: false, error: { message: "Error fetching accounts!", details: error.message}};
+                return { success: false, error: { message: "Error fetching accounts!", details: error.response.data.message}};
             }
         }
     },
@@ -43,7 +43,7 @@ const useAccountStore = create((set) => ({
                 window.location.href = "/404";
                 return { success: false, error: { message: "Account not found!", details: "The account you are looking for does not exist!" } };
             }
-            return { success: false, error: { message: "Error fetching account!", details: error.message}};
+            return { success: false, error: { message: "Error fetching account!", details: error.response.data.message}};
         }
     },
     addAccount: async (account) => {
@@ -56,7 +56,7 @@ const useAccountStore = create((set) => ({
             set((state) => ({ accounts: [...state.accounts, response.data] }));
             return {success: true, data: response.data};
         } catch (error) {
-            return { success: false, error: { message: "Error adding account!", details: error.message}};
+            return { success: false, error: { message: "Error adding account!", details: error.response.data.message}};
         }
     },
     updateAccount: async (account) => {
@@ -71,7 +71,7 @@ const useAccountStore = create((set) => ({
             }));
             return {success: true, data: response.data};
         } catch (error) {
-            return { success: false, error: { message: "Error updating account!", details: error.message}};
+            return { success: false, error: { message: "Error updating account!", details: error.response.data.message}};
         }
     },
     deleteAccount: async (id) => {
@@ -84,7 +84,7 @@ const useAccountStore = create((set) => ({
             set((state) => ({ accounts: state.accounts.filter((m) => m.id !== id) }));
             return {success: true};
         } catch (error) {
-            return { success: false, error: { message: "Error deleting account!", details: error.message}};
+            return { success: false, error: { message: "Error deleting account!", details: error.response.data.message}};
         }
     },
     searchAccounts: async (searchTerm) => {
@@ -97,7 +97,7 @@ const useAccountStore = create((set) => ({
             set({ accounts: response.data });
             return {success: true, data: response.data};
         } catch (error) {
-            return { success: false, error: { message: "Error searching accounts!", details: error.message}};
+            return { success: false, error: { message: "Error searching accounts!", details: error.response.data.message}};
         }
     }
 

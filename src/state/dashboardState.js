@@ -14,7 +14,7 @@ const useDashboardStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions by product!", details: error.message } };
+            return { success: false, error: { message: "Error fetching subscriptions by product!", details: error.response.data.message } };
         }
     },
     getSubscriptionsByProductCategory: async () => {
@@ -26,7 +26,7 @@ const useDashboardStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions by product category!", details: error.message } };
+            return { success: false, error: { message: "Error fetching subscriptions by product category!", details: error.response.data.message } };
         }
     },
     getSubscriptionsByYear: async () => {
@@ -38,7 +38,7 @@ const useDashboardStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions by year!", details: error.message } };
+            return { success: false, error: { message: "Error fetching subscriptions by year!", details: error.response.data.message } };
         }
     },
     getSubscriptionsByYear2: async (year) => {
@@ -50,7 +50,7 @@ const useDashboardStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions by year!", details: error.message } };
+            return { success: false, error: { message: "Error fetching subscriptions by year!", details: error.response.data.message } };
         }
     },
     getSubscriptionsByYearAndMonth: async () => {
@@ -62,7 +62,7 @@ const useDashboardStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions by year and month", details: error.message } };
+            return { success: false, error: { message: "Error fetching subscriptions by year and month", details: error.response.data.message } };
         }
     },
     getSubscriptionsByYearAndMonth2: async (year) => {
@@ -74,7 +74,7 @@ const useDashboardStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions by year and month", details: error.message } };
+            return { success: false, error: { message: "Error fetching subscriptions by year and month", details: error.response.data.message } };
         }
     },
     getSubscriptionsByYearAndMonth3: async (year, month) => {
@@ -86,7 +86,7 @@ const useDashboardStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions by year and month", details: error.message } };
+            return { success: false, error: { message: "Error fetching subscriptions by year and month", details: error.response.data.message } };
         }
     },
     getSubscriptionsByYearMonthAndDay: async () => {
@@ -98,7 +98,7 @@ const useDashboardStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.message } };
+            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.response.data.message } };
         }
     },
     getSubscriptionsByYearMonthAndDay2: async (year) => {
@@ -110,7 +110,7 @@ const useDashboardStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.message } };
+            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.response.data.message } };
         }
     },
     getSubscriptionsByYearMonthAndDay3: async (year, month) => {
@@ -122,7 +122,7 @@ const useDashboardStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.message } };
+            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.response.data.message } };
         }
     },
     getSubscriptionsByYearMonthAndDay4: async (year, month, day) => {
@@ -134,7 +134,7 @@ const useDashboardStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.message } };
+            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.response.data.message } };
         }
     },
 }));

@@ -20,7 +20,7 @@ const useEntryStore = create((set) => ({
                 localStorage.removeItem("token");
                 window.location.href = useEntryStore.getState().signInUrl;
             }
-            return { success: false, error: { message: "Error fetching entries!", details: error.message} };
+            return { success: false, error: { message: "Error fetching entries!", details: error.response.data.message} };
         }
     },
     fetchEntry: async (id) => {
@@ -32,7 +32,7 @@ const useEntryStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching entry!", details: error.message } };
+            return { success: false, error: { message: "Error fetching entry!", details: error.response.data.message } };
         }
     },
     addEntry: async (entry) => {
@@ -45,7 +45,7 @@ const useEntryStore = create((set) => ({
             set((state) => ({ entries: [...state.entries, response.data] }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error adding entry!", details: error.message } };
+            return { success: false, error: { message: "Error adding entry!", details: error.response.data.message } };
         }
     },
     updateEntry: async (entry) => {
@@ -60,7 +60,7 @@ const useEntryStore = create((set) => ({
             }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error updating entry!", details: error.message } };
+            return { success: false, error: { message: "Error updating entry!", details: error.response.data.message } };
         }
     },
     deleteEntry: async (id) => {
@@ -73,7 +73,7 @@ const useEntryStore = create((set) => ({
             set((state) => ({ entries: state.entries.filter((m) => m.id !== id) }));
             return { success: true };
         } catch (error) {
-            return { success: false, error: { message: "Error deleting entry!", details: error.message } };
+            return { success: false, error: { message: "Error deleting entry!", details: error.response.data.message } };
         }
     },
     searchEntries: async (searchTerm) => {
@@ -86,7 +86,7 @@ const useEntryStore = create((set) => ({
             set({ entries: response.data });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error searching entries!", details: error.message } };
+            return { success: false, error: { message: "Error searching entries!", details: error.response.data.message } };
         }
     }
 }));

@@ -21,7 +21,7 @@ const useMembershipStore = create((set) => ({
                 window.location.href = useMembershipStore.getState().signInUrl;
                 return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             }
-            return { success: false, error: { message: "Error fetching memberships!", details: error.message } };
+            return { success: false, error: { message: "Error fetching memberships!", details: error.response.data.message } };
         }
     },
     fetchMembership: async (id) => {
@@ -33,7 +33,7 @@ const useMembershipStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching membership!", details: error.message } };
+            return { success: false, error: { message: "Error fetching membership!", details: error.response.data.message } };
         }
     },
     addMembership: async (membership) => {
@@ -46,7 +46,7 @@ const useMembershipStore = create((set) => ({
             set((state) => ({ memberships: [...state.memberships, response.data] }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error adding membership!", details: error.message } };
+            return { success: false, error: { message: "Error adding membership!", details: error.response.data.message } };
         }
     },
     updateMembership: async (membership) => {
@@ -61,7 +61,7 @@ const useMembershipStore = create((set) => ({
             }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error updating membership!", details: error.message } };
+            return { success: false, error: { message: "Error updating membership!", details: error.response.data.message } };
         }
     },
     deleteMembership: async (id) => {
@@ -74,7 +74,7 @@ const useMembershipStore = create((set) => ({
             set((state) => ({ memberships: state.memberships.filter((m) => m.id !== id) }));
             return { success: true };
         } catch (error) {
-            return { success: false, error: { message: "Error deleting membership!", details: error.message } };
+            return { success: false, error: { message: "Error deleting membership!", details: error.response.data.message } };
         }
     },
     searchMemberships: async (searchTerm) => {
@@ -87,7 +87,7 @@ const useMembershipStore = create((set) => ({
             set({ memberships: response.data });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error searching memberships!", details: error.message } };
+            return { success: false, error: { message: "Error searching memberships!", details: error.response.data.message } };
         }
     },
 }));

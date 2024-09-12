@@ -19,9 +19,9 @@ const useUsersStore = create((set) => ({
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useUsersStore.getState().signInUrl;
-                return { success: false, error: { message: "Invalid token!", details: error.message } };
+                return { success: false, error: { message: "Invalid token!", details: error.response.data.message } };
             } else {
-                return { success: false, error: { message: "Error fetching users!", details: error.message } };
+                return { success: false, error: { message: "Error fetching users!", details: error.response.data.message } };
             }
         }
     },
@@ -35,7 +35,7 @@ const useUsersStore = create((set) => ({
             set({ users: response.data });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching users!", details: error.message } };
+            return { success: false, error: { message: "Error fetching users!", details: error.response.data.message } };
         }
 
     }

@@ -21,7 +21,7 @@ const useJournalStore = create((set) => ({
                 window.location.href = useJournalStore.getState().signInUrl;
                 return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             } else {
-                return { success: false, error: { message: "Error fetching journals!", details: error.message } };
+                return { success: false, error: { message: "Error fetching journals!", details: error.response.data.message } };
             }
         }
     },
@@ -34,7 +34,7 @@ const useJournalStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching journal!", details: error.message } };
+            return { success: false, error: { message: "Error fetching journal!", details: error.response.data.message } };
         }
     },
     addJournal: async (journal) => {
@@ -47,7 +47,7 @@ const useJournalStore = create((set) => ({
             set((state) => ({ journals: [...state.journals, response.data] }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error adding journal!", details: error.message } };
+            return { success: false, error: { message: "Error adding journal!", details: error.response.data.message } };
         }
     },
     updateJournal: async (journal) => {
@@ -62,7 +62,7 @@ const useJournalStore = create((set) => ({
             }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error updating journal!", details: error.message } };
+            return { success: false, error: { message: "Error updating journal!", details: error.response.data.message } };
         }
     },
     deleteJournal: async (id) => {
@@ -75,7 +75,7 @@ const useJournalStore = create((set) => ({
             set((state) => ({ journals: state.journals.filter((m) => m.id !== id) }));
             return { success: true };
         } catch (error) {
-            return { success: false, error: { message: "Error deleting journal!", details: error.message } };
+            return { success: false, error: { message: "Error deleting journal!", details: error.response.data.message } };
         }
     },
     searchJournals: async (search) => {
@@ -88,7 +88,7 @@ const useJournalStore = create((set) => ({
             set({ journals: response.data });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error searching journals!", details: error.message } };
+            return { success: false, error: { message: "Error searching journals!", details: error.response.data.message } };
         }
     }
 }));

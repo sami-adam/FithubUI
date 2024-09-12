@@ -20,9 +20,9 @@ const useProductStore = create((set) => ({
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useProductStore.getState().signInUrl;
-                return { success: false, error: { message: "Invalid token!", details: error.message } };
+                return { success: false, error: { message: "Invalid token!", details: error.response.data.message } };
             } else {
-                return { success: false, error: { message: "Error fetching products!", details: error.message } };
+                return { success: false, error: { message: "Error fetching products!", details: error.response.data.message } };
             }
         }
     },
@@ -35,7 +35,7 @@ const useProductStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching product!", details: error.message } };
+            return { success: false, error: { message: "Error fetching product!", details: error.response.data.message } };
         }
     },
     addProduct: async (product) => {
@@ -48,7 +48,7 @@ const useProductStore = create((set) => ({
             set((state) => ({ products: [...state.products, response.data] }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error adding product!", details: error.message } };
+            return { success: false, error: { message: "Error adding product!", details: error.response.data.message } };
         }
     },
     updateProduct: async (product) => {
@@ -63,7 +63,7 @@ const useProductStore = create((set) => ({
             }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error updating product!", details: error.message } };
+            return { success: false, error: { message: "Error updating product!", details: error.response.data.message } };
         }
     },
     deleteProduct: async (id) => {
@@ -76,7 +76,7 @@ const useProductStore = create((set) => ({
             set((state) => ({ products: state.products.filter((p) => p.id !== id) }));
             return { success: true };
         } catch (error) {
-            return { success: false, error: { message: "Error deleting product!", details: error.message } };
+            return { success: false, error: { message: "Error deleting product!", details: error.response.data.message } };
         }
     },
     searchProducts: async (searchTerm) => {
@@ -89,7 +89,7 @@ const useProductStore = create((set) => ({
             set({ products: response.data });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error searching products!", details: error.message } };
+            return { success: false, error: { message: "Error searching products!", details: error.response.data.message } };
         }
     },
 }))
