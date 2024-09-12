@@ -61,7 +61,7 @@ export default function ClassEnrollmentPage({ defaultSearch="" }) {
 
     const listItems = classEnrollments.map((classEnrollment) => ({
         "id": classEnrollment.reference,
-        "avatar": classEnrollment.member && classEnrollment.member.firstName.charAt(0) + classEnrollment.member.lastName.charAt(0),
+        "avatar": classEnrollment.member && classEnrollment.member.firstName && classEnrollment.member.firstName.charAt(0) + classEnrollment.member.lastName.charAt(0),
         "title": classEnrollment.member && classEnrollment.member.firstName + " " + classEnrollment.member.lastName,
         "subtitle": classEnrollment.startDate + " - " + classEnrollment.endDate,
         "firstRow": [classEnrollment.fitnessClass && classEnrollment.fitnessClass.name, classEnrollment.price],

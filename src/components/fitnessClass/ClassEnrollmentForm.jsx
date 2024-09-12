@@ -17,6 +17,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 const stages = ["NEW", "PAID", "ACTIVE", "EXPIRED", "CANCELLED"];
 export default function ClassEnrollmentForm(){
@@ -31,7 +32,6 @@ export default function ClassEnrollmentForm(){
     const addClassEnrollment = useClassEnrollmentStore((state) => state.addClassEnrollment);
     const deleteClassEnrollment = useClassEnrollmentStore((state) => state.deleteClassEnrollment);
     const fetchClassEnrollment = useClassEnrollmentStore((state) => state.fetchClassEnrollment);
-    const error = useClassEnrollmentStore((state) => state.error);
     const [classEnrollment, setClassEnrollment] = useState(null);
     const [loading, setLoading] = useState(true);
     const [fetchData, setFetchData] = useState(true);
@@ -54,8 +54,17 @@ export default function ClassEnrollmentForm(){
           setLoading(false);
         }
         if(id && mode !== 'add' && !classEnrollment && id !== 'new'){
-          fetchClassEnrollment(id).then((data) => {
-            setClassEnrollment(data);
+          fetchClassEnrollment(id).then((res) => {
+            if(res.success){
+                setClassEnrollment(res.data);
+            } else {
+                Swal.fire({
+                    title: t(res.error.message),
+                    text: t(res.error.details),
+                    icon: 'error',
+                    confirmButtonText: t('OK')
+                });
+            }
             setLoading(false);
           });
         }
@@ -81,7 +90,7 @@ export default function ClassEnrollmentForm(){
             fetchClassSchedules();
             setFetchData(false);
         }
-    }, [mode, id, classEnrollment, fetchData, fetchMembers, fetchFitnessClasses, fetchClassSchedules, fetchClassEnrollment, error]);
+    }, [mode, id, classEnrollment, fetchData, fetchMembers, fetchFitnessClasses, fetchClassSchedules, fetchClassEnrollment]);
 
     const validateFields = [
         { type: "other", value: member, message: "Please select a member" },
@@ -104,7 +113,7 @@ export default function ClassEnrollmentForm(){
 
     return (
         <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-        <FormHeader loading={loading} title="Enrollment Information" mode={mode} setMode={setMode} deleteMethod={deleteClassEnrollment} updateMethod={updateClassEnrollment} updateFields={updateFields} addMethod={addClassEnrollment} addFields={addFields} validateFields={validateFields} error={error} stateStore={useClassEnrollmentStore}>
+        <FormHeader loading={loading} title="Enrollment Information" mode={mode} setMode={setMode} deleteMethod={deleteClassEnrollment} updateMethod={updateClassEnrollment} updateFields={updateFields} addMethod={addClassEnrollment} addFields={addFields} validateFields={validateFields} stateStore={useClassEnrollmentStore}>
             <HorozontalStepper stages={stages} currentStage={(stages.indexOf(classEnrollment&&classEnrollment.status)||0)} />
         </FormHeader>
         <FormBaseLayout loading={loading}>
