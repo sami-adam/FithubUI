@@ -7,7 +7,6 @@ const useClassEnrollmentStore = create((set) => ({
     token: localStorage.getItem("token"),
     baseURL: process.env.REACT_APP_BASE_URL,
     signInUrl: process.env.REACT_APP_SIGN_IN_URL,
-    error: null,
     fetchClassEnrollments: async () => {
         try {
             const response = await axios.get(useClassEnrollmentStore.getState().baseURL + "/class-enrollments", {
@@ -16,13 +15,14 @@ const useClassEnrollmentStore = create((set) => ({
                 },
             });
             set({ classEnrollments: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useClassEnrollmentStore.getState().signInUrl;
-                set({ error: { message: "Please sign in", details: error.response.data } });
+                return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             } else {
-                set({ error: { message: "Error fetching class enrollments!", details: error } });
+                return { success: false, error: { message: "Error fetching class enrollments!", details: error.message } };
             }
         }
     },
@@ -33,9 +33,9 @@ const useClassEnrollmentStore = create((set) => ({
                     "Authorization": "Bearer " + useClassEnrollmentStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            set({ error: { message: "Error fetching class enrollment!", details: error } });
+            return { success: false, error: { message: "Error fetching class enrollment!", details: error.message } };
         }
     },
     addClassEnrollment: async (classEnrollment) => {
@@ -47,9 +47,9 @@ const useClassEnrollmentStore = create((set) => ({
             });
             set((state) => ({ classEnrollments: [...state.classEnrollments, response.data] }));
             set({ classEnrollment: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
-            set({ error: { message: "Error adding class enrollment!", details: error } });
-            return { error: { message: "Error adding class enrollment!", details: error } };
+            return { success: false, error: { message: "Error adding class enrollment!", details: error } };
         }
     },
     updateClassEnrollment: async (classEnrollment) => {
@@ -63,8 +63,9 @@ const useClassEnrollmentStore = create((set) => ({
                 classEnrollments: state.classEnrollments.map((b) => (b.id === classEnrollment.id ? response.data : b)),
             }));
             set({ classEnrollment: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
-            set({ error: { message: "Error updating class enrollment!", details: error } });
+            return { error: { message: "Error updating class enrollment!", details: error } };
         }
     },
     deleteClassEnrollment: async (id) => {
@@ -77,8 +78,9 @@ const useClassEnrollmentStore = create((set) => ({
             set((state) => ({
                 classEnrollments: state.classEnrollments.filter((b) => b.id !== id),
             }));
+            return { success: true };
         } catch (error) {
-            set({ error: { message: "Error deleting class enrollment!", details: error } });
+            return { success: false, error: { message: "Error deleting class enrollment!", details: error } };
         }
     },
     searchClassEnrollments: async (search) => {
@@ -89,9 +91,9 @@ const useClassEnrollmentStore = create((set) => ({
                 },
             });
             set({ classEnrollments: response.data });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            set({ error: { message: "Error searching class enrollments!", details: error } });
+            return { success: false, error: { message: "Error searching class enrollments!", details: error } };
         }
     },
     getMemberClassEnrollments: async (memberId) => {
@@ -102,9 +104,9 @@ const useClassEnrollmentStore = create((set) => ({
                 },
             });
             set({ classEnrollments: response.data });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            set({ error: { message: "Error fetching class enrollments!", details: error } });
+            return { success: false, error: { message: "Error fetching member class enrollments!", details: error } };
         }
     }
 }));

@@ -14,12 +14,14 @@ const useAccountStore = create((set) => ({
                 },
             });
             set({ accounts: response.data });
+            return {success: true, data: response.data};
         } catch (error) {
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useAccountStore.getState().signInUrl;
+                return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             } else {
-                console.error("Error fetching products", error);
+                return { success: false, error: { message: "Error fetching accounts!", details: error.message}};
             }
         }
     },
@@ -30,15 +32,18 @@ const useAccountStore = create((set) => ({
                     "Authorization": "Bearer " + useAccountStore.getState().token,
                 },
             });
-            return response.data;
+            return {success: true, data: response.data};
         } catch (error) {
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useAccountStore.getState().signInUrl;
+                return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             }
             if (error.response && error.response.status === 404) {
                 window.location.href = "/404";
+                return { success: false, error: { message: "Account not found!", details: "The account you are looking for does not exist!" } };
             }
+            return { success: false, error: { message: "Error fetching account!", details: error.message}};
         }
     },
     addAccount: async (account) => {
@@ -49,8 +54,9 @@ const useAccountStore = create((set) => ({
                 },
             });
             set((state) => ({ accounts: [...state.accounts, response.data] }));
+            return {success: true, data: response.data};
         } catch (error) {
-            console.error("Error adding account", error);
+            return { success: false, error: { message: "Error adding account!", details: error.message}};
         }
     },
     updateAccount: async (account) => {
@@ -63,8 +69,9 @@ const useAccountStore = create((set) => ({
             set((state) => ({
                 accounts: state.accounts.map((m) => (m.id === account.id ? response.data : m)),
             }));
+            return {success: true, data: response.data};
         } catch (error) {
-            console.error("Error updating account", error);
+            return { success: false, error: { message: "Error updating account!", details: error.message}};
         }
     },
     deleteAccount: async (id) => {
@@ -75,8 +82,9 @@ const useAccountStore = create((set) => ({
                 },
             });
             set((state) => ({ accounts: state.accounts.filter((m) => m.id !== id) }));
+            return {success: true};
         } catch (error) {
-            console.error("Error deleting account", error);
+            return { success: false, error: { message: "Error deleting account!", details: error.message}};
         }
     },
     searchAccounts: async (searchTerm) => {
@@ -87,8 +95,9 @@ const useAccountStore = create((set) => ({
                 },
             });
             set({ accounts: response.data });
+            return {success: true, data: response.data};
         } catch (error) {
-            console.error("Error searching accounts", error);
+            return { success: false, error: { message: "Error searching accounts!", details: error.message}};
         }
     }
 

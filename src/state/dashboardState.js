@@ -12,9 +12,9 @@ const useDashboardStore = create((set) => ({
                     "Authorization": "Bearer " + useDashboardStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscriptions by product", error);
+            return { success: false, error: { message: "Error fetching subscriptions by product!", details: error.message } };
         }
     },
     getSubscriptionsByProductCategory: async () => {
@@ -24,9 +24,9 @@ const useDashboardStore = create((set) => ({
                     "Authorization": "Bearer " + useDashboardStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscriptions by product category", error);
+            return { success: false, error: { message: "Error fetching subscriptions by product category!", details: error.message } };
         }
     },
     getSubscriptionsByYear: async () => {
@@ -36,9 +36,9 @@ const useDashboardStore = create((set) => ({
                     "Authorization": "Bearer " + useDashboardStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscriptions by year", error);
+            return { success: false, error: { message: "Error fetching subscriptions by year!", details: error.message } };
         }
     },
     getSubscriptionsByYear2: async (year) => {
@@ -48,9 +48,9 @@ const useDashboardStore = create((set) => ({
                     "Authorization": "Bearer " + useDashboardStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscriptions by year", error);
+            return { success: false, error: { message: "Error fetching subscriptions by year!", details: error.message } };
         }
     },
     getSubscriptionsByYearAndMonth: async () => {
@@ -60,9 +60,9 @@ const useDashboardStore = create((set) => ({
                     "Authorization": "Bearer " + useDashboardStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscriptions by year and month", error);
+            return { success: false, error: { message: "Error fetching subscriptions by year and month", details: error.message } };
         }
     },
     getSubscriptionsByYearAndMonth2: async (year) => {
@@ -72,9 +72,9 @@ const useDashboardStore = create((set) => ({
                     "Authorization": "Bearer " + useDashboardStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscriptions by year and month", error);
+            return { success: false, error: { message: "Error fetching subscriptions by year and month", details: error.message } };
         }
     },
     getSubscriptionsByYearAndMonth3: async (year, month) => {
@@ -84,9 +84,9 @@ const useDashboardStore = create((set) => ({
                     "Authorization": "Bearer " + useDashboardStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscriptions by year and month", error);
+            return { success: false, error: { message: "Error fetching subscriptions by year and month", details: error.message } };
         }
     },
     getSubscriptionsByYearMonthAndDay: async () => {
@@ -96,9 +96,9 @@ const useDashboardStore = create((set) => ({
                     "Authorization": "Bearer " + useDashboardStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscriptions by year, month, and day", error);
+            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.message } };
         }
     },
     getSubscriptionsByYearMonthAndDay2: async (year) => {
@@ -108,9 +108,9 @@ const useDashboardStore = create((set) => ({
                     "Authorization": "Bearer " + useDashboardStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscriptions by year, month, and day", error);
+            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.message } };
         }
     },
     getSubscriptionsByYearMonthAndDay3: async (year, month) => {
@@ -120,9 +120,9 @@ const useDashboardStore = create((set) => ({
                     "Authorization": "Bearer " + useDashboardStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscriptions by year, month, and day", error);
+            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.message } };
         }
     },
     getSubscriptionsByYearMonthAndDay4: async (year, month, day) => {
@@ -132,9 +132,9 @@ const useDashboardStore = create((set) => ({
                     "Authorization": "Bearer " + useDashboardStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscriptions by year, month, and day", error);
+            return { success: false, error: { message: "Error fetching subscriptions by year, month, and day", details: error.message } };
         }
     },
 }));

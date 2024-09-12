@@ -14,8 +14,9 @@ const useEmailStore = create((set) => ({
                 },
             });
             set({ emails: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching emails", error);
+            return { success: false, error: { message: "Error fetching emails!", details: error.message } };
         }
     },
     addEmail: async (email) => {
@@ -26,8 +27,9 @@ const useEmailStore = create((set) => ({
                 },
             });
             set((state) => ({ emails: [...state.emails, response.data] }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error adding email", error);
+            return { success: false, error: { message: "Error adding email!", details: error.message } };
         }
     },
     updateEmail: async (email) => {
@@ -40,8 +42,9 @@ const useEmailStore = create((set) => ({
             set((state) => ({
                 emails: state.emails.map((e) => (e.id === email.id ? response.data : e)),
             }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error updating email", error);
+            return { success: false, error: { message: "Error updating email!", details: error.message } };
         }
     },
     deleteEmail: async (id) => {
@@ -52,8 +55,9 @@ const useEmailStore = create((set) => ({
                 },
             });
             set((state) => ({ emails: state.emails.filter((e) => e.id !== id) }));
+            return { success: true };
         } catch (error) {
-            console.error("Error deleting email", error);
+            return { success: false, error: { message: "Error deleting email!", details: error.message } };
         }
     },
     serachEmails: async (search) => {
@@ -64,8 +68,9 @@ const useEmailStore = create((set) => ({
                 },
             });
             set({ emails: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching emails", error);
+            return { success: false, error: { message: "Error searching emails!", details: error.message } };
         }
     }
 }))

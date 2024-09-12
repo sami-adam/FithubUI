@@ -14,11 +14,13 @@ const useEntryStore = create((set) => ({
                 },
             });
             set({ entries: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useEntryStore.getState().signInUrl;
             }
+            return { success: false, error: { message: "Error fetching entries!", details: error.message} };
         }
     },
     fetchEntry: async (id) => {
@@ -28,9 +30,9 @@ const useEntryStore = create((set) => ({
                     "Authorization": "Bearer " + useEntryStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching entry", error);
+            return { success: false, error: { message: "Error fetching entry!", details: error.message } };
         }
     },
     addEntry: async (entry) => {
@@ -41,8 +43,9 @@ const useEntryStore = create((set) => ({
                 },
             });
             set((state) => ({ entries: [...state.entries, response.data] }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error adding entry", error);
+            return { success: false, error: { message: "Error adding entry!", details: error.message } };
         }
     },
     updateEntry: async (entry) => {
@@ -55,8 +58,9 @@ const useEntryStore = create((set) => ({
             set((state) => ({
                 entries: state.entries.map((m) => (m.id === entry.id ? response.data : m)),
             }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error updating entry", error);
+            return { success: false, error: { message: "Error updating entry!", details: error.message } };
         }
     },
     deleteEntry: async (id) => {
@@ -67,8 +71,9 @@ const useEntryStore = create((set) => ({
                 },
             });
             set((state) => ({ entries: state.entries.filter((m) => m.id !== id) }));
+            return { success: true };
         } catch (error) {
-            console.error("Error deleting entry", error);
+            return { success: false, error: { message: "Error deleting entry!", details: error.message } };
         }
     },
     searchEntries: async (searchTerm) => {
@@ -79,8 +84,9 @@ const useEntryStore = create((set) => ({
                 },
             });
             set({ entries: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching entries", error);
+            return { success: false, error: { message: "Error searching entries!", details: error.message } };
         }
     }
 }));

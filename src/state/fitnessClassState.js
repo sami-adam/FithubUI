@@ -14,12 +14,14 @@ const useFitnessClassStore = create((set) => ({
                 },
             });
             set({ fitnessClasses: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useFitnessClassStore.getState().signInUrl;
+                return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             } else {
-                console.error("Error fetching fitness classes", error);
+                return { success: false, error: { message: "Error fetching fitness classes!", details: error.message } };
             }
         }
     },
@@ -30,9 +32,9 @@ const useFitnessClassStore = create((set) => ({
                     "Authorization": "Bearer " + useFitnessClassStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching fitness class", error);
+            return { success: false, error: { message: "Error fetching fitness class!", details: error.message } };
         }
     },
     addFitnessClass: async (fitnessClass) => {
@@ -43,8 +45,9 @@ const useFitnessClassStore = create((set) => ({
                 },
             });
             set((state) => ({ fitnessClasses: [...state.fitnessClasses, response.data] }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error adding fitness class", error);
+            return { success: false, error: { message: "Error adding fitness class!", details: error.message } };
         }
     },
     updateFitnessClass: async (fitnessClass) => {
@@ -57,8 +60,9 @@ const useFitnessClassStore = create((set) => ({
             set((state) => ({
                 fitnessClasses: state.fitnessClasses.map((fc) => (fc.id === fitnessClass.id ? response.data : fc)),
             }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error updating fitness class", error);
+            return { success: false, error: { message: "Error updating fitness class!", details: error.message } };
         }
     },
     deleteFitnessClass: async (id) => {
@@ -69,8 +73,9 @@ const useFitnessClassStore = create((set) => ({
                 },
             });
             set((state) => ({ fitnessClasses: state.fitnessClasses.filter((fc) => fc.id !== id) }));
+            return { success: true };
         } catch (error) {
-            console.error("Error deleting fitness class", error);
+            return { success: false, error: { message: "Error deleting fitness class!", details: error.message } };
         }
     },
     searchFitnessClasses: async (search) => {
@@ -81,8 +86,9 @@ const useFitnessClassStore = create((set) => ({
                 },
             });
             set({ fitnessClasses: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error searching fitness classes", error);
+            return { success: false, error: { message: "Error searching fitness classes!", details: error.message } };
         }
     },
 }));

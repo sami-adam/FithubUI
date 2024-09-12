@@ -14,12 +14,14 @@ const useAttachmentStore = create((set) => ({
                 },
             });
             set({ attachments: response.data });
+            return {success: true, data: response.data};
         } catch (error) {
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useAttachmentStore.getState().signInUrl;
+                return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             } else {
-                console.error("Error fetching attachments", error);
+                return { success: false, error: { message: "Error fetching attachments!", details: error.message}};
             }
         }
     },
@@ -30,9 +32,9 @@ const useAttachmentStore = create((set) => ({
                     "Authorization": "Bearer " + useAttachmentStore.getState().token,
                 },
             });
-            return response.data;
+            return {success: true, data: response.data};
         } catch (error) {
-            console.error("Error fetching attachment", error);
+            return { success: false, error: { message: "Error fetching attachment!", details: error.message}};
         }
     }
 }));

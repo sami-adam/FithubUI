@@ -14,12 +14,14 @@ const useJournalStore = create((set) => ({
                 },
             });
             set({ journals: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useJournalStore.getState().signInUrl;
+                return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             } else {
-                console.error("Error fetching journals", error);
+                return { success: false, error: { message: "Error fetching journals!", details: error.message } };
             }
         }
     },
@@ -30,9 +32,9 @@ const useJournalStore = create((set) => ({
                     "Authorization": "Bearer " + useJournalStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching journal", error);
+            return { success: false, error: { message: "Error fetching journal!", details: error.message } };
         }
     },
     addJournal: async (journal) => {
@@ -43,8 +45,9 @@ const useJournalStore = create((set) => ({
                 },
             });
             set((state) => ({ journals: [...state.journals, response.data] }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error adding journal", error);
+            return { success: false, error: { message: "Error adding journal!", details: error.message } };
         }
     },
     updateJournal: async (journal) => {
@@ -57,8 +60,9 @@ const useJournalStore = create((set) => ({
             set((state) => ({
                 journals: state.journals.map((m) => (m.id === journal.id ? response.data : m)),
             }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error updating journal", error);
+            return { success: false, error: { message: "Error updating journal!", details: error.message } };
         }
     },
     deleteJournal: async (id) => {
@@ -69,8 +73,9 @@ const useJournalStore = create((set) => ({
                 },
             });
             set((state) => ({ journals: state.journals.filter((m) => m.id !== id) }));
+            return { success: true };
         } catch (error) {
-            console.error("Error deleting journal", error);
+            return { success: false, error: { message: "Error deleting journal!", details: error.message } };
         }
     },
     searchJournals: async (search) => {
@@ -81,8 +86,9 @@ const useJournalStore = create((set) => ({
                 },
             });
             set({ journals: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error searching journals", error);
+            return { success: false, error: { message: "Error searching journals!", details: error.message } };
         }
     }
 }));
