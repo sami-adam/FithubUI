@@ -17,6 +17,7 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
 import Swal from 'sweetalert2';
+import { FaCalendarAlt } from 'react-icons/fa';
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -123,6 +124,27 @@ export default function MemberForm() {
         <FormHeader loading={loading} title="Member Details" mode={mode} setMode={setMode} addMethod={addMember} addFields={addFields} 
         updateMethod={updateMember} updateFields={updateFields} deleteMethod={deleteMember} validateFields={validateFields} error={error} stateStore={useMemberStore}>
             <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
+            <div style={{ paddingTop: 16}}>
+                {member && 
+                <div style={{display:"flex", flexDirection:"row"}}>
+                <Button variant="soft"  sx={{mx: 1}} className='shadow-inner'
+                    startDecorator={<FaCalendarAlt/>} 
+                    endDecorator={<Typography fontSize="small" >{memberSubscriptionsCount}</Typography>}
+                    onClick={() => navigate(`/subscriptions/member/${member.id}`)}
+                    >
+                        <Typography fontSize="small">{t("SUBSCRIPTIONS")}</Typography>
+                </Button>
+
+                <Button variant="soft" className='shadow-inner' sx={{mx: 1}}
+                    startDecorator={<FaCalendarAlt/>}
+                    endDecorator={<Typography fontSize="small" >{memberClassEnrollmentsCount}</Typography>}
+                    onClick={() => navigate(`/class-enrollments/member/${member.id}`)}
+                    >
+                        <Typography fontSize="small">{t("CLASS ENROLLMENTS")}</Typography>
+                </Button>
+                </div>
+                }
+            </div>
         </FormHeader>
         <FormBaseLayout loading={loading}>
         <CardContent
