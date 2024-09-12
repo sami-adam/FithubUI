@@ -5,12 +5,8 @@ import useClassEnrollmentStore from '../../state/classEnrollment';
 import useAttachmentStore from '../../state/attachmentState';
 import { useEffect, useState } from 'react';
 import { Box, Button, CardContent, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormLabel, Input, Modal, ModalDialog, Radio, Typography } from '@mui/joy';
-import { Add, Email } from '@mui/icons-material';
-import { HorozontalStepper, Required, SnackbarCustom } from '../common/Common';
-import { BiEdit } from "react-icons/bi";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { BsSave } from "react-icons/bs";
-import { FaCalendarAlt } from "react-icons/fa";
+import { Email } from '@mui/icons-material';
+import { HorozontalStepper, Required } from '../common/Common';
 import { useTranslation } from 'react-i18next';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import InputFileUpload from '../common/InputFileUpload';
@@ -20,9 +16,6 @@ import ContactsIcon from '@mui/icons-material/Contacts';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
-import Swal from 'sweetalert2';
-import { validateEmail, validateIdentificationNumber, validateInputs, validateName, validatePhone } from '../../utils/validations';
-import { toast } from 'react-toastify';
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -49,8 +42,6 @@ export default function MemberForm() {
     const [phone, setPhone] = useState('');
     const [gender, setGender] = useState(null);
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
     const [openPictureEdit, setOpenPictureEdit] = useState(false);
     const [profileSrc, setProfileSrc] = useState("");
 
@@ -62,14 +53,6 @@ export default function MemberForm() {
     const [memberClassEnrollmentsCount, setMemberClassEnrollmentsCount] = useState(0);
 
     useEffect(() => {
-        if(error){
-            Swal.fire({
-                title: t(error.message),
-                text: t(error.details),
-                icon: "error",
-            });
-            useMemberStore.setState({error: null});
-        }
         if(mode === 'add'){
             setLoading(false);
           }
@@ -98,89 +81,37 @@ export default function MemberForm() {
         }
     }, [mode, member, fetchData, getMemberSubscriptions, fetchAttachment, fetchMember, id]);
 
-    const handleSave = () => {
-        const validInputs = validateInputs([{"type": "name", "value": firstName}, 
-            {"type": "name", "value": lastName}, {"type": "id", "value": identificationNumber}, 
-            {"type": "email", "value": email}, {"type": "phone", "value": phone}]);
-        if(!validInputs){
-            return;
-        }
-        updateMember({
-            id: member.id,
-            firstName: firstName,
-            lastName: lastName,
-            identificationNumber: identificationNumber,
-            email: email,
-            phone: phone,
-            gender: gender,
-        });
-        if(error){
-            Swal.fire({
-                title: t(error.message),
-                text: t(error.details),
-                icon: "error",
-                confirmButtonText: t("OK"),
-            });
-            return
-        }
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Member updated successfully'});
-    }
+    const validateFields = [
+        {type: "name", value: firstName, message: t("Please enter a valid name!")},
+        {type: "name", value: lastName, message: t("Please enter a valid name!")},
+        {type: "email", value: email, message: t("Please enter a valid email!")},
+        {type: "phone", value: phone, message: t("Please enter a valid phone number!")},
+        {type: "id", value: identificationNumber, message: t("Please enter a valid ID number!")},
+    ];
 
-    const handleAdd = () => {
-        const validInputs = validateInputs([{"type": "name", "value": firstName}, 
-            {"type": "name", "value": lastName}, {"type": "id", "value": identificationNumber}, 
-            {"type": "email", "value": email}, {"type": "phone", "value": phone}]);
-        if(!validInputs){
-            return;
-        }
-        addMember({
-            firstName: firstName,
-            lastName: lastName,
-            identificationNumber: identificationNumber,
-            email: email,
-            phone: phone,
-            gender: gender
-        });
-        if(error){
-            Swal.fire({
-                title: t(error.message),
-                text: t(error.details),
-                icon: "error",
-                confirmButtonText: t("OK"),
-            });
-            return
-        }
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Member added successfully'});
+    const addFields = {
+        firstName: firstName,
+        lastName: lastName,
+        identificationNumber: identificationNumber,
+        email: email,
+        phone: phone,
+        gender: gender
     }
-
-    const handleDelete = () => {
-        const confirm = window.confirm("Are you sure you want to delete this subscription?");
-        if(confirm){
-            deleteMember(member.id);
-            window.history.back();
-        }
-        if(error){
-            Swal.fire({
-                title: t(error.message),
-                text: t(error.details),
-                icon: "error",
-                confirmButtonText: t("OK"),
-            });
-            return
-        }
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Member deleted successfully'});
+    const updateFields = {
+        id: typeof id === 'string' && id !== 'new' ? id : member && member.id,
+        firstName: firstName,
+        lastName: lastName,
+        identificationNumber: identificationNumber,
+        email: email,
+        phone: phone,
+        gender: gender,
     }
 
     return (
         <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-        <FormHeader loading={loading} title="Member Details" mode={mode} setMode={setMode} handleSave={handleSave} deleteMethod={deleteMember} handelDelete={handleDelete} error={error}>
+        <FormHeader loading={loading} title="Member Details" mode={mode} setMode={setMode} addMethod={addMember} addFields={addFields} 
+        updateMethod={updateMember} updateFields={updateFields} deleteMethod={deleteMember} validateFields={validateFields} error={error} stateStore={useMemberStore}>
             <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
-            <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
         </FormHeader>
         <FormBaseLayout loading={loading}>
         <CardContent

@@ -26,16 +26,16 @@ export const validateInputs = (inputs=[]) => {
     var messages = [];
     inputs.forEach((input) => {
         if(input.type === "name"){
-            !validateName(input.value) && messages.push(input.message || "Please enter a valid name");
+            !validateName(input.value) && messages.push(input.message || "Please enter a valid name!");
         }
         if(input.type === "email"){
-            !validateEmail(input.value) && messages.push(input.message || "Please enter a valid email");
+            !validateEmail(input.value) && messages.push(input.message || "Please enter a valid email!");
         }
         if(input.type === "phone"){
-            !validatePhone(input.value) && messages.push(input.message || "Please enter a valid phone number");
+            !validatePhone(input.value) && messages.push(input.message || "Please enter a valid phone number!");
         }
         if(input.type === "id"){
-            !validateIdentificationNumber(input.value) && messages.push(input.message || "Please enter a valid ID number");
+            !validateIdentificationNumber(input.value) && messages.push(input.message || "Please enter a valid ID number!");
         }
         if(input.type === "other"){
             if(!input.value){

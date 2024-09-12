@@ -1,18 +1,15 @@
 import useEmployeeStore from '../../state/employeeState';
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Box, CardContent, FormControl, FormLabel, Input, Option, Select, Typography, useTheme } from '@mui/joy';
+import { Box, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
 import { Email, Person } from '@mui/icons-material';
-import { Required, SnackbarCustom } from '../common/Common';
+import { Required } from '../common/Common';
 import { useTranslation } from 'react-i18next';
 import BadgeIcon from '@mui/icons-material/Badge';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
-import { toast } from 'react-toastify';
-import Swal from 'sweetalert2';
-import { validateEmail, validateIdentificationNumber, validateName, validatePhone } from '../../utils/validations';
 
 export default function EmployeeForm() {
     const location = useLocation();
@@ -36,12 +33,7 @@ export default function EmployeeForm() {
     const [address, setAddress] = useState('');
     const [employeeType, setEmployeeType] = useState('');
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
-
     const {t} = useTranslation();
-    const theme = useTheme();
-
     useEffect(() => {
         if(mode === 'add'){
           setLoading(false);
@@ -61,116 +53,36 @@ export default function EmployeeForm() {
         }
       }, [mode, employee, id, fetchEmployee]);
 
-    const handleSave = () => {
-        const validInputs = validateInputs();
-        if(!validInputs){
-          return;
-        }
-        updateEmployee({
-            id: employee.id,
-            name: name,
-            identificationNumber: identificationNumber,
-            email: email,
-            phone: phone,
-            address: address,
-            employeeType: employeeType
-        });
-        if(error){
-          Swal.fire({
-            title: t("Error"),
-            text: t(error),
-            icon: "error",
-            confirmButtonText: t("OK"),
-          });
-          return;
-        }
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Employee updated successfully'});
+    const validateFields = [
+      {type: "name", value: name, message: t("Please enter a valid name!")},
+      {type: "email", value: email, message: t("Please enter a valid email!")},
+      {type: "phone", value: phone, message: t("Please enter a valid phone number!")},
+      {type: "id", value: identificationNumber, message: t("Please enter a valid ID number!")},
+    ];
+    const updateFields = {
+      id: typeof id === 'string' && id !== 'new' ? id : employee?.id,
+      name: name,
+      identificationNumber: identificationNumber,
+      email: email,
+      phone: phone,
+      address: address,
+      employeeType: employeeType
     }
 
-    const validateInputs = () => {
-      const message = [];
-      !validateName(name) && message.push(t("Please enter a valid name"));
-      !validateIdentificationNumber(identificationNumber) && message.push(t("Please enter a valid ID number"));
-      !validateEmail(email) && message.push(t("Please enter a valid email"));
-      !validatePhone(phone) && message.push(t("Please enter a valid phone number"));
-      var duration = 3;
-      if(message.length > 0){
-        message.forEach((msg) => toast.error(msg, {position: "top-center", autoClose: (duration ++) * 1000}));
-        return false;
-      }
-      return true;
-      }
-
-
-    const handleAdd = () => {
-        const validInputs = validateInputs();
-        if(!validInputs){
-          return;
-        }
-        addEmployee({
-            name: name,
-            identificationNumber: identificationNumber,
-            email: email,
-            phone: phone,
-            address: address,
-            employeeType: employeeType
-        });
-        if(error){
-          Swal.fire({
-            title: t("Error"),
-            text: t(error),
-            icon: "error",
-            confirmButtonText: t("OK"),
-          });
-          return;
-        }
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Employee added successfully'});
-    }
-
-    const handelDelete = () => {
-      Swal.fire({
-        title: t("Are you sure?"),
-        text: t("You won't be able to revert this!"),
-        color: theme.palette.mode === 'dark' ? "white" : "black",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: theme.palette.primary.main,
-        cancelButtonColor: theme.palette.mode === 'dark' ? "brown" : "brown",
-        confirmButtonText: t("Yes, delete it!"),
-        cancelButtonText: t("Cancel"),
-        background: theme.palette.mode === 'dark' ? 'black' : '#fff',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          deleteEmployee(id);
-          if(error){
-            Swal.fire({
-              title: t("Error"),
-              text: t(error),
-              icon: "error",
-              confirmButtonText: t("OK"),
-            });
-            return;
-          }
-          Swal.fire({
-            title: t("Deleted!"),
-            text: t("Employee profile has been deleted."),
-            icon: "success"
-          });
-          window.history.back();
-        }
-      });
-        // setOpenSnackbar(true);
-        // setSnack({type: 'success', title: 'Success', message: 'Employee deleted successfully'});
+    const addFields = {
+      name: name,
+      identificationNumber: identificationNumber,
+      email: email,
+      phone: phone,
+      address: address,
+      employeeType: employeeType
     }
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-      <FormHeader loading={loading} title="Employee Information" mode={mode} setMode={setMode} handleSave={handleSave} handleAdd={handleAdd} handelDelete={handelDelete}>
-        <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
+      <FormHeader loading={loading} title="Employee Information" mode={mode} setMode={setMode} 
+      updateMethod={updateEmployee} updateFields={updateFields} addMethod={addEmployee} addFields={addFields} 
+      deleteMethod={deleteEmployee} deleteMessage="Employee deleted successfully" validateFields={validateFields} error={error} stateStore={useEmployeeStore}>
       </FormHeader>
 
       <FormBaseLayout loading={loading}>

@@ -48,8 +48,8 @@ const useClassEnrollmentStore = create((set) => ({
             set((state) => ({ classEnrollments: [...state.classEnrollments, response.data] }));
             set({ classEnrollment: response.data });
         } catch (error) {
-            console.log(error);
             set({ error: { message: "Error adding class enrollment!", details: error } });
+            return { error: { message: "Error adding class enrollment!", details: error } };
         }
     },
     updateClassEnrollment: async (classEnrollment) => {

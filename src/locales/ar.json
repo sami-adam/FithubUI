@@ -275,7 +275,18 @@
       "Error fetching class enrollments!": "خطأ في جلب تسجيلات الفصول!",
       "classEnrollmentAdded": "تمت إضافة تسجيل الفصل",
       "Class enrollment has been updated!": "تم تحديث تسجيل الفصل!",
-      "DELETE": "حذف"
+      "DELETE": "حذف",
+      "Deleted successfully!": "تم الحذف بنجاح!",
+      "Please enter a valid name!": "الرجاء إدخال اسم صحيح!",
+      "Please enter a valid email!": "الرجاء إدخال بريد إلكتروني صحيح!",
+      "Please enter a valid phone number!": "الرجاء إدخال رقم هاتف صحيح!",
+      "Please enter a valid ID number!": "الرجاء إدخال رقم هوية صحيح!",
+      "Employee Information added successfully!": "تمت إضافة معلومات الموظف بنجاح!",
+      "Employee Information updated successfully!": "تم تحديث معلومات الموظف بنجاح!",
+      "Member Details added successfully!": "تمت إضافة تفاصيل المشترك بنجاح!",
+      "Member Details updated successfully!": "تم تحديث تفاصيل المشترك بنجاح!",
+      "Enrollment Information added successfully!": "تمت إضافة معلومات التسجيل بنجاح!",
+      "Enrollment Information updated successfully!": "تم تحديث معلومات التسجيل بنجاح!"
     }
   }
   

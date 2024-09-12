@@ -77,7 +77,8 @@ export function DeleteButton({deleteMethod, ids=[], mode, error, message}){
             Swal.fire({
               title: t("Deleted!"),
               text: t(message),
-              icon: "success"
+              icon: "success",
+              confirmButtonText: t("OK"),
             });
             window.history.back();
           }

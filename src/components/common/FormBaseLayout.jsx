@@ -10,15 +10,20 @@ import { BiEdit } from "react-icons/bi";
 import { BsSave } from "react-icons/bs";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { Add } from "@mui/icons-material";
+import { validateInputs } from "../../utils/validations";
+import Swal from "sweetalert2";
+import { useState } from "react";
+import { SnackbarCustom } from "./Common";
 
 
 
 export default function FormBaseLayout({ children, loading=false }) {
     const theme = useTheme();
+    const { i18n } = useTranslation();
     return (
         <>
         <Box flex={1} sx={{ width: "100%"}}>
-            {loading && <LoadingPage/> ||
+            {(loading && <LoadingPage/>) ||
             <Card
             variant="outlined"
             sx={{
@@ -38,18 +43,63 @@ export default function FormBaseLayout({ children, loading=false }) {
             </Card>
             }
         </Box>
-        <ToastContainer autoClose={3000} theme={theme.palette.mode}/>
+        <ToastContainer autoClose={3000} theme={theme.palette.mode} rtl={i18n.dir() === 'rtl'}/>
         </>
 
     )
 }
 
-export function FormHeader({ children, loading=false, title="", mode, setMode, handleSave, handleAdd, deleteMethod, deleteMessage, error }) {
+export function FormHeader({ children, loading=false, title="", mode, setMode, updateMethod, updateFields, addMethod, addFields, deleteMethod, deleteMessage, validateFields=[], stateStore }) {
     const theme = useTheme();
     const {t} = useTranslation();
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
+    const [error, setError] = useState(null);
+    const handleAdd = async () => {
+        const validInputs = validateInputs(validateFields);
+        if(!validInputs){
+            return;
+        }
+        const res = await addMethod(addFields);
+        console.log(res);
+        if(res && res.error){
+            setError(res.error);
+            Swal.fire({
+                title: t(res.error.message),
+                text: t(res.error.details),
+                icon: "error",
+                confirmButtonText: t("OK"),
+            });
+            return
+        }
+        setMode('view');
+        setOpenSnackbar(true);
+        setSnack({type: 'success', title: 'Success', message: t(`${title} added successfully!`)});
+    }
+    const handleSave = async () => {
+        const validInputs = validateInputs(validateFields);
+        if(!validInputs){
+            return;
+        }
+        const res = await updateMethod(updateFields);
+        if(res && res.error){
+            setError(res.error);
+            Swal.fire({
+                title: t(res.error.message),
+                text: t(res.error.details),
+                icon: "error",
+                confirmButtonText: t("OK"),
+            });
+            return
+        }
+        setMode('view');
+        setOpenSnackbar(true);
+        setSnack({type: 'success', title: 'Success', message: t(`${title} updated successfully!`)});
+    }
     return (
         <Box flex={1} sx={{ width: "100%"}}>
-        {loading && <LoadingPage/> || 
+        <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
+        {(loading && <LoadingPage/>) || 
             <Box
             sx={{
                 display: 'flex',
@@ -89,7 +139,7 @@ export function FormHeader({ children, loading=false, title="", mode, setMode, h
 export function FormFooter({ children, loading=false }) {
     return (
         <Box flex={1} sx={{ width: "100%"}}>
-        {loading && <LoadingPage/> || 
+        {(loading && <LoadingPage/>) || 
             <Box
         sx={{
             display: 'flex',

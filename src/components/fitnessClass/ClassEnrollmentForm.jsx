@@ -5,14 +5,10 @@ import useFitnessClassStore from "../../state/fitnessClassState";
 import useClassScheduleStore from "../../state/classScheduleState";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { HorozontalStepper, Required, SnackbarCustom } from "../common/Common";
-import { FormBackButton } from "../common/Buttons";
-import { Box, Button, CardContent, FormControl, FormLabel, Table, Typography } from "@mui/joy";
+import { HorozontalStepper, Required } from "../common/Common";
+import { CardContent, FormControl, FormLabel, Table, Typography } from "@mui/joy";
 import FormBaseLayout, { FormFooter, FormHeader } from "../common/FormBaseLayout";
-import { BiEdit } from "react-icons/bi";
-import { BsSave } from "react-icons/bs";
-import { Add, Fitbit, Person } from "@mui/icons-material";
-import { IoTrashBinOutline } from "react-icons/io5";
+import { Fitbit, Person } from "@mui/icons-material";
 import { ButtonDatePicker, ManyToOneField } from "../common/Fields";
 import Input from '@mui/joy/Input';
 import { NumericFormat } from "react-number-format";
@@ -21,8 +17,6 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import Swal from "sweetalert2";
-import { validateInputs } from "../../utils/validations";
 
 const stages = ["NEW", "PAID", "ACTIVE", "EXPIRED", "CANCELLED"];
 export default function ClassEnrollmentForm(){
@@ -37,7 +31,6 @@ export default function ClassEnrollmentForm(){
     const addClassEnrollment = useClassEnrollmentStore((state) => state.addClassEnrollment);
     const deleteClassEnrollment = useClassEnrollmentStore((state) => state.deleteClassEnrollment);
     const fetchClassEnrollment = useClassEnrollmentStore((state) => state.fetchClassEnrollment);
-    const savedClassEnrollment = useClassEnrollmentStore((state) => state.classEnrollment);
     const error = useClassEnrollmentStore((state) => state.error);
     const [classEnrollment, setClassEnrollment] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -56,19 +49,7 @@ export default function ClassEnrollmentForm(){
     const [netAmount, setNetAmount] = useState(null);
     const [status, setStatus] = useState(null);
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
-
     useEffect(() => {
-        if(error){
-            Swal.fire({
-                title: t(error.message),
-                text: t(error.details),
-                icon: "error",
-                confirmButtonText: t("OK")
-            });
-            useClassEnrollmentStore.setState({error: null});
-        }
         if(mode === 'add'){
           setLoading(false);
         }
@@ -100,78 +81,31 @@ export default function ClassEnrollmentForm(){
             fetchClassSchedules();
             setFetchData(false);
         }
-    }, [mode, id, classEnrollment, fetchData, fetchMembers, fetchFitnessClasses, fetchClassSchedules, fetchClassEnrollment]);
+    }, [mode, id, classEnrollment, fetchData, fetchMembers, fetchFitnessClasses, fetchClassSchedules, fetchClassEnrollment, error]);
 
-    const handleSave = () => {
-        const validInputs = validateInputs([
-            { type: "other", value: member, message: "Please select a member" },
-            { type: "other", value: fitnessClass, message: "Please select a fitness class" },
-            { type: "other", value: classSchedule, message: "Please select a class schedule" }
-        ]);
-        if(!validInputs){
-            return;
-        }
-        updateClassEnrollment({
-            id: classEnrollment.id,
-            member: member && {"id": member.id},
-            fitnessClass: fitnessClass && {"id": fitnessClass.id},
-            classSchedule: classSchedule && {"id": classSchedule.id},
-        });
-        if(error){
-            Swal.fire({
-                title: t(error.message),
-                text: t(error.details),
-                icon: "error",
-            });
-            return;
-        }
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('success'), message: t('Class enrollment has been updated!')});
+    const validateFields = [
+        { type: "other", value: member, message: "Please select a member" },
+        { type: "other", value: fitnessClass, message: "Please select a fitness class" },
+        { type: "other", value: classSchedule, message: "Please select a class schedule" }
+    ]
+
+    const addFields = {
+        member: member && {"id": member.id},
+        fitnessClass: fitnessClass && {"id": fitnessClass.id},
+        classSchedule: classSchedule && {"id": classSchedule.id},
     }
 
-    const handleAdd = async () => {
-        const validInputs = validateInputs([
-            { type: "other", value: member, message: "Please select a member" },
-            { type: "other", value: fitnessClass, message: "Please select a fitness class" },
-            { type: "other", value: classSchedule, message: "Please select a class schedule" }
-        ]);
-        if(!validInputs){
-            return;
-        }
-        await addClassEnrollment({
-            member: member && {"id": member.id},
-            fitnessClass: fitnessClass && {"id": fitnessClass.id},
-            classSchedule: classSchedule && {"id": classSchedule.id},
-        });
-        if(error){
-            Swal.fire({
-                title: t(error.message),
-                text: t(error.details),
-                icon: "error",
-            });
-            return;
-        }
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('success'), message: t('classEnrollmentAdded')});
-    }
-
-    const handleDelete = () => {
-        const confirm = window.confirm("Are you sure you want to delete this Enrollment?");
-        if(confirm){
-            deleteClassEnrollment(classEnrollment.id);
-            window.history.back();
-        }
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('success'), message: t('classEnrollmentDeleted')});
+    const updateFields = {
+        id: typeof id === 'string' && id !== 'new' ? id : classEnrollment?.id,
+        member: member && {"id": member.id},
+        fitnessClass: fitnessClass && {"id": fitnessClass.id},
+        classSchedule: classSchedule && {"id": classSchedule.id},
     }
 
     return (
         <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-        <FormHeader loading={loading} title="Enrollment Information" mode={mode} setMode={setMode} handleSave={handleSave} handleAdd={handleAdd} handelDelete={handleDelete}>
+        <FormHeader loading={loading} title="Enrollment Information" mode={mode} setMode={setMode} deleteMethod={deleteClassEnrollment} updateMethod={updateClassEnrollment} updateFields={updateFields} addMethod={addClassEnrollment} addFields={addFields} validateFields={validateFields} error={error} stateStore={useClassEnrollmentStore}>
             <HorozontalStepper stages={stages} currentStage={(stages.indexOf(classEnrollment&&classEnrollment.status)||0)} />
-            <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
         </FormHeader>
         <FormBaseLayout loading={loading}>
         <CardContent
