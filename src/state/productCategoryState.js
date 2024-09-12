@@ -14,8 +14,9 @@ const useProductCategoryStore = create((set) => ({
                 },
             });
             set({ productCategories: response.data });
+            return { success: true , data: response.data };
         } catch (error) {
-            console.error("Error fetching product categories", error);
+            return { success: false, error: { message: "Error fetching product categories!", details: error.message } };
         }
     },
     fetchProductCategory: async (id) => {
@@ -25,9 +26,9 @@ const useProductCategoryStore = create((set) => ({
                     "Authorization": "Bearer " + useProductCategoryStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching product category", error);
+            return { success: false, error: { message: "Error fetching product category!", details: error.message } };
         }
     },
     addProductCategory: async (productCategory) => {
@@ -38,8 +39,9 @@ const useProductCategoryStore = create((set) => ({
                 },
             });
             set((state) => ({ productCategories: [...state.productCategories, response.data] }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error adding product category", error);
+            return { success: false, error: { message: "Error adding product category!", details: error.message } };
         }
     },
     updateProductCategory: async (productCategory) => {
@@ -52,8 +54,9 @@ const useProductCategoryStore = create((set) => ({
             set((state) => ({
                 productCategories: state.productCategories.map((p) => (p.id === productCategory.id ? response.data : p)),
             }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error updating product category", error);
+            return { success: false, error: { message: "Error updating product category!", details: error.message } };   
         }
     },
     deleteProductCategory: async (productCategoryId) => {
@@ -66,8 +69,9 @@ const useProductCategoryStore = create((set) => ({
             set((state) => ({
                 productCategories: state.productCategories.filter((p) => p.id !== productCategoryId),
             }));
+            return { success: true };
         } catch (error) {
-            console.error("Error deleting product category", error);
+            return { success: false, error: { message: "Error deleting product category!", details: error.message } };
         }
     },
     searchProductCategories: async (search) => {
@@ -78,8 +82,9 @@ const useProductCategoryStore = create((set) => ({
                 },
             });
             set({ productCategories: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error searching product categories", error);
+            return { success: false, error: { message: "Error searching product categories!", details: error.message } };
         }
     },
 }))

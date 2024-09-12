@@ -16,6 +16,7 @@ import ContactsIcon from '@mui/icons-material/Contacts';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
+import Swal from 'sweetalert2';
 
 const stages = ["NEW", "ACTIVE", "EXPIRING", "EXPIRED"]
 export default function MemberForm() {
@@ -58,7 +59,17 @@ export default function MemberForm() {
           }
         if(id && mode !== 'add' && !member && id !== 'new'){
             fetchMember(id).then((member) => {
-                setMember(member);
+                if(member.success){
+                    setMember(member.data);
+                } else {
+                    Swal.fire({
+                        title: t(member.error.message),
+                        text: t(member.error.details),
+                        icon: 'error',
+                        confirmButtonText: t('Ok')
+                    });
+                }
+                
             }).finally(() => setLoading(false));
         }
         if(member){

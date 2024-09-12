@@ -14,13 +14,15 @@ const useTaxStore = create((set) => ({
                 },
             });
             set({ taxes: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
             // Navigate to the sign in page if the token is invalid
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useTaxStore.getState().signInUrl;
+                return { success: false, error: { message: "Invalid token!", details: error.message } };
             } else {
-                console.error("Error fetching taxes", error);
+                return { success: false, error: { message: "Error fetching taxes!", details: error.message } };
             }
         }
     },
@@ -31,9 +33,9 @@ const useTaxStore = create((set) => ({
                     "Authorization": "Bearer " + useTaxStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching tax", error);
+            return { success: false, error: { message: "Error fetching tax!", details: error.message } };
         }
     },
     addTax: async (tax) => {
@@ -44,8 +46,9 @@ const useTaxStore = create((set) => ({
                 },
             });
             set((state) => ({ taxes: [...state.taxes, response.data] }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error adding tax", error);
+            return { success: false, error: { message: "Error adding tax!", details: error.message } };
         }
     },
     updateTax: async (tax) => {
@@ -58,8 +61,9 @@ const useTaxStore = create((set) => ({
             set((state) => ({
                 taxes: state.taxes.map((t) => (t.id === tax.id ? response.data : t)),
             }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error updating tax", error);
+            return { success: false, error: { message: "Error updating tax!", details: error.message } };
         }
     },
     deleteTax: async (id) => {
@@ -70,8 +74,9 @@ const useTaxStore = create((set) => ({
                 },
             });
             set((state) => ({ taxes: state.taxes.filter((t) => t.id !== id) }));
+            return { success: true };
         } catch (error) {
-            console.error("Error deleting tax", error);
+            return { success: false, error: { message: "Error deleting tax!", details: error.message } };
         }
     },
     searchTaxes: async (search) => {
@@ -82,8 +87,9 @@ const useTaxStore = create((set) => ({
                 },
             });
             set({ taxes: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error searching taxes", error);
+            return { success: false, error: { message: "Error searching taxes!", details: error.message } };
         }
     }
 }));

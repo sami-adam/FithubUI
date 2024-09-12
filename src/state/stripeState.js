@@ -19,8 +19,9 @@ const useStripeStore = create(set => ({
         if(!localStorage.getItem('stripePublicKey')){
             localStorage.setItem('stripePublicKey', response.data.publicKey);
         }
+        return { success: true, data: response.data.publicKey };
       } catch (error) {
-        console.error('Error fetching public key:', error);
+        return { success: false, error: { message: 'Error fetching public key!', details: error.message } };
       }
     },
     createCheckoutSession: async (product,amount) => {
@@ -36,10 +37,9 @@ const useStripeStore = create(set => ({
             }
         });
         set({ sessionId: response.data.id });
-        return response.data.id;
+        return { success: true, data: response.data.id };
       } catch (error) {
-        console.error('Error creating checkout session:', error);
-        throw error;
+        return { success: false, error: { message: 'Error creating checkout session!', details: error.message } };
       }
     },
     setStripe: (stripeInstance) => set({ stripe: stripeInstance })

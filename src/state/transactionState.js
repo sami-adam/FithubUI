@@ -14,12 +14,14 @@ const useTransactionStore = create((set) => ({
                 },
             });
             set({ transactions: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useTransactionStore.getState().signInUrl;
+                return { success: false, error: { message: "Invalid token!", details: error.message } };
             } else {
-                console.error("Error fetching transactions", error);
+                return { success: false, error: { message: "Error fetching transactions!", details: error.message } };
             }
         }
     },
@@ -30,9 +32,9 @@ const useTransactionStore = create((set) => ({
                     "Authorization": "Bearer " + useTransactionStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching transaction", error);
+            return { success: false, error: { message: "Error fetching transaction!", details: error.message } };
         }
     },
     addTransaction: async (transaction) => {
@@ -43,9 +45,9 @@ const useTransactionStore = create((set) => ({
                 },
             });
             set((state) => ({ transactions: [...state.transactions, response.data] }));
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error adding transaction", error);
+            return { success: false, error: { message: "Error adding transaction!", details: error.message } };
         }
     },
     updateTransaction: async (transaction) => {
@@ -58,8 +60,9 @@ const useTransactionStore = create((set) => ({
             set((state) => ({
                 transactions: state.transactions.map((m) => (m.id === transaction.id ? response.data : m)),
             }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error updating transaction", error);
+            return { success: false, error: { message: "Error updating transaction!", details: error.message } };
         }
     },
     deleteTransaction: async (id) => {
@@ -70,8 +73,9 @@ const useTransactionStore = create((set) => ({
                 },
             });
             set((state) => ({ transactions: state.transactions.filter((m) => m.id !== id) }));
+            return { success: true };
         } catch (error) {
-            console.error("Error deleting transaction", error);
+            return { success: false, error: { message: "Error deleting transaction!", details: error.message } };
         }
     },
     searchTransactions: async (searchTerm) => {
@@ -82,13 +86,14 @@ const useTransactionStore = create((set) => ({
                 },
             });
             set({ transactions: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching transactions", error);
+            return { success: false, error: { message: "Error searching transactions!", details: error.message } };
         }
     },
     postTransaction: async (transaction) => {
         try {
-            await axios.get(`${useTransactionStore.getState().baseURL}/transaction/post/${transaction.id}`, {
+            const response = await axios.get(`${useTransactionStore.getState().baseURL}/transaction/post/${transaction.id}`, {
                 headers: {
                     "Authorization": "Bearer " + useTransactionStore.getState().token,
                 },
@@ -96,8 +101,9 @@ const useTransactionStore = create((set) => ({
             set((state) => ({
                 transactions: state.transactions.map((m) => (m.id === transaction.id ? { ...m, status: "POSTED" } : m)),
             }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error posting transaction", error);
+            return { success: false, error: { message: "Error posting transaction!", details: error.message } };
         }
     }
 }));

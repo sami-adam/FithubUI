@@ -21,8 +21,9 @@ const useSubscriptionStore = create((set) => ({
                 },
             });
             set({ subscriptions: response.data.content, totalPages: response.data.page.totalPages, pageSize: response.data.page.size, currentPage: response.data.page.number });
+            return { success: true, data: response.data.content };
         } catch (error) {
-            console.error("Error fetching subscriptions", error);
+            return { success: false, error: { message: "Error fetching subscriptions!", details: error.message } };
         }
     },
     fetchSubscription: async (id) => {
@@ -32,9 +33,9 @@ const useSubscriptionStore = create((set) => ({
                     "Authorization": "Bearer " + useSubscriptionStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching subscription", error);
+            return { success: false, error: { message: "Error fetching subscription!", details: error.message } };
         }
     },
     addSubscription: async (subscription) => {
@@ -45,8 +46,9 @@ const useSubscriptionStore = create((set) => ({
                 },
             });
             set((state) => ({ subscriptions: [...state.subscriptions, response.data] }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error adding subscription", error);
+            return { success: false, error: { message: "Error adding subscription!", details: error.message } };
         }
     },
     updateSubscription: async (subscription) => {
@@ -59,8 +61,9 @@ const useSubscriptionStore = create((set) => ({
             set((state) => ({
                 subscriptions: state.subscriptions.map((s) => (s.id === subscription.id ? response.data : s)),
             }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error updating subscription", error);
+            return { success: false, error: { message: "Error updating subscription!", details: error.message } };
         }
     },
     deleteSubscription: async (id) => {
@@ -71,8 +74,9 @@ const useSubscriptionStore = create((set) => ({
                 },
             });
             set((state) => ({ subscriptions: state.subscriptions.filter((s) => s.id !== id) }));
+            return { success: true };
         } catch (error) {
-            console.error("Error deleting subscription", error);
+            return { success: false, error: { message: "Error deleting subscription!", details: error.message } };
         }
     },
     changeStatus: async (id) => {
@@ -85,8 +89,9 @@ const useSubscriptionStore = create((set) => ({
             set((state) => ({
                 subscriptions: state.subscriptions.map((s) => (s.id === id ? response.data : s)),
             }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error changing status", error);
+            return { success: false, error: { message: "Error changing subscription status!", details: error.message } };
         }
     },
     searchSubscriptions: async (search) => {
@@ -97,8 +102,9 @@ const useSubscriptionStore = create((set) => ({
                 },
             });
             set({ subscriptions: response.data.content, totalPages: response.data.page.totalPages, pageSize: response.data.page.size, currentPage: response.data.page.number });
+            return { success: true, data: response.data.content };
         } catch (error) {
-            console.error("Error searching subscriptions", error);
+            return { success: false, error: { message: "Error searching subscriptions!", details: error.message } };
         }
 
     },

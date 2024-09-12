@@ -14,13 +14,15 @@ const useProductStore = create((set) => ({
                 },
             });
             set({ products: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
             // Navigate to the sign in page if the token is invalid
             if (error.response && error.response.status === 403) {
                 localStorage.removeItem("token");
                 window.location.href = useProductStore.getState().signInUrl;
+                return { success: false, error: { message: "Invalid token!", details: error.message } };
             } else {
-                console.error("Error fetching products", error);
+                return { success: false, error: { message: "Error fetching products!", details: error.message } };
             }
         }
     },
@@ -31,9 +33,9 @@ const useProductStore = create((set) => ({
                     "Authorization": "Bearer " + useProductStore.getState().token,
                 },
             });
-            return response.data;
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error fetching product", error);
+            return { success: false, error: { message: "Error fetching product!", details: error.message } };
         }
     },
     addProduct: async (product) => {
@@ -44,8 +46,9 @@ const useProductStore = create((set) => ({
                 },
             });
             set((state) => ({ products: [...state.products, response.data] }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error adding product", error);
+            return { success: false, error: { message: "Error adding product!", details: error.message } };
         }
     },
     updateProduct: async (product) => {
@@ -58,8 +61,9 @@ const useProductStore = create((set) => ({
             set((state) => ({
                 products: state.products.map((p) => (p.id === product.id ? response.data : p)),
             }));
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error updating product", error);
+            return { success: false, error: { message: "Error updating product!", details: error.message } };
         }
     },
     deleteProduct: async (id) => {
@@ -70,8 +74,9 @@ const useProductStore = create((set) => ({
                 },
             });
             set((state) => ({ products: state.products.filter((p) => p.id !== id) }));
+            return { success: true };
         } catch (error) {
-            console.error("Error deleting product", error);
+            return { success: false, error: { message: "Error deleting product!", details: error.message } };
         }
     },
     searchProducts: async (searchTerm) => {
@@ -82,8 +87,9 @@ const useProductStore = create((set) => ({
                 },
             });
             set({ products: response.data });
+            return { success: true, data: response.data };
         } catch (error) {
-            console.error("Error searching products", error);
+            return { success: false, error: { message: "Error searching products!", details: error.message } };
         }
     },
 }))
