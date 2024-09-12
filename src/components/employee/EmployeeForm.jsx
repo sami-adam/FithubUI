@@ -10,6 +10,7 @@ import ContactsIcon from '@mui/icons-material/Contacts';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
+import Swal from 'sweetalert2';
 
 export default function EmployeeForm() {
     const location = useLocation();
@@ -20,7 +21,6 @@ export default function EmployeeForm() {
     const addEmployee = useEmployeeStore((state) => state.addEmployee);
     const deleteEmployee = useEmployeeStore((state) => state.deleteEmployee);
     const fetchEmployee = useEmployeeStore((state) => state.fetchEmployee);
-    const error = useEmployeeStore((state) => state.error);
     const [employee, setEmployee] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -39,8 +39,17 @@ export default function EmployeeForm() {
           setLoading(false);
         }
         if(id && mode !== 'add' && !employee && id !== 'new'){
-            fetchEmployee(id).then((data) => {
-                setEmployee(data);
+            fetchEmployee(id).then((res) => {
+              if(res.success) {
+                setEmployee(res.data);
+              } else {
+                Swal.fire({
+                  title: t(res.error.message),
+                  text: t(res.error.details),
+                  icon: 'error',
+                  confirmButtonText: t('OK')
+                });
+              }
             }).finally(()=> setLoading(false)) 
         }
         if(employee){
@@ -82,7 +91,7 @@ export default function EmployeeForm() {
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
       <FormHeader loading={loading} title="Employee Information" mode={mode} setMode={setMode} 
       updateMethod={updateEmployee} updateFields={updateFields} addMethod={addEmployee} addFields={addFields} 
-      deleteMethod={deleteEmployee} deleteMessage="Employee deleted successfully" validateFields={validateFields} error={error} stateStore={useEmployeeStore}>
+      deleteMethod={deleteEmployee} deleteMessage="Employee deleted successfully" validateFields={validateFields} stateStore={useEmployeeStore}>
       </FormHeader>
 
       <FormBaseLayout loading={loading}>
