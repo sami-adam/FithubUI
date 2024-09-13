@@ -19,6 +19,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
 import { ManyToOneField } from '../common/Fields';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import Swal from 'sweetalert2';
 
 export default function ClassScheduleForm() {
     const location = useLocation();
@@ -44,8 +45,7 @@ export default function ClassScheduleForm() {
 
     const {t} = useTranslation();
     const { id } = useParams();
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
+
     
     const stages = ["NEW", "PLANNED", "RUNNING", "FINISHED", "CANCELLED"];
 
@@ -53,9 +53,18 @@ export default function ClassScheduleForm() {
         if(mode === 'add'){
           setLoading(false);
         }
-        if(id && mode !== 'add' && !classSchedule){
-            fetchClassSchedule(id).then((data) => {
-                setClassSchedule(data);
+        if(id && mode !== 'add' && !classSchedule && id !== 'new'){
+            fetchClassSchedule(id).then((res) => {
+                if(res.success){
+                  setClassSchedule(res.data);
+                }
+                if(res.error){
+                  Swal.fire({
+                    icon: 'error',
+                    title: t(res.error.message),
+                    text: t(res.error.details),
+                  });
+                }
             }).finally(() => setLoading(false));
         }
         if(fetchData){
@@ -74,63 +83,55 @@ export default function ClassScheduleForm() {
       }
     , [mode, classSchedule, fetchData, fetchFitnessClasses, fetchInstructors, id, fetchClassSchedule]);
 
-    const handleSave = () => {
-       updateClassSchedule({
-            id: classSchedule.id,
-            fitnessClass: fitnessClass && {id: fitnessClass.id},
-            instructor: instructor && {id: instructor.id},
-            startDate: startDate,
-            endDate: endDate,
-            price: price,
-            status: status
-        });
-        setMode('view');
-        setSnack({type: 'success', title: 'Success', message: 'Class Schedule updated successfully'});
-        setOpenSnackbar(true);
+    const validateFields = [
+      {type: "other", value: fitnessClass, message: t("Please select a fitness class")},
+      {type: "other", value: instructor, message: t("Please select an instructor")},
+      {type: "other", value: startDate, message: t("Please select a start date")},
+      {type: "other", value: endDate, message: t("Please select an end date")},
+      {type: "other", value: price, message: t("Please enter a price")},
+    ]
+
+    const updateFields = {
+      id: typeof id === 'string' && id !== 'new' ? id : classSchedule && classSchedule.id,
+      fitnessClass: fitnessClass && {id: fitnessClass.id},
+      instructor: instructor && {id: instructor.id},
+      startDate: startDate,
+      endDate: endDate,
+      price: price,
+      status: status
     }
 
-    const handleAdd = () => {
-        addClassSchedule({
-            fitnessClass: fitnessClass && {id: fitnessClass.id},
-            instructor: instructor && {id: instructor.id},
-            startDate: startDate,
-            endDate: endDate,
-            price: price,
-            status: "NEW"
-        });
-        setMode('view');
-        setSnack({type: 'success', title: 'Success', message: 'Class Schedule added successfully'});
-        setOpenSnackbar(true);
+    const addFields = {
+      fitnessClass: fitnessClass && {id: fitnessClass.id},
+      instructor: instructor && {id: instructor.id},
+      startDate: startDate,
+      endDate: endDate,
+      price: price,
+      status: "NEW"
     }
 
-    const handelDelete = () => {
-        const confirm = window.confirm("Are you sure you want to delete this class schedule?");
-
-        if(confirm){
-            deleteClassSchedule(classSchedule.id);
-            setMode('view');
-            setSnack({type: 'success', title: 'Success', message: 'Class Schedule deleted successfully'});
-            setOpenSnackbar(true);
-            window.history.back();
-        }
-    }
     const handleEnroll = () => {
       const respose = enrollMember(classSchedule && classSchedule.id);
-      if(respose){
-          setSnack({type: 'success', title: 'Success', message: 'Member enrolled successfully'});
-          setOpenSnackbar(true);
+      if(respose.success){
+          Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: t('Member enrolled successfully!'),
+          });
       }
-      else{
-          setSnack({type: 'error', title: 'Error', message: 'Error enrolling member'});
-          setOpenSnackbar(true);
+      else {
+          Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: t('Failed to enroll member!'),
+          });
       }
     }
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-        <FormHeader loading={loading}>
+        <FormHeader loading={loading} title="Class Schedule" mode={mode} setMode={setMode} validateFields={validateFields} updateFields={updateFields} addFields={addFields} updateMethod={updateClassSchedule} addMethod={addClassSchedule} deleteMethod={deleteClassSchedule} >
         <HorozontalStepper stages={stages} currentStage={(stages.indexOf(classSchedule&&classSchedule.status)||0)} />
-        <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
         {/* <Divider inset="none" /> */}
         <Button variant='soft' onClick={handleEnroll} startDecorator={<LibraryAddIcon />}
         sx={{
@@ -140,24 +141,6 @@ export default function ClassScheduleForm() {
           }}>
           {t("ENROLL")}
         </Button>
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-          <div style={{display:"flex", flexDirection:"row"}}>
-            <Typography level="title-md">
-            {(classSchedule&&classSchedule.reference)|| t("New Class Schedule")}
-            </Typography>
-          
-          </div>
-          <div style={{ display: "flex", flexDirection:"row"}}>
-            <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-            <Button variant='soft' startDecorator={<BsSave fontSize={20}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-            <Box flexGrow={1} width={4}/>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-            <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view' && classSchedule? 'none': 'none'}}>{t("DELETE")}</Button>
-          </div>
-          
-        </div>
-        {/* <Divider inset="none" /> */}
         </FormHeader>
       <FormBaseLayout loading={loading}>
       <CardContent
@@ -213,7 +196,7 @@ export default function ClassScheduleForm() {
             required
             slotProps={{
                 input: {
-                min: dayjs(new Date()).format('YYYY-MM-DD'),
+                min: startDate? startDate.format('YYYY-MM-DD') : dayjs(new Date()).format('YYYY-MM-DD'),
                 //max: '2018-06-14',
                 },
             }}
