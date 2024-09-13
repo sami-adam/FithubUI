@@ -89,7 +89,7 @@ export default function EmployeeForm() {
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-      <FormHeader loading={loading} title="Employee Information" mode={mode} setMode={setMode} 
+      <FormHeader loading={loading} title="Employee Information" mode={mode} setMode={setMode} setRecord={setEmployee}
       updateMethod={updateEmployee} updateFields={updateFields} addMethod={addEmployee} addFields={addFields} 
       deleteMethod={deleteEmployee} deleteMessage="Employee deleted successfully" validateFields={validateFields} stateStore={useEmployeeStore}>
       </FormHeader>

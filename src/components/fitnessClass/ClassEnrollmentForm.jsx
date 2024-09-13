@@ -132,7 +132,8 @@ export default function ClassEnrollmentForm(){
 
     return (
         <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-        <FormHeader loading={loading} title="Enrollment Information" mode={mode} setMode={setMode} deleteMethod={deleteClassEnrollment} updateMethod={updateClassEnrollment} updateFields={updateFields} addMethod={addClassEnrollment} addFields={addFields} validateFields={validateFields} stateStore={useClassEnrollmentStore}>
+        <FormHeader loading={loading} title="Enrollment Information" mode={mode} setMode={setMode} deleteMethod={deleteClassEnrollment} setRecord={setClassEnrollment}
+        updateMethod={updateClassEnrollment} updateFields={updateFields} addMethod={addClassEnrollment} addFields={addFields} validateFields={validateFields} stateStore={useClassEnrollmentStore}>
             <HorozontalStepper stages={stages} currentStage={(stages.indexOf(classEnrollment&&classEnrollment.status)||0)} />
         </FormHeader>
         <FormBaseLayout loading={loading}>

@@ -28,11 +28,21 @@ export const validateInputs = (inputs=[]) => {
         if(input.type === "name"){
             !validateName(input.value) && messages.push(input.message || "Please enter a valid name!");
         }
+        if(input.type === "text"){
+            if(!input.value){
+                messages.push(input.message || "Please enter a valid value!");
+            }
+        }
         if(input.type === "email"){
             !validateEmail(input.value) && messages.push(input.message || "Please enter a valid email!");
         }
         if(input.type === "phone"){
             !validatePhone(input.value) && messages.push(input.message || "Please enter a valid phone number!");
+        }
+        if(input.type === "number"){
+            if(!input.value || input.value == 0){
+                messages.push(input.message || "Please enter a valid number!");
+            }
         }
         if(input.type === "id"){
             !validateIdentificationNumber(input.value) && messages.push(input.message || "Please enter a valid ID number!");

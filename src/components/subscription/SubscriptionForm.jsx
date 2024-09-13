@@ -1,5 +1,4 @@
 import CardContent from '@mui/joy/CardContent';
-import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
@@ -9,19 +8,16 @@ import { Box, Table } from '@mui/joy';
 import { useEffect, useRef, useState } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { BiEdit } from "react-icons/bi";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { BsSave } from "react-icons/bs";
 
 import useMemberStore from '../../state/memberState';
 import useProductStore from '../../state/productState';
 import useSubscriptionStore from '../../state/subscriptionState';
 import { ButtonDatePicker, ManyToOneField } from '../common/Fields';
 import dayjs from 'dayjs';
-import { Add, Person } from '@mui/icons-material';
+import { Person } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { DocumentSnackbar, HorozontalStepper, SnackbarCustom } from '../common/Common';
+import { DocumentSnackbar, HorozontalStepper } from '../common/Common';
 import SubscriptionInvoice from '../../reports/SubscriptionInvoice';
 import { MdPictureAsPdf } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
@@ -32,6 +28,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import { FormBackButton } from '../common/Buttons';
 import FormBaseLayout, { FormFooter, FormHeader } from '../common/FormBaseLayout';
 import { FaMoneyBills } from "react-icons/fa6";
+import Swal from 'sweetalert2';
 
 export default function SubscriptionForm() {
   const location = useLocation();
@@ -63,9 +60,6 @@ export default function SubscriptionForm() {
 
   const inputRef = useRef(null);
   const {t} = useTranslation();
-
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
   
   const stages = ['NEW', 'PAID', "ACTIVE", "EXPIRED"];
 
@@ -73,9 +67,18 @@ export default function SubscriptionForm() {
     if(mode === 'add'){
       setLoading(false);
     }
-    if(id && mode !== 'add' && !subscription){
-      fetchSubscription(id).then((data) => {
-        setSubscription(data);
+    if(id && mode !== 'add' && !subscription && id !== 'new'){
+      fetchSubscription(id).then((res) => {
+        if(res.success){
+          setSubscription(res.data);
+        }
+        if(res.error){
+          Swal.fire({
+            icon: 'error',
+            title: t(res.error.message),
+            text: t(res.error.details)
+          });
+        }
       }).finally(() => setLoading(false));
     }
     if(mode !== 'view' && fetchData){
@@ -125,43 +128,31 @@ export default function SubscriptionForm() {
   }, [members, products, subscription, mode, product, unitPrice, quantity, subtotal, tax, 
     discount, fetchData, fetchMembers, fetchProducts, fetchSubscription, id]);
 
-  const handleSave = () => {
-    updateSubscription({
-      id: subscription.id,
-      member: member && {"id": member.id},
-      product: product && {"id": product.id},
-      startDate: startDate,
-      endDate: endDate,
-      subscriptionQty: quantity,
-      discountAmount: discount
-    });
-    setMode('view');
-    setOpenSnackbar(true);
-    setSnack({type: 'success', title: 'Success', message: 'Subscription updated successfully!'});
+  const validateFields = [
+    {type: "other", value: member, message: "Please select a member!"},
+    {type: "other", value: product, message: "Please select a product!"},
+    {type: "number", value: quantity, message: "Please enter a valid quantity!"},
+    {type: "other", value: startDate, message: "Please select a valid start date!"},
+    {type: "other", value: endDate, message: "Please select a valid end date!"},
+  ]
+
+  const updateFields = {
+    id: typeof id === 'string' && id !== 'new' ? id: subscription&&subscription.id,
+    member: member && {"id": member.id},
+    product: product && {"id": product.id},
+    startDate: startDate,
+    endDate: endDate,
+    subscriptionQty: quantity,
+    discountAmount: discount
   }
 
-  const handleAdd = () => {
-    addSubscription({
-      member: member && {"id": member.id},
-      product: product && {"id": product.id, "price": product.price},
-      startDate: startDate,
-      endDate: endDate,
-      subscriptionQty: quantity,
-      discountAmount: discount
-    });
-    setMode('view');
-    setOpenSnackbar(true);
-    setSnack({type: 'success', title: 'Success', message: 'Subscription added successfully!'});
-  }
-
-  const handelDelete = () => {
-    const confirm = window.confirm("Are you sure you want to delete this subscription?");
-    if(confirm){
-    deleteSubscription(subscription.id);
-    setOpenSnackbar(true);
-    setSnack({type: 'success', title: 'Success', message: 'Subscription deleted successfully!'});
-    window.history.back();
-    }
+  const addFields = {
+    member: member && {"id": member.id},
+    product: product && {"id": product.id, "price": product.price},
+    startDate: startDate,
+    endDate: endDate,
+    subscriptionQty: quantity,
+    discountAmount: discount
   }
 
   const handelAccountTransactionCreation = () => {
@@ -169,20 +160,24 @@ export default function SubscriptionForm() {
     generateAccountTransaction(subscription&&subscription.id).then((data) => {
       console.log(data);
     }).finally(() => {
-    fetchSubscription(id).then((data) => {
-      setSubscription(data);
-      setOpenSnackbar(true);
-      setSnack({type: 'success', title: 'Success', message: 'Transaction created successfully!'});
+    fetchSubscription(id).then((res) => {
+      if(res.success){
+        setSubscription(res.data);
+      }
+      Swal.fire({
+        icon: 'success',
+        title: t("Transaction generated successfully!"),
+        text: t("Transaction has been successfully generated for this subscription.")
+      });
     }).finally(() => setLoading(false));
   });
   }
 
   return (
     <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-    <FormHeader loading={loading}>
-    <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />
-      <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />
-      {/* <Divider inset="none" /> */}
+    <FormHeader loading={loading} title='Subscription' mode={mode} setMode={setMode} validateFields={validateFields} updateFields={updateFields} 
+    addFields={addFields} updateMethod={updateSubscription} addMethod={addSubscription} deleteMessage={deleteSubscription} stateStore={useSubscriptionStore} setRecord={setSubscription}>
+      <HorozontalStepper stages={stages} currentStage={(stages.indexOf(subscription&&subscription.status)||0)} />
       <div style={{paddingTop:16}}>
         <Button variant="soft" startDecorator={<MdPictureAsPdf fontSize={18}/>} onClick={() => setOpenDownload(true)}>
             <Typography fontSize="small">{t("INVOICE")}</Typography>
@@ -200,17 +195,7 @@ export default function SubscriptionForm() {
           />
           }
         </div>
-        <div style={{ display: "flex", flexDirection:"row"}}>
-          <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-          <Button variant='soft' startDecorator={<BsSave fontSize={20}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-          <Box flexGrow={1} width={4}/>
-          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-          <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-          <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view' && subscription? 'none': 'none'}}>{t("DELETE")}</Button>
-        </div>
-        
       </div>
-      {/* <Divider inset="none" /> */}
     </FormHeader>
     <FormBaseLayout loading={loading}>
       <CardContent

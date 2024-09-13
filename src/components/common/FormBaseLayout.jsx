@@ -49,7 +49,7 @@ export default function FormBaseLayout({ children, loading=false }) {
     )
 }
 
-export function FormHeader({ children, loading=false, title="", mode, setMode, updateMethod, updateFields, addMethod, addFields, deleteMethod, deleteMessage, validateFields=[], stateStore }) {
+export function FormHeader({ children, loading=false, title="", mode, setMode, updateMethod, updateFields, addMethod, addFields, deleteMethod, deleteMessage, validateFields=[], stateStore, setRecord }) {
     const theme = useTheme();
     const {t} = useTranslation();
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -60,6 +60,13 @@ export function FormHeader({ children, loading=false, title="", mode, setMode, u
             return;
         }
         const res = await addMethod(addFields);
+        if(res.success){
+            console.log(res.data);
+            window.history.replaceState(null, "", window.location.pathname.replace("new", res.data.id));
+        }
+        if(res.success && setRecord){
+            setRecord(res.data);
+        }
         if(res && res.error){
             Swal.fire({
                 title: t(res.error.message),

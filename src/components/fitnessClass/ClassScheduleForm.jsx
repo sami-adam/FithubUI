@@ -130,7 +130,8 @@ export default function ClassScheduleForm() {
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-        <FormHeader loading={loading} title="Class Schedule" mode={mode} setMode={setMode} validateFields={validateFields} updateFields={updateFields} addFields={addFields} updateMethod={updateClassSchedule} addMethod={addClassSchedule} deleteMethod={deleteClassSchedule} >
+        <FormHeader loading={loading} title="Class Schedule" mode={mode} setMode={setMode} validateFields={validateFields} setRecord={setClassSchedule}
+        updateFields={updateFields} addFields={addFields} updateMethod={updateClassSchedule} addMethod={addClassSchedule} deleteMethod={deleteClassSchedule} stateStore={useClassScheduleStore}>
         <HorozontalStepper stages={stages} currentStage={(stages.indexOf(classSchedule&&classSchedule.status)||0)} />
         {/* <Divider inset="none" /> */}
         <Button variant='soft' onClick={handleEnroll} startDecorator={<LibraryAddIcon />}

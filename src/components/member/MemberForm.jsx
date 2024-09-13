@@ -121,7 +121,7 @@ export default function MemberForm() {
 
     return (
         <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-        <FormHeader loading={loading} title="Member Details" mode={mode} setMode={setMode} addMethod={addMember} addFields={addFields} 
+        <FormHeader loading={loading} title="Member Details" mode={mode} setMode={setMode} addMethod={addMember} addFields={addFields} setRecord={setMember}
         updateMethod={updateMember} updateFields={updateFields} deleteMethod={deleteMember} validateFields={validateFields} error={error} stateStore={useMemberStore}>
             <HorozontalStepper stages={stages} currentStage={(stages.indexOf(member&&member.status)||0)} />
             <div style={{ paddingTop: 16}}>
