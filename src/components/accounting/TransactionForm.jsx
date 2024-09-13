@@ -8,12 +8,13 @@ import { Add, AddCircle } from '@mui/icons-material';
 import { BiEdit } from "react-icons/bi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { BsSave } from "react-icons/bs";
-import { SnackbarCustom } from '../common/Common';
+import { HorozontalStepper, SnackbarCustom } from '../common/Common';
 import { useTranslation } from 'react-i18next';
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { DeleteOutlined } from "@ant-design/icons";
 import FormBaseLayout, { FormHeader } from "../common/FormBaseLayout";
 import { ManyToOneField } from "../common/Fields";
+import Swal from "sweetalert2";
 
 
 export default function TransactionForm() {
@@ -44,13 +45,22 @@ export default function TransactionForm() {
 
     const {t} = useTranslation();
 
+    const stages = ["DRAFT", "POSTED"]
     useEffect(() => {
         if(mode === 'add'){
           setLoading(false);
         }
-        if(id && mode !== 'add' && !transaction){
-            fetchTransaction(id).then((data) => {
-                setTransaction(data);
+        if(id && mode !== 'add' && !transaction && id !== 'new'){
+            fetchTransaction(id).then((res) => {
+              if(res.success){
+                setTransaction(res.data);
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: t(res.error.message),
+                  text: t(res.error.details),
+                });
+              }
             }).finally(() => setLoading(false));
         }
         if(fetchData){
@@ -65,38 +75,20 @@ export default function TransactionForm() {
         }
       }, [mode, transaction, fetchData, fetchJournals, fetchAccounts, fetchTransaction, id]);
 
-    const handleSave = () => {
-        updateTransaction({
-            id: transaction.id,
-            journal: journal,
-            description: description,
-            entries: entries.map(entry => { return {"id": entry.id,"account": {"id": entry.account.id}, "transaction": {"id": transaction.id}, "type": entry.type, "debit": entry.debit, "credit": entry.credit}}),
-            status: 'DRAFT'
-        });
-        setSnack({type: 'success', title: 'Success', message: 'Transaction updated successfully!'});
-        setOpenSnackbar(true);
-        setMode('view');
+    const updateFields = {
+      id: typeof id === 'string' && id !== 'new' ? id : transaction && transaction.id,
+      journal: journal,
+      description: description,
+      entries: entries.map(entry => { return {"id": entry && entry.id,"account": {"id": entry.account && entry.account.id}, "transaction": {"id": transaction&&transaction.id}, "type": entry.type, "debit": entry.debit, "credit": entry.credit}}),
+      status: 'DRAFT'
     }
 
-    const handleAdd = async () => {
-        const addedTransaction = addTransaction({
-            journal: journal,
-            description: description,
-            timestamp: new Date(),
-            entries: entries.map(entry => { return {"account": {"id": entry.account&&entry.account.id},"transaction": {"id": transaction&&transaction.id},  "type": entry.type, "debit": entry.debit, "credit": entry.credit}}),
-            status: 'DRAFT'
-        });
-        setTransaction(await addedTransaction);
-        setSnack({type: 'success', title: 'Success', message: 'Transaction added successfully!'});
-        setOpenSnackbar(true);
-        setMode('view');
-    }
-
-    const handleDelete = () => {
-        deleteTransaction(transaction.id);
-        setSnack({type: 'success', title: 'Success', message: 'Transaction deleted successfully!'});
-        setOpenSnackbar(true);
-        setMode('view');
+    const addFields = {
+      journal: journal,
+      description: description,
+      timestamp: new Date(),
+      entries: entries.map(entry => { return {"account": {"id": entry.account&&entry.account.id},"transaction": {"id": transaction&&transaction.id},  "type": entry.type, "debit": entry.debit, "credit": entry.credit}}),
+      status: 'DRAFT'
     }
 
     const handleTransactionPost = () => {
@@ -128,27 +120,13 @@ export default function TransactionForm() {
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-      <FormHeader loading={loading}>
-        {/* <Divider inset="none" /> */}
-        <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-          <Typography level="title-lg">
-              {t("Transaction Information")}
-          </Typography>
-          <div style={{ display: "flex", flexDirection:"row"}}>
-            <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-            <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-            <Box flexGrow={1} width={4}/>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-            <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
-          </div>
-        </div>
-        {/* <Divider inset="none" /> */}
+      <FormHeader loading={loading} title="Transaction Information" mode={mode} setMode={setMode} updateMethod={updateTransaction} addMethod={addTransaction} 
+      deleteMethod={deleteTransaction} updateFields={updateFields} addFields={addFields} setRecord={setTransaction}>
+        <HorozontalStepper stages={stages} currentStage={stages.indexOf(transaction && transaction.status) || 0} />
         <div>
         <Button variant="soft" onClick={handleTransactionPost} 
           startDecorator={<FaMoneyBillTransfer fontSize={18}/>} 
-          sx={{display: (mode === 'view'&& transaction && transaction.status === "DRAFT")? 'flex': "none"}}>{t("POST")}</Button>
+          sx={{display: (transaction && transaction.status === "DRAFT")? 'flex': "none", marginTop: 4}}>{t("POST")}</Button>
         </div>
       </FormHeader>
       <FormBaseLayout loading={loading}>
