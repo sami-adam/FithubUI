@@ -54,7 +54,6 @@ export function FormHeader({ children, loading=false, title="", mode, setMode, u
     const {t} = useTranslation();
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
-    const [error, setError] = useState(null);
     const handleAdd = async () => {
         const validInputs = validateInputs(validateFields);
         if(!validInputs){
@@ -62,7 +61,6 @@ export function FormHeader({ children, loading=false, title="", mode, setMode, u
         }
         const res = await addMethod(addFields);
         if(res && res.error){
-            setError(res.error);
             Swal.fire({
                 title: t(res.error.message),
                 text: t(res.error.details),
@@ -82,7 +80,6 @@ export function FormHeader({ children, loading=false, title="", mode, setMode, u
         }
         const res = await updateMethod(updateFields);
         if(res && res.error){
-            setError(res.error);
             Swal.fire({
                 title: t(res.error.message),
                 text: t(res.error.details),
@@ -126,7 +123,7 @@ export function FormHeader({ children, loading=false, title="", mode, setMode, u
                     <Box flexGrow={1} width={4}/>
                     <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
                     <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-                    <DeleteButton deleteMethod={deleteMethod} mode={mode} message={deleteMessage || t("Deleted successfully!")} error={error}/>
+                    <DeleteButton deleteMethod={deleteMethod} mode={mode} message={deleteMessage || t("Deleted successfully!")}/>
                 </div>
                 </div>
             </Box>

@@ -46,7 +46,7 @@ export function TableBackButton(){
     )
 }
 
-export function DeleteButton({deleteMethod, ids=[], mode, error, message}){
+export function DeleteButton({deleteMethod, ids=[], mode, message}){
     const theme = useTheme();
     const {t} = useTranslation();
     const {id} = useParams();
@@ -64,11 +64,11 @@ export function DeleteButton({deleteMethod, ids=[], mode, error, message}){
           background: theme.palette.mode === 'dark' ? 'black' : '#fff',
         }).then((result) => {
           if (result.isConfirmed) {
-            deleteMethod(id);
-            if(error){
+            const res = deleteMethod(id);
+            if(res && res.error){
               Swal.fire({
-                title: t("Error"),
-                text: t(error),
+                title: t(res.error.message),
+                text: t(res.error.details),
                 icon: "error",
                 confirmButtonText: t("OK"),
               });

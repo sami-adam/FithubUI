@@ -79,7 +79,7 @@ const useClassScheduleStore = create((set) => ({
         }
     },
 
-    SearchClassSchedules: async (search) => {
+    searchClassSchedules: async (search) => {
         try {
             const response = await axios.get(useClassScheduleStore.getState().baseURL + "/class-schedules/search/" + search, {
                 headers: {

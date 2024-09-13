@@ -165,14 +165,14 @@ export function OneToManyField({ defaultItems = [{ id: Date.now(), name: '' }] }
   );
 };
 
-export function ManyToOneField({options=[], optionsFields=["name"], value, setValue, mode, url}){
+export function ManyToOneField({options=[], optionsFields=["name"], value, setValue, mode, url, customOnChange}){
   const theme = useTheme();
   return (
     <>
     <Autocomplete 
       options={options} getOptionLabel={(option) => optionsFields.map(field => option[field]).join(' ')}
       value={value} 
-      onChange={(event, newValue) => setValue(newValue)}
+      onChange={(event, newValue) => (customOnChange && customOnChange(newValue)) || setValue(newValue)}
       disabled={mode === 'view'} 
       onClick={() => console.log('clicked')} 
       sx={{ display: mode === 'view' ? 'none' : 'flex' }}

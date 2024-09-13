@@ -26,7 +26,7 @@ export default function ClassEnrollmentForm(){
 
     const [members, fetchMembers] = useMemberStore((state) => [state.members, state.fetchMembers]);
     const [fitnessClasses, fetchFitnessClasses] = useFitnessClassStore((state) => [state.fitnessClasses, state.fetchFitnessClasses]);
-    const [classSchedules, fetchClassSchedules] = useClassScheduleStore((state) => [state.classSchedules, state.fetchClassSchedules]);
+    const [classSchedules, searchClassSchedules] = useClassScheduleStore((state) => [state.classSchedules, state.searchClassSchedules]);
 
     const updateClassEnrollment = useClassEnrollmentStore((state) => state.updateClassEnrollment);
     const addClassEnrollment = useClassEnrollmentStore((state) => state.addClassEnrollment);
@@ -68,16 +68,12 @@ export default function ClassEnrollmentForm(){
             setLoading(false);
           });
         }
-        if(!classEnrollment){
-            setStartDate(dayjs());
-            setEndDate(dayjs());
-        }
         if(classEnrollment){
             setMember(member => member || classEnrollment.member);
             setFitnessClass(fitnessClass => fitnessClass || classEnrollment.fitnessClass);
             setClassSchedule(classSchedule => classSchedule || classEnrollment.classSchedule);
-            setStartDate(startDate => dayjs(classEnrollment.startDate));
-            setEndDate(endDate => dayjs(classEnrollment.endDate));
+            setStartDate(startDate => startDate || dayjs(classEnrollment.startDate));
+            setEndDate(endDate => endDate || dayjs(classEnrollment.endDate));
             setPrice(price => price || classEnrollment.price);
             setDiscountAmount(discountAmount => discountAmount || classEnrollment.discountAmount);
             setTaxAmount(taxAmount => taxAmount || classEnrollment.taxAmount);
@@ -87,10 +83,10 @@ export default function ClassEnrollmentForm(){
         if(mode !== 'view' && fetchData){
             fetchMembers();
             fetchFitnessClasses();
-            fetchClassSchedules();
+            searchClassSchedules(classSchedule && classSchedule.reference);
             setFetchData(false);
         }
-    }, [mode, id, classEnrollment, fetchData, fetchMembers, fetchFitnessClasses, fetchClassSchedules, fetchClassEnrollment]);
+    }, [mode, id, classEnrollment, fetchData, fetchMembers, fetchFitnessClasses, searchClassSchedules, fetchClassEnrollment, fitnessClass]);
 
     const validateFields = [
         { type: "other", value: member, message: "Please select a member" },
@@ -109,6 +105,29 @@ export default function ClassEnrollmentForm(){
         member: member && {"id": member.id},
         fitnessClass: fitnessClass && {"id": fitnessClass.id},
         classSchedule: classSchedule && {"id": classSchedule.id},
+    }
+
+    const onchangeFitnessClass = async (value) => {
+        setFitnessClass(value);
+        if(value){
+            const res = await searchClassSchedules(value.name);
+            if(res.success){
+                setClassSchedule(null);
+            }
+        }
+    }
+
+    const onchangeClassSchedule = async (value) => {
+        setClassSchedule(value);
+        if(value){
+            setStartDate(dayjs(value.startDate));
+            setEndDate(dayjs(value.endDate));
+            setPrice(value.price);
+            // setDiscountAmount(value.discountAmount);
+            // setTaxAmount(value.taxAmount);
+            // setNetAmount(value.netAmount);
+            // setStatus(value.status);
+        }
     }
 
     return (
@@ -131,12 +150,12 @@ export default function ClassEnrollmentForm(){
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
                 <FormLabel><Typography level='body-sm' startDecorator={<Fitbit sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Fitness Class")}</Typography></FormLabel>
-                <ManyToOneField options={fitnessClasses} optionsFields={["name"]} value={fitnessClass} setValue={setFitnessClass} mode={mode} url={"/fitness-classes"}/>
+                <ManyToOneField options={fitnessClasses} optionsFields={["name"]} value={fitnessClass} setValue={setFitnessClass} mode={mode} url={"/fitness-classes"} customOnChange={onchangeFitnessClass}/>
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/2' }}}>
                 <FormLabel><Typography level='body-sm' startDecorator={<Fitbit sx={{ fontSize: 18}}/>} endDecorator={<Required/>}>{t("Class Schedule")}</Typography></FormLabel>
-                <ManyToOneField options={classSchedules} optionsFields={["reference"]} value={classSchedule} setValue={setClassSchedule} mode={mode} url={"/class-schedules"}/>
+                <ManyToOneField options={classSchedules} optionsFields={["reference"]} value={classSchedule} setValue={setClassSchedule} mode={mode} url={"/class-schedules"} customOnChange={onchangeClassSchedule}/>
             </FormControl>
 
             <FormControl sx={{gridColumn: { xs: '1/-1', md: '2/2' }}}>
