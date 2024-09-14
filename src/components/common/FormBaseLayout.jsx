@@ -3,7 +3,7 @@ import { DeleteButton, FormBackButton } from "./Buttons";
 import LoadingPage from "./LaodingPage";
 import backgroundImage from '../../assets/background.jpg';
 import backgroundImageDark from '../../assets/backgrounddm.jpg';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
@@ -14,6 +14,7 @@ import { validateInputs } from "../../utils/validations";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { SnackbarCustom } from "./Common";
+import { position } from "stylis";
 
 
 
@@ -43,7 +44,7 @@ export default function FormBaseLayout({ children, loading=false }) {
             </Card>
             }
         </Box>
-        <ToastContainer autoClose={3000} theme={theme.palette.mode} rtl={i18n.dir() === 'rtl'}/>
+        <ToastContainer autoClose={3000} theme={theme.palette.mode} rtl={i18n.dir() === 'rtl'} position="top-center"/>
         </>
 
     )
@@ -77,27 +78,36 @@ export function FormHeader({ children, loading=false, title="", mode, setMode, u
             return
         }
         setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: t(`${title} added successfully!`)});
+        toast.success(t(`${title} added successfully!`));
+        // setOpenSnackbar(true);
+        // setSnack({type: 'success', title: 'Success', message: t(`${title} added successfully!`)});
     }
     const handleSave = async () => {
         const validInputs = validateInputs(validateFields);
         if(!validInputs){
             return;
         }
-        const res = await updateMethod(updateFields);
-        if(res && res.error){
-            Swal.fire({
-                title: t(res.error.message),
-                text: t(res.error.details),
-                icon: "error",
-                confirmButtonText: t("OK"),
-            });
-            return
-        }
+        // const res = await updateMethod(updateFields);
+        // if(res && res.error){
+        //     Swal.fire({
+        //         title: t(res.error.message),
+        //         text: t(res.error.details),
+        //         icon: "error",
+        //         confirmButtonText: t("OK"),
+        //     });
+        //     return
+        // }
+        toast.promise(
+            updateMethod(updateFields),
+            {
+              pending: 'Saving...',
+              success: t(`${title} updated successfully!`) + ' 🥳',
+              error: t('An error occurred while updating the record'),
+            },
+        )
         setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: t(`${title} updated successfully!`)});
+        // setOpenSnackbar(true);
+        // setSnack({type: 'success', title: 'Success', message: t(`${title} updated successfully!`)});
     }
     return (
         <Box flex={1} sx={{ width: "100%"}}>

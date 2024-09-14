@@ -21,7 +21,7 @@ const useMemberStore = create((set) => ({
                 window.location.href = useMemberStore.getState().signInUrl;
                 return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             } else {
-                return { success: false, error: { message: "Error fetching members!", details: error.response.data.message } };
+                return { success: false, error: { message: "Error fetching members!", details: error.response&&error.response.data.message } };
             }
         }
     },
@@ -34,7 +34,7 @@ const useMemberStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching member!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error fetching member!", details: error.response&&error.response.data.message } };
         }
     },
     addMember: async (member) => {
@@ -47,7 +47,7 @@ const useMemberStore = create((set) => ({
             set((state) => ({ members: [...state.members, response.data] }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error adding member!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error adding member!", details: error.response&&error.response.data.message } };
         }
     },
     updateMember: async (member) => {
@@ -62,7 +62,7 @@ const useMemberStore = create((set) => ({
             }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error updating member!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error updating member!", details: error.response&&error.response.data.message } };
         }
     },
     deleteMember: async (id) => {
@@ -75,7 +75,7 @@ const useMemberStore = create((set) => ({
             set((state) => ({ members: state.members.filter((m) => m.id !== id) }));
             return { success: true };
         } catch (error) {
-            return { success: false, error: { message: "Error deleting member!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error deleting member!", details: error.response&&error.response.data.message } };
         }
     },
     searchMembers: async (search) => {
@@ -88,7 +88,7 @@ const useMemberStore = create((set) => ({
             set({ members: response.data });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error searching members!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error searching members!", details: error.response&&error.response.data.message } };
         }
     },
     uploadProfilePicture: async (id, file) => {

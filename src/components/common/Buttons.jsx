@@ -71,6 +71,9 @@ export function DeleteButton({deleteMethod, ids=[], mode, message}){
                 text: t(res.error.details),
                 icon: "error",
                 confirmButtonText: t("OK"),
+                color: theme.palette.mode === 'dark' ? "white" : "black",
+                cancelButtonColor: theme.palette.mode === 'dark' ? "brown" : "brown",
+                background: theme.palette.mode === 'dark' ? 'black' : '#fff',
               });
               return;
             }
@@ -79,6 +82,9 @@ export function DeleteButton({deleteMethod, ids=[], mode, message}){
               text: t(message),
               icon: "success",
               confirmButtonText: t("OK"),
+              color: theme.palette.mode === 'dark' ? "white" : "black",
+              cancelButtonColor: theme.palette.mode === 'dark' ? "brown" : "brown",
+              background: theme.palette.mode === 'dark' ? 'black' : '#fff',
             });
             window.history.back();
           }

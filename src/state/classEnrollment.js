@@ -22,7 +22,7 @@ const useClassEnrollmentStore = create((set) => ({
                 window.location.href = useClassEnrollmentStore.getState().signInUrl;
                 return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             } else {
-                return { success: false, error: { message: "Error fetching class enrollments!", details: error.response.data.message } };
+                return { success: false, error: { message: "Error fetching class enrollments!", details: error.response&&error.response.data.message } };
             }
         }
     },
@@ -35,7 +35,7 @@ const useClassEnrollmentStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching class enrollment!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error fetching class enrollment!", details: error.response&&error.response.data.message } };
         }
     },
     addClassEnrollment: async (classEnrollment) => {

@@ -21,7 +21,7 @@ const useStripeStore = create(set => ({
         }
         return { success: true, data: response.data.publicKey };
       } catch (error) {
-        return { success: false, error: { message: 'Error fetching public key!', details: error.response.data.message } };
+        return { success: false, error: { message: 'Error fetching public key!', details: error.response&&error.response.data.message } };
       }
     },
     createCheckoutSession: async (product,amount) => {
@@ -39,7 +39,7 @@ const useStripeStore = create(set => ({
         set({ sessionId: response.data.id });
         return { success: true, data: response.data.id };
       } catch (error) {
-        return { success: false, error: { message: 'Error creating checkout session!', details: error.response.data.message } };
+        return { success: false, error: { message: 'Error creating checkout session!', details: error.response&&error.response.data.message } };
       }
     },
     setStripe: (stripeInstance) => set({ stripe: stripeInstance })

@@ -18,7 +18,7 @@ const useNotificationStore = create((set) => ({
             set({ notifications: response.data });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching notifications!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error fetching notifications!", details: error.response&&error.response.data.message } };
         }
     },
     fetchUserNotifications: async (userId) => {
@@ -33,7 +33,7 @@ const useNotificationStore = create((set) => ({
             set({ unreadNotifcations: response.data.filter((n) => !n.read) });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching notifications!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error fetching notifications!", details: error.response&&error.response.data.message } };
         }
     },
     fetchUserUnreadNotifications: async (userId) => {
@@ -46,7 +46,7 @@ const useNotificationStore = create((set) => ({
             set({ unreadNotifcations: response.data });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching unread notifications!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error fetching unread notifications!", details: error.response&&error.response.data.message } };
         }
     },
     addNotification: async (notification) => {
@@ -60,7 +60,7 @@ const useNotificationStore = create((set) => ({
             set((state) => ({ unreadNotifcations: [...state.unreadNotifcations, response.data] }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error adding notification!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error adding notification!", details: error.response&&error.response.data.message } };
         }
     },
     markAsRead: async (id) => {
@@ -77,7 +77,7 @@ const useNotificationStore = create((set) => ({
             }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error updating notification!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error updating notification!", details: error.response&&error.response.data.message } };
         }
     },
     markAsUnread: async (id) => {
@@ -94,7 +94,7 @@ const useNotificationStore = create((set) => ({
             }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error updating notification!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error updating notification!", details: error.response&&error.response.data.message } };
         }
     },
 }));

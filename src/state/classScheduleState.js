@@ -17,7 +17,7 @@ const useClassScheduleStore = create((set) => ({
             set({ classSchedules: response.data });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching class schedules!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error fetching class schedules!", details: error.response&&error.response.data.message } };
         }
     },
     fetchClassSchedule: async (id) => {
@@ -31,7 +31,7 @@ const useClassScheduleStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching class schedule!", details: error.response.data.message } };   
+            return { success: false, error: { message: "Error fetching class schedule!", details: error.response&&error.response.data.message } };   
         }
     },
 
@@ -45,7 +45,7 @@ const useClassScheduleStore = create((set) => ({
             set((state) => ({ classSchedules: [...state.classSchedules, response.data] }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error adding class schedule!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error adding class schedule!", details: error.response&&error.response.data.message } };
         }
     },
 
@@ -61,7 +61,7 @@ const useClassScheduleStore = create((set) => ({
             }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error updating class schedule!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error updating class schedule!", details: error.response&&error.response.data.message } };
         }
     },
 
@@ -75,7 +75,7 @@ const useClassScheduleStore = create((set) => ({
             set((state) => ({ classSchedules: state.classSchedules.filter((m) => m.id !== id) }));
             return { success: true };
         } catch (error) {
-            return { success: false, error: { message: "Error deleting class schedule!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error deleting class schedule!", details: error.response&&error.response.data.message } };
         }
     },
 
@@ -89,7 +89,7 @@ const useClassScheduleStore = create((set) => ({
             set({ classSchedules: response.data });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error searching class schedules!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error searching class schedules!", details: error.response&&error.response.data.message } };
         }
     },
     enrollMember: async (classScheduleId) => {
@@ -101,7 +101,7 @@ const useClassScheduleStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error enrolling member!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error enrolling member!", details: error.response&&error.response.data.message } };
         }
     }
 }));

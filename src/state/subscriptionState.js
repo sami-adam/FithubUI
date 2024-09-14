@@ -23,7 +23,7 @@ const useSubscriptionStore = create((set) => ({
             set({ subscriptions: response.data.content, totalPages: response.data.page.totalPages, pageSize: response.data.page.size, currentPage: response.data.page.number });
             return { success: true, data: response.data.content };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscriptions!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error fetching subscriptions!", details: error.response&&error.response.data.message } };
         }
     },
     fetchSubscription: async (id) => {
@@ -35,7 +35,7 @@ const useSubscriptionStore = create((set) => ({
             });
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error fetching subscription!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error fetching subscription!", details: error.response&&error.response.data.message } };
         }
     },
     addSubscription: async (subscription) => {
@@ -48,7 +48,7 @@ const useSubscriptionStore = create((set) => ({
             set((state) => ({ subscriptions: [...state.subscriptions, response.data] }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error adding subscription!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error adding subscription!", details: error.response&&error.response.data.message } };
         }
     },
     updateSubscription: async (subscription) => {
@@ -63,7 +63,7 @@ const useSubscriptionStore = create((set) => ({
             }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error updating subscription!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error updating subscription!", details: error.response&&error.response.data.message } };
         }
     },
     deleteSubscription: async (id) => {
@@ -76,7 +76,7 @@ const useSubscriptionStore = create((set) => ({
             set((state) => ({ subscriptions: state.subscriptions.filter((s) => s.id !== id) }));
             return { success: true };
         } catch (error) {
-            return { success: false, error: { message: "Error deleting subscription!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error deleting subscription!", details: error.response&&error.response.data.message } };
         }
     },
     changeStatus: async (id) => {
@@ -91,7 +91,7 @@ const useSubscriptionStore = create((set) => ({
             }));
             return { success: true, data: response.data };
         } catch (error) {
-            return { success: false, error: { message: "Error changing subscription status!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error changing subscription status!", details: error.response&&error.response.data.message } };
         }
     },
     searchSubscriptions: async (search) => {
@@ -104,7 +104,7 @@ const useSubscriptionStore = create((set) => ({
             set({ subscriptions: response.data.content, totalPages: response.data.page.totalPages, pageSize: response.data.page.size, currentPage: response.data.page.number });
             return { success: true, data: response.data.content };
         } catch (error) {
-            return { success: false, error: { message: "Error searching subscriptions!", details: error.response.data.message } };
+            return { success: false, error: { message: "Error searching subscriptions!", details: error.response&&error.response.data.message } };
         }
 
     },

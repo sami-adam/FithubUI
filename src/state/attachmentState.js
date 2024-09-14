@@ -21,7 +21,7 @@ const useAttachmentStore = create((set) => ({
                 window.location.href = useAttachmentStore.getState().signInUrl;
                 return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             } else {
-                return { success: false, error: { message: "Error fetching attachments!", details: error.response.data.message}};
+                return { success: false, error: { message: "Error fetching attachments!", details: error.response&&error.response.data.message}};
             }
         }
     },
@@ -34,7 +34,7 @@ const useAttachmentStore = create((set) => ({
             });
             return {success: true, data: response.data};
         } catch (error) {
-            return { success: false, error: { message: "Error fetching attachment!", details: error.response.data.message}};
+            return { success: false, error: { message: "Error fetching attachment!", details: error.response&&error.response.data.message}};
         }
     }
 }));

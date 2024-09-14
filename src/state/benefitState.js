@@ -22,7 +22,7 @@ const useBenefitStore = create((set) => ({
                 window.location.href = useBenefitStore.getState().signInUrl;
                 return { success: false, error: { message: "Unauthorized", details: "You are not authorized to view this page!" } };
             } else {
-                return { success: false, error: { message: "Error fetching benefits!", details: error.response.data.message}};
+                return { success: false, error: { message: "Error fetching benefits!", details: error.response&&error.response.data.message}};
             }
         }
     },
@@ -35,7 +35,7 @@ const useBenefitStore = create((set) => ({
             });
             return {success: true, data: response.data};
         } catch (error) {
-            return { success: false, error: { message: "Error fetching benefit!", details: error.response.data.message}};
+            return { success: false, error: { message: "Error fetching benefit!", details: error.response&&error.response.data.message}};
         }
     },
     addBenefit: async (benefit) => {
@@ -48,7 +48,7 @@ const useBenefitStore = create((set) => ({
             set((state) => ({ benefits: [...state.benefits, response.data] }));
             return {success: true, data: response.data};
         } catch (error) {
-            return { success: false, error: { message: "Error adding benefit!", details: error.response.data.message}};
+            return { success: false, error: { message: "Error adding benefit!", details: error.response&&error.response.data.message}};
         }
     },
     updateBenefit: async (benefit) => {
@@ -63,7 +63,7 @@ const useBenefitStore = create((set) => ({
             }));
             return {success: true, data: response.data};
         } catch (error) {
-            return { success: false, error: { message: "Error updating benefit!", details: error.response.data.message}};
+            return { success: false, error: { message: "Error updating benefit!", details: error.response&&error.response.data.message}};
         }
     },
     deleteBenefit: async (id) => {
@@ -76,7 +76,7 @@ const useBenefitStore = create((set) => ({
             set((state) => ({ benefits: state.benefits.filter((b) => b.id !== id) }));
             return {success: true};
         } catch (error) {
-            return { success: false, error: { message: "Error deleting benefit!", details: error.response.data.message}};
+            return { success: false, error: { message: "Error deleting benefit!", details: error.response&&error.response.data.message}};
         }
     },
     searchBenefits: async (search) => {
@@ -89,7 +89,7 @@ const useBenefitStore = create((set) => ({
             set({ benefits: response.data });
             return {success: true, data: response.data};
         } catch (error) {
-            return { success: false, error: { message: "Error searching benefits!", details: error.response.data.message}};
+            return { success: false, error: { message: "Error searching benefits!", details: error.response&&error.response.data.message}};
         }
     }
 }));
