@@ -3,16 +3,13 @@ import useProductCategoryStore from '../../state/productCategoryState';
 import useBenefitStore from '../../state/benefitState';
 import useAccountStore from '../../state/accountState';
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, CardContent, Chip, FormControl, FormLabel, Input, Typography } from '@mui/joy';
-import { Add, Close } from '@mui/icons-material';
+import { Autocomplete, Box, CardContent, Chip, FormControl, FormLabel, Input } from '@mui/joy';
+import { Close } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import { BiEdit } from "react-icons/bi";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { BsSave } from "react-icons/bs";
-import { SnackbarCustom } from '../common/Common';
 import { FaTags } from "react-icons/fa";
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
 import { ManyToOneField } from '../common/Fields';
+import Swal from 'sweetalert2';
 
 export default function ProductCategoryForm() {
     const location = useLocation();
@@ -46,9 +43,17 @@ export default function ProductCategoryForm() {
         if(mode === 'add'){
           setLoading(false);
         }
-        if(id && mode !== 'add' && !productCategory){
-            fetchProductCategory(id).then((data) => {
-                setProductCategory(data);
+        if(id && mode !== 'add' && !productCategory && id !== 'new'){
+            fetchProductCategory(id).then((res) => {
+              if(res.success){
+                setProductCategory(res.data);
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: t(res.error.message),
+                  text: t(res.error.details),
+                });
+              }
             }).finally(() => setLoading(false));
         }
         if(fetchData){
@@ -65,61 +70,30 @@ export default function ProductCategoryForm() {
         }
     }, [productCategory, fetchData, fetchBenefits, fetchAccounts, id, mode, fetchProductCategory]);
 
-    const handleSave = () => {
-        updateProductCategory({id: productCategory.id,
-            name: name,
-            description: description,
-            benefits: benefs.map(benefit => {return {id: benefit.id}}),
-            incomeAccount: incomeAccount && {id: incomeAccount.id},
-            expenseAccount: expenseAccount && {id: expenseAccount.id}
-        });
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('Product Category Updated'), message: 'Product Category Updated'});
-    }
+    const validateFields = [
+      {type: "name", value: name, message: t("Please enter a valid name!")},
+    ]
 
-    const handleAdd = () => {
-        addProductCategory({
-            name: name,
-            description: description,
-            benefits: benefs.map(benefit => {return {id: benefit.id}}),
-            incomeAccount: incomeAccount && {id: incomeAccount.id},
-            expenseAccount: expenseAccount && {id: expenseAccount.id}
-        });
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('Product Category Added'), message: 'Product Category Added'});
+    const updateFields = {
+      id: typeof id === 'string' && id !== 'new' ? id : productCategory && productCategory.id,
+      name: name,
+      description: description,
+      benefits: benefs.map(benefit => {return {id: benefit.id}}),
+      incomeAccount: incomeAccount && {id: incomeAccount.id},
+      expenseAccount: expenseAccount && {id: expenseAccount.id}
     }
-
-    const handleDelete = () => {
-        const confirmDelete = window.confirm(t('Are you sure you want to delete this product category?'));
-        if(confirmDelete){
-            deleteProductCategory(productCategory.id);
-            window.location.href = '/product-categories';
-        }
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('Product Category Deleted'), message: 'Product Category Deleted'});
+    const addFields = {
+      name: name,
+      description: description,
+      benefits: benefs.map(benefit => {return {id: benefit.id}}),
+      incomeAccount: incomeAccount && {id: incomeAccount.id},
+      expenseAccount: expenseAccount && {id: expenseAccount.id}
     }
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-      <FormHeader loading={loading}>
-        {/* <Divider inset="none" /> */}
-        <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-          <Typography level="title-lg">
-              {t("Subscription Type")}
-          </Typography>
-          <div style={{ display: "flex", flexDirection:"row"}}>
-            <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-            <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-            <Box flexGrow={1} width={4}/>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-            <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view' && productCategory? 'none': 'none'}}>{t("DELETE")}</Button>
-          </div>
-        </div>
-        {/* <Divider inset="none" /> */}
+      <FormHeader loading={loading} title="Subscription Category" mode={mode} setMode={setMode} validateFields={validateFields} updateFields={updateFields} addFields={addFields} 
+      updateMethod={updateProductCategory} addMethod={addProductCategory} deleteMethod={deleteProductCategory} setRecord={setProductCategory}>
       </FormHeader>
       <FormBaseLayout loading={loading}>
       <CardContent

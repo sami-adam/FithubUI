@@ -38,13 +38,11 @@ export default function Carousel({ items, duration = 3000 }) {
           >
             {item.title}
           </Typography>
-          <AspectRatio ratio={17 / 9}>
-          <img
+          <iframe
             src={item.image}
-            alt={item.title}
+            alt={item.title} className="w-full aspect-[4/3]"
             style={{ width: '100%', height: 155.5, objectFit:"revert-layer",borderRadius: 5 }}
           />
-          </AspectRatio>
           
         </Box>
       ))}

@@ -18,7 +18,8 @@ export const validateIdentificationNumber = (id) => {
 
 export const validateName = (name) => {
     // Name should not be empty and not contain any numbers or special characters
-    const re = /^[a-zA-Z ]+$/;
+    // Support Arabic and English characters
+    const re = /^[a-zA-Z\u0600-\u06FF\s]+$/;
     return re.test(name);
 }
 

@@ -3,17 +3,14 @@ import useProductStore from '../../state/productState';
 import useProductCategoryStore from '../../state/productCategoryState';
 import useTaxStore from '../../state/taxState';
 import { useEffect, useState } from 'react';
-import { Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Textarea, Typography } from '@mui/joy';
-import { Add } from '@mui/icons-material';
+import { Box, CardContent, FormControl, FormLabel, Input, Option, Select, Textarea, Typography } from '@mui/joy';
 import ImageIcon from '@mui/icons-material/Image';
 import { NumericFormat } from 'react-number-format';
 import { useTranslation } from 'react-i18next';
-import { BiEdit } from "react-icons/bi";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { BsSave } from "react-icons/bs";
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
 import { ManyToOneField } from '../common/Fields';
 import { SnackbarCustom } from '../common/Common';
+import Swal from 'sweetalert2';
 
 export default function ProductForm() {
     const location = useLocation();
@@ -47,9 +44,17 @@ export default function ProductForm() {
         if(mode === 'add'){
           setLoading(false);
         }
-        if(id && mode !== 'add' && !product){
-            fetchProduct(id).then((data) => {
-                setProduct(data);
+        if(id && mode !== 'add' && !product && id !== 'new'){
+            fetchProduct(id).then((res) => {
+              if(res.success){
+                setProduct(res.data);
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: t(res.error.message),
+                  text: t(res.error.details),
+                });
+              }
             }).finally(() => setLoading(false));
         }
         if(mode !== 'view' && fetchData){
@@ -69,66 +74,37 @@ export default function ProductForm() {
             setDurationType(durationType=>durationType||product.durationType);
         }
       }, [mode, fetchData, product, fetchProductCategories, fetchTaxes, id, fetchProduct]);
+
+      const validateFields = [
+        {type: "name", value: name, message: t("Please enter a valid name!")},
+        {type: "other", value: category, message: t("Please select a valid category!")},
+        {type: "other", value: durationType, message: t("Please select a valid duration type!")},
+      ]
     
-    const handleSave = () => {
-        updateProduct({
-            id: product.id,
-            category: category && {"id": category.id},
-            tax: tax && {"id": tax.id},
-            name: name,
-            price: price,
-            image: image,
-            description: description,
-            durationType: durationType
-        });
-        setMode('view');
-        setSnack({type: 'success', title: 'Success', message: 'Product updated successfully'});
-        setOpenSnackbar(true);
-    }
-
-    const handleAdd = () => {
-        addProduct({
-            category: category && {"id": category.id},
-            tax: tax && {"id": tax.id},
-            name: name,
-            price: price,
-            image: image,
-            description: description,
-            durationType: durationType
-        });
-        setMode('view');
-        setSnack({type: 'success', title: 'Success', message: 'Product added successfully'});
-        setOpenSnackbar(true);
-    }
-
-    const handelDelete = () => {
-        const confirm = window.confirm("Are you sure you want to delete this subscription?");
-        if(confirm){
-        deleteProduct(product.id);
-        window.history.back();
-        setSnack({type: 'success', title: 'Success', message: 'Product deleted successfully'});
-        setOpenSnackbar(true);
-        }
-    }
-
+      const updateFields = {
+        id: typeof id === 'string' && id !== 'new' ? id : product && product.id,
+        category: category && {"id": category.id},
+        tax: tax && {"id": tax.id},
+        name: name,
+        price: price,
+        image: image,
+        description: description,
+        durationType: durationType
+      }
+      const addFields = {
+        category: category && {"id": category.id},
+        tax: tax && {"id": tax.id},
+        name: name,
+        price: price,
+        image: image,
+        description: description,
+        durationType: durationType
+      }
+      
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-      <FormHeader loading={loading}>
-        {/* <Divider inset="none" /> */}
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-          <Typography level="title-lg">
-              {t("Subscription Type")}
-          </Typography>
-          <div style={{ display: "flex", flexDirection:"row"}}>
-            <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-            <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-            <Box flexGrow={1} width={4}/>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-            <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handelDelete} sx={{display: mode === 'view' && product? 'none': 'none'}}>{t("DELETE")}</Button>
-          </div>
-        </div>
-        {/* <Divider inset="none" /> */}
+      <FormHeader loading={loading} title="Subscription Type" mode={mode} setMode={setMode} validateFields={validateFields} updateFields={updateFields} addFields={addFields} 
+      updateMethod={updateProduct} addMethod={addProduct} deleteMethod={deleteProduct} setRecord={setProduct}>
       </FormHeader>
       <FormBaseLayout loading={loading}>
       <SnackbarCustom open={openSnackbar} setOpen={setOpenSnackbar} type={snack.type} title={snack.title} message={snack.message} />

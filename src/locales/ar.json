@@ -300,7 +300,15 @@
       "Journal Information added successfully!": "تمت إضافة معلومات اليومية بنجاح!",
       "Please enter a valid rate!": "الرجاء إدخال نسبة صحيحة!",
       "Tax added successfully!": "تمت إضافة الضريبة بنجاح!",
-      "Tax updated successfully!": "تم تحديث الضريبة بنجاح!"
+      "Tax updated successfully!": "تم تحديث الضريبة بنجاح!",
+      "Fitness Class Information added successfully!": "تمت إضافة معلومات فصل اللياقة بنجاح!",
+      "Fitness Class Information updated successfully!": "تم تحديث معلومات فصل اللياقة بنجاح!",
+      "Subscription Type updated successfully!": "تم تحديث نوع الاشتراك بنجاح!",
+      "Please select a valid category!": "الرجاء اختيار فئة صحيحة!",
+      "Please select a valid duration type!": "الرجاء اختيار نوع مدة صحيح!",
+      "Subscription Category updated successfully!": "تم تحديث فئة الاشتراك بنجاح!",
+      "Subscription Category": "فئة الاشتراك",
+      "Subscription Category added successfully!": "تمت إضافة فئة الاشتراك بنجاح!"
     }
   }
   

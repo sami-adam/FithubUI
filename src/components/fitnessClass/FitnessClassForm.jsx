@@ -2,16 +2,13 @@ import useFitnessClassStore from "../../state/fitnessClassState";
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import {  IconButton, Option, Select } from '@mui/joy';
-import { Box, Button, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
-import { Add, AddCircle } from '@mui/icons-material';
-import { SnackbarCustom } from '../common/Common';
+import { Box, Button, CardContent, FormControl, FormLabel, Input } from '@mui/joy';
+import { AddCircle } from '@mui/icons-material';
 import { HtmlField } from "../common/Fields";
 import { useTranslation } from "react-i18next";
-import { BiEdit } from "react-icons/bi";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { BsSave } from "react-icons/bs";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import FormBaseLayout, { FormHeader } from "../common/FormBaseLayout";
+import Swal from "sweetalert2";
 
 
 export default function FitnessClassForm() {
@@ -40,9 +37,17 @@ export default function FitnessClassForm() {
         if(mode === 'add'){
           setLoading(false);
         }
-        if(id && mode !== 'add' && !fitnessClass){
-            fetchFitnessClass(id).then((data) => {
-                setFitnessClass(data);
+        if(id && mode !== 'add' && !fitnessClass && id !== 'new'){
+            fetchFitnessClass(id).then((res) => {
+              if(res.success){
+                setFitnessClass(res.data);
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: t(res.error.message),
+                  text: t(res.error.details),
+                });
+              }
             }).finally(() => setLoading(false));
         }
         if(fitnessClass){
@@ -53,41 +58,24 @@ export default function FitnessClassForm() {
         }
     }, [mode, fitnessClass, id, fetchFitnessClass]);
 
-    const handleSave = () => {
-        updateFitnessClass({
-            id: fitnessClass.id,
-            name: name,
-            intensityLevel: intensityLevel,
-            description: description,
-            images: images.map(image => { return {"id": image.id, "url": image.url}}),
-        });
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Fitness Class updated successfully'});
+    const validateFields = [
+      {type: "name", value: name, message: t("Please enter a valid name!")},
+      {type: "other", value: intensityLevel, message: t("Please select a valid intensity level!")},
+    ]
+    const updateFields = {
+      id: typeof id === 'string' && id !== 'new' ? id : fitnessClass && fitnessClass.id,
+      name: name,
+      intensityLevel: intensityLevel,
+      description: description,
+      images: images.map(image => { return {"id": image.id, "url": image.url}}),
     }
-
-    const handleAdd = () => {
-        addFitnessClass({
-            name: name,
-            intensityLevel: intensityLevel,
-            description: description,
-            images: images.map(image => { return {"url": image.url}}),
-        });
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Fitness Class added successfully'});
+    const addFields = {
+      name: name,
+      intensityLevel: intensityLevel,
+      description: description,
+      images: images.map(image => { return {"url": image.url}}),
     }
-
-    const handleDelete = () => {
-        const confirm = window.confirm("Are you sure you want to delete this subscription?");
-        if(confirm){
-            deleteFitnessClass(fitnessClass.id);
-            window.history.back();
-        }
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Fitness Class deleted successfully'});
-    }
-
+  
     const handleAddImage = () => {
       setImages([...images, { url: '' }]);
       };
@@ -105,23 +93,8 @@ export default function FitnessClassForm() {
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-      <FormHeader loading={loading}>
-        {/* <Divider inset="none" /> */}
-        <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-          <Typography level="title-lg">
-              {t("Fitness Class Information")}
-          </Typography>
-          <div style={{ display: "flex", flexDirection:"row"}}>
-            <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-            <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-            <Box flexGrow={1} width={4}/>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-            <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
-          </div>
-        </div>
-        {/* <Divider inset="none" /> */}
+      <FormHeader loading={loading} title="Fitness Class Information" mode={mode} setMode={setMode} validateFields={validateFields} updateFields={updateFields} addFields={addFields} 
+      updateMethod={updateFitnessClass} addMethod={addFitnessClass} deleteMethod={deleteFitnessClass} setRecord={setFitnessClass}>
       </FormHeader>
       <FormBaseLayout loading={loading}>
       <CardContent

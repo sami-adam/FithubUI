@@ -1,14 +1,10 @@
 import { useLocation, useParams } from 'react-router-dom';
 import useBenefitStore from '../../state/benefitState';
 import { useEffect, useState } from 'react';
-import { Box, Button, CardContent, FormControl, FormLabel, Input, Typography } from '@mui/joy';
-import { Add } from '@mui/icons-material';
+import { Box, CardContent, FormControl, FormLabel, Input } from '@mui/joy';
 import { useTranslation } from 'react-i18next';
-import { BiEdit } from "react-icons/bi";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { BsSave } from "react-icons/bs";
-import { SnackbarCustom } from '../common/Common';
 import FormBaseLayout, { FormHeader } from '../common/FormBaseLayout';
+import Swal from 'sweetalert2';
 
 export default function BenefitForm() {
     const location = useLocation();
@@ -25,17 +21,23 @@ export default function BenefitForm() {
     const [description, setDescription] = useState('');
 
     const {t} = useTranslation();
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
     const { id } = useParams();
 
     useEffect(() => {
         if(mode === 'add'){
           setLoading(false);
         }
-        if(id && mode !== 'add' && !benefit){
-            fetchBenefit(id).then((data) => {
-                setBenefit(data);
+        if(id && mode !== 'add' && !benefit && id !== 'new'){
+            fetchBenefit(id).then((res) => {
+              if(res.success){
+                setBenefit(res.data);
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: t(res.error.message),
+                  text: t(res.error.details),
+                });
+              }
             }).finally(() => setLoading(false));
         }
         if(benefit){
@@ -44,58 +46,23 @@ export default function BenefitForm() {
         }
     }, [benefit, mode, id, fetchBenefit]);
 
-    const handleSave = () => {
-        updateBenefit({id: benefit.id,
-            name: name,
-            description: description
-        });
-        setMode('view');
-
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('Benefit Updated'), message: 'Benefit Updated'});
+    const validateFields = [
+      {type: "name", value: name, message: t("Please enter a valid name!")},
+    ]
+    const updateFields = {
+      id: typeof id === 'string' && id !== 'new' ? id : benefit && benefit.id,
+      name: name,
+      description: description
     }
-
-    const handleAdd = () => {
-        addBenefit({
-            name: name,
-            description: description
-        });
-        setMode('view');
-
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('Benefit Added'), message: 'Benefit Added'});
-    }
-
-    const handleDelete = () => {
-        const result = window.confirm(t('Delete this benefit?'));
-        if(result){
-            deleteBenefit(benefit.id);
-            window.location.href = '/benefits';
-        }
-
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: t('Benefit Deleted'), message: 'Benefit Deleted'});
+    const addFields = {
+      name: name,
+      description: description
     }
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-      <FormHeader loading={loading}>
-        {/* <Divider inset="none" /> */}
-        <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-          <Typography level="title-lg">
-              {t("Benefit")}
-          </Typography>
-          <div style={{ display: "flex", flexDirection:"row"}}>
-            <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-            <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-            <Box flexGrow={1} width={4}/>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-            <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view' && benefit? 'flex': 'none'}}>{t("DELETE")}</Button>
-          </div>
-        </div>
-        {/* <Divider inset="none" /> */}
+      <FormHeader loading={loading} title="Benefit" mode={mode} setMode={setMode} validateFields={validateFields} updateFields={updateFields} addFields={addFields} 
+        updateMethod={updateBenefit} addMethod={addBenefit} deleteMethod={deleteBenefit} setRecord={setBenefit}>
       </FormHeader>
       <FormBaseLayout loading={loading}>
       <CardContent
