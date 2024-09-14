@@ -289,7 +289,18 @@
       "Enrollment Information updated successfully!": "تم تحديث معلومات التسجيل بنجاح!",
       "Class Schedule added successfully!": "تمت إضافة جدول الفصل بنجاح!",
       "Transaction Information updated successfully!": "تم تحديث معلومات المعاملة بنجاح!",
-      "Transaction Information added successfully!": "تمت إضافة معلومات المعاملة بنجاح!"
+      "Transaction Information added successfully!": "تمت إضافة معلومات المعاملة بنجاح!",
+      "Please select a journal!": "الرجاء اختيار يومية!",
+      "Account Information updated successfully!": "تم تحديث معلومات الحساب بنجاح!",
+      "Please enter a valid code!": "الرجاء إدخال كود صحيح!",
+      "Please select a valid type!": "الرجاء اختيار نوع صحيح!",
+      "Account Information added successfully!": "تمت إضافة معلومات الحساب بنجاح!",
+      "Journal Information updated successfully!": "تم تحديث معلومات اليومية بنجاح!",
+      "Please select a valid account!": "الرجاء اختيار حساب صحيح!",
+      "Journal Information added successfully!": "تمت إضافة معلومات اليومية بنجاح!",
+      "Please enter a valid rate!": "الرجاء إدخال نسبة صحيحة!",
+      "Tax added successfully!": "تمت إضافة الضريبة بنجاح!",
+      "Tax updated successfully!": "تم تحديث الضريبة بنجاح!"
     }
   }
   

@@ -3,12 +3,9 @@ import useTransactionStore from "../../state/transactionState";
 import useJournalStore from "../../state/journalState";
 import useAccountStore from "../../state/accountState";
 import { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, CardContent, FormControl, FormLabel, IconButton, Input, Option, Select, Typography } from '@mui/joy';
-import { Add, AddCircle } from '@mui/icons-material';
-import { BiEdit } from "react-icons/bi";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { BsSave } from "react-icons/bs";
-import { HorozontalStepper, SnackbarCustom } from '../common/Common';
+import { Autocomplete, Box, Button, CardContent, FormControl, FormLabel, IconButton, Input, Option, Select } from '@mui/joy';
+import { AddCircle } from '@mui/icons-material';
+import { HorozontalStepper } from '../common/Common';
 import { useTranslation } from 'react-i18next';
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { DeleteOutlined } from "@ant-design/icons";
@@ -40,9 +37,6 @@ export default function TransactionForm() {
     const [description, setDescription] = useState('');
     const [entries, setEntries] = useState([]);
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
-
     const {t} = useTranslation();
 
     const stages = ["DRAFT", "POSTED"]
@@ -73,9 +67,12 @@ export default function TransactionForm() {
             setDescription(description=>description||transaction.description);
             setEntries(entries=>entries.length > 0 ? entries :transaction.entries);
         }
-      }, [mode, transaction, fetchData, fetchJournals, fetchAccounts, fetchTransaction, id]);
+      }, [mode, transaction, fetchData, fetchJournals, fetchAccounts, fetchTransaction, id, t]);
 
-    const updateFields = {
+      const validateFields = [
+        {type: "other", value: journal, message: t("Please select a journal!")},
+      ]
+      const updateFields = {
       id: typeof id === 'string' && id !== 'new' ? id : transaction && transaction.id,
       journal: journal,
       description: description,
@@ -93,13 +90,19 @@ export default function TransactionForm() {
 
     const handleTransactionPost = () => {
         if(!transaction.id){
-            setSnack({type: 'error', title: 'Error', message: 'Transaction not found!'});
-            setOpenSnackbar(true);
-            return;
+          Swal.fire({
+            icon: 'error',
+            title: t("Transaction not found"),
+            confirmButtonText: t("OK")
+          });
+          return;
         }
         postTransaction({"id": transaction.id});
-        setSnack({type: 'success', title: 'Success', message: 'Transaction posted successfully!'});
-        setOpenSnackbar(true);
+        Swal.fire({
+          icon: 'success',
+          title: t("Transaction posted successfully"),
+          confirmButtonText: t("OK")
+        });
         setMode('view');
     }
 
@@ -121,7 +124,7 @@ export default function TransactionForm() {
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
       <FormHeader loading={loading} title="Transaction Information" mode={mode} setMode={setMode} updateMethod={updateTransaction} addMethod={addTransaction} 
-      deleteMethod={deleteTransaction} updateFields={updateFields} addFields={addFields} setRecord={setTransaction}>
+      deleteMethod={deleteTransaction} updateFields={updateFields} addFields={addFields} setRecord={setTransaction} validateFields={validateFields}>
         <HorozontalStepper stages={stages} currentStage={stages.indexOf(transaction && transaction.status) || 0} />
         <div>
         <Button variant="soft" onClick={handleTransactionPost} 

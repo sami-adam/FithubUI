@@ -2,15 +2,11 @@ import { useLocation, useParams } from "react-router-dom";
 import useJournalStore from "../../state/journalState";
 import useAccountStore from "../../state/accountState";
 import { useEffect, useState } from 'react';
-import { Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
-import { Add } from '@mui/icons-material';
-import { BiEdit } from "react-icons/bi";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { BsSave } from "react-icons/bs";
-import { SnackbarCustom } from '../common/Common';
+import { CardContent, FormControl, FormLabel, Input, Option, Select } from '@mui/joy';
 import { useTranslation } from 'react-i18next';
 import FormBaseLayout, { FormHeader } from "../common/FormBaseLayout";
 import { ManyToOneField } from "../common/Fields";
+import Swal from "sweetalert2";
 
 
 export default function JournalForm() {
@@ -35,9 +31,6 @@ export default function JournalForm() {
     const [account, setAccount] = useState('');
     const [loading, setLoading] = useState(true);
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
-
     const {t} = useTranslation();
 
     const journalTypes = [
@@ -49,8 +42,16 @@ export default function JournalForm() {
           setLoading(false);
         }
         if(id && mode !== 'add' && !journal){
-            fetchJournal(id).then((data) => {
-                setJournal(data);
+            fetchJournal(id).then((res) => {
+              if(res.success){
+                setJournal(res.data);
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: t(res.error.message),
+                  text: t(res.error.details)
+                });
+              }
             }).finally(() => setLoading(false));
         }
         if(fetchData){
@@ -66,62 +67,32 @@ export default function JournalForm() {
         }
       }, [mode, journal, fetchData, id, fetchJournal, fetchAccounts]);
 
-    const handleSave = () => {
-        updateJournal({
-            id: journal.id,
-            name: name,
-            code: code,
-            description: description,
-            type: type,
-            account: account
-        });
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Journal updated successfully'});
+      const validateFields = [
+        {type: "name", value: name, message: t("Please enter a valid name!")},
+        {type: "other", value: code, message: t("Please enter a valid code!")},
+        {type: "other", value: type, message: t("Please select a valid type!")},
+        {type: "other", value: account, message: t("Please select a valid account!")}
+      ]
+      const updateFields = {
+      id: typeof id === 'string' && id !== 'new' ? id : journal && journal.id,
+      name: name,
+      code: code,
+      description: description,
+      type: type,
+      account: account
     }
-
-    const handleAdd = () => {
-        addJournal({
-            name: name,
-            code: code,
-            description: description,
-            type: type,
-            account: account
-        });
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Journal added successfully'});
-    }
-
-    const handleDelete = () => {
-        const confirm = window.confirm('Are you sure you want to delete this journal?');
-        if(confirm){
-            deleteJournal(journal.id);
-            window.location.href = '/journals';
-        }
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Journal deleted successfully'});
+    const addFields = {
+      name: name,
+      code: code,
+      description: description,
+      type: type,
+      account: account
     }
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-      <FormHeader loading={loading}>
-        {/* <Divider inset="none" /> */}
-        <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-          <Typography level="title-lg">
-              {t("Journal Information")}
-          </Typography>
-          <div style={{ display: "flex", flexDirection:"row"}}>
-            <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-            <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-            <Box flexGrow={1} width={4}/>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-            <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
-          </div>
-        </div>
-        {/* <Divider inset="none" /> */}
+      <FormHeader loading={loading} title="Journal Information" mode={mode} setMode={setMode} validateFields={validateFields} updateFields={updateFields} 
+      addFields={addFields} updateMethod={updateJournal} addMethod={addJournal} deleteMethod={deleteJournal} setRecord={setJournal}>
       </FormHeader>
       <FormBaseLayout loading={loading}>
       <CardContent

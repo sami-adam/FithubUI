@@ -1,15 +1,10 @@
 import { useLocation, useParams } from "react-router-dom";
 import useAccountStore from "../../state/accountState";
 import { useEffect, useState } from 'react';
-import { Box, Button, CardContent, FormControl, FormLabel, Input, Option, Select, Typography } from '@mui/joy';
-import { Add } from '@mui/icons-material';
-import { BiNews } from "react-icons/bi";
-import { BiEdit } from "react-icons/bi";
-import { IoTrashBinOutline } from "react-icons/io5";
-import { BsSave } from "react-icons/bs";
-import { SnackbarCustom } from '../common/Common';
+import { Box, CardContent, FormControl, FormLabel, Input, Option, Select } from '@mui/joy';
 import { useTranslation } from 'react-i18next';
 import FormBaseLayout, { FormHeader } from "../common/FormBaseLayout";
+import Swal from "sweetalert2";
 
 
 export default function AccountForm() {
@@ -28,10 +23,6 @@ export default function AccountForm() {
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [type, setType] = useState('');
-
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snack, setSnack] = useState({type: 'success', title: '', message: ''});
-
     const {t} = useTranslation();
 
     const accountTypes = [
@@ -46,9 +37,17 @@ export default function AccountForm() {
         if(mode === 'add'){
           setLoading(false);
         }
-        if(id && mode !== 'add' && !account){
-            fetchAccount(id).then((data) => {
-                setAccount(data);
+        if(id && mode !== 'add' && !account && id !== 'new'){
+            fetchAccount(id).then((res) => {
+              if(res.success){
+                setAccount(res.data);
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: t(res.error.message),
+                  text: t(res.error.details)
+                });
+              }
             }).finally(() => setLoading(false));
         }
         if(account){
@@ -58,59 +57,29 @@ export default function AccountForm() {
         }
       }, [mode, account, id, fetchAccount]);
 
-    const handleSave = () => {
-        updateAccount({
-            id: account.id,
-            name: name,
-            code: code,
-            type: type
-        });
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Account updated successfully'});
-    }
+    const validateFields = [
+      {type: "name", value: name, message: t("Please enter a valid name!")},
+      {type: "number", value: code, message: t("Please enter a valid code!")},
+      {type: "other", value: type, message: t("Please select a valid type!")}
+    ]
 
-    const handleAdd = () => {
-        addAccount({
-            name: name,
-            code: code,
-            type: type
-        });
-        setMode('view');
-        setOpenSnackbar(true);
-        setSnack({type: 'success', title: 'Success', message: 'Account added successfully'});
+    const updateFields = {
+      id: typeof id === 'string' && id !== 'new' ? id : account && account.id,
+      name: name,
+      code: code,
+      type: type
     }
-
-    const handleDelete = () => {
-        const confirm = window.confirm('Are you sure you want to delete this account?');
-        if(confirm){
-            deleteAccount(account.id);
-            window.location.href = '/accounts';
-            setOpenSnackbar(true);
-            setSnack({type: 'success', title: 'Success', message: 'Account deleted successfully'});
-        }
-        
+   
+    const addFields = {
+      name: name,
+      code: code,
+      type: type
     }
 
     return (
       <div style={{ display: "flex", flexDirection:"column", width:"100%"}}>
-      <FormHeader loading={loading}>
-        {/* <Divider inset="none" /> */}
-        <SnackbarCustom type={snack.type} title={snack.title} message={snack.message} open={openSnackbar} setOpen={setOpenSnackbar} />
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between", paddingTop:16}}>
-          <Typography level="title-lg" startDecorator={<BiNews />}>
-              {t("Account Information")}
-          </Typography>
-          <div style={{ display: "flex", flexDirection:"row"}}>
-            <Button variant='soft' startDecorator={<BiEdit fontSize={20}/>} onClick={()=> setMode("edit")} sx={{display: mode === 'view'? 'flex': 'none'}}>{t("EDIT")}</Button>
-            <Button variant='soft' startDecorator={<BsSave fontSize={18}/>} onClick={handleSave} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("SAVE")}</Button>
-            <Box flexGrow={1} width={4}/>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={()=> setMode("view")} sx={{display: mode === 'edit'? 'flex': 'none'}}>{t("DISCARD")}</Button>
-            <Button variant='soft' startDecorator={<Add fontSize='20px'/>} onClick={handleAdd} sx={{display: mode === 'add'? 'flex': 'none'}}>{t("ADD")}</Button>
-            <Button variant='soft' color='danger' startDecorator={<IoTrashBinOutline fontSize={20}/>} onClick={handleDelete} sx={{display: mode === 'view'? 'none': 'none'}}>{t("DELETE")}</Button>
-          </div>
-        </div>
-        {/* <Divider inset="none" /> */}
+      <FormHeader loading={loading} title="Account Information" mode={mode} setMode={setMode} updateMethod={updateAccount} addMethod={addAccount} 
+      deleteMethod={deleteAccount} updateFields={updateFields} addFields={addFields} setRecord={setAccount} validateFields={validateFields}>
       </FormHeader>
       <FormBaseLayout loading={loading}>
       <CardContent
