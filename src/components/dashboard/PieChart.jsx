@@ -7,7 +7,7 @@ Chart.register(CategoryScale);
 export default function PieChart({ data }) {
   console.log("Before Data In Pie:::::::::::::",data);
   const [chartData, setChartData] = useState({
-    labels: data.map((rec) => rec.year || rec.id ),
+    labels: data.map((rec) => rec.id ),
     datasets: [
       {
         label: "Users Gained ",
