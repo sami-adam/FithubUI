@@ -12,49 +12,46 @@ import LoadingPage, { CircularLoadingPage } from "../components/common/LaodingPa
 
 Chart.register(CategoryScale);
 export default function Dashboard() {
-    const [chartData, setChartData] = useState({
-        labels: Data.map((data) => data.year), 
-        datasets: [
-          {
-            label: "Users Gained ",
-            data: Data.map((data) => data.userGain),
-            backgroundColor: [
-              "rgba(75,192,192,1)",
-              "#ecf0f1",
-              "#50AF95",
-              "#f3ba2f",
-              "#2a71d0"
-            ],
-            borderColor: "black",
-            borderWidth: 2
-          }
-        ]
-      });
+  const getSubscriptionsByProduct = useDashboardStore((state) => state.getSubscriptionsByProduct);
+  const [subscriptionsByProduct, setSubscriptionsByProduct] = useState([]);
+  const [fetchData, setFetchData] = useState(true);
+  const data = Data;
 
-    return (
-        <div style={{ width: "100%"}}>
-          <div style={{width:"100%", display: "flex", flexDirection: "row", alignItems:"baseline"}}>
-            <Card sx={{ width: "45%", m: 1}}>
-                <BarChart chartData={chartData}/>
-            </Card>
-            <Card sx={{ width: "45%", m: 1 }}>
-              <LineChart chartData={chartData} />
-            </Card>
-          </div>
-          <div style={{width:"100%", display: "flex", flexDirection: "row", alignItems:"baseline"}}>
-            <Card sx={{ width: "22%", height:"15%", m:1 }}>
-                <PieChart chartData={chartData} />
-            </Card>
-            <Card sx={{ width: "22%", height:"15%", m:1 }}>
-                <PieChart chartData={chartData} />
-            </Card>
-            <Card sx={{ width: "22%", height:"15%", m:1 }}>
-                <PieChart chartData={chartData} />
-            </Card>
-            <Card sx={{ width: "22%", height:"15%", m:1 }}>
-                <PieChart chartData={chartData} />
-            </Card>
-          </div>
-        </div>
+  useEffect(() => {
+    const getData = async () => {
+      const response = await getSubscriptionsByProduct();
+      var data = [];
+      for (const [key, value] of Object.entries(response.data)) {
+        data.push({ id: key,name: value.productName , count: value.subscriptionCount });
+      }
+      setSubscriptionsByProduct(data);
+    };
+    getData();
+  }, []);
+  return (
+    <div style={{ width: "100%"}}>
+      <div style={{width:"100%", display: "flex", flexDirection: "row", alignItems:"baseline"}}>
+        <Card sx={{ width: "45%", m: 1}}>
+            <BarChart data={data}/>
+        </Card>
+        <Card sx={{ width: "45%", m: 1 }}>
+          <LineChart data={data} />
+        </Card>
+      </div>
+      <div style={{width:"100%", display: "flex", flexDirection: "row", alignItems:"baseline"}}>
+        <Card sx={{ width: "22%", height:"15%", m:1 }}>
+            <PieChart data={subscriptionsByProduct} />
+        </Card>
+        <Card sx={{ width: "22%", height:"15%", m:1 }}>
+            <PieChart data={data} />
+        </Card>
+        <Card sx={{ width: "22%", height:"15%", m:1 }}>
+            <PieChart data={data} />
+        </Card>
+        <Card sx={{ width: "22%", height:"15%", m:1 }}>
+            <PieChart data={data} />
+        </Card>
+      </div>
+    </div>
     );
     }
