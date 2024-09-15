@@ -50,6 +50,7 @@ export function DeleteButton({deleteMethod, ids=[], mode, message}){
     const theme = useTheme();
     const {t} = useTranslation();
     const {id} = useParams();
+    const navigate = useNavigate();
     const handelDelete = () => {
         Swal.fire({
           title: t("Are you sure?"),
@@ -62,9 +63,9 @@ export function DeleteButton({deleteMethod, ids=[], mode, message}){
           confirmButtonText: t("Yes, delete it!"),
           cancelButtonText: t("Cancel"),
           background: theme.palette.mode === 'dark' ? 'black' : '#fff',
-        }).then((result) => {
+        }).then(async (result) => {
           if (result.isConfirmed) {
-            const res = deleteMethod(id);
+            const res = await deleteMethod(id !== 'new'? id: window.location.pathname.split('/').pop());
             if(res && res.error){
               Swal.fire({
                 title: t(res.error.message),
@@ -77,6 +78,7 @@ export function DeleteButton({deleteMethod, ids=[], mode, message}){
               });
               return;
             }
+            window.history.back();
             Swal.fire({
               title: t("Deleted!"),
               text: t(message),
@@ -86,7 +88,6 @@ export function DeleteButton({deleteMethod, ids=[], mode, message}){
               cancelButtonColor: theme.palette.mode === 'dark' ? "brown" : "brown",
               background: theme.palette.mode === 'dark' ? 'black' : '#fff',
             });
-            window.history.back();
           }
         });
           // setOpenSnackbar(true);
