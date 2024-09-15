@@ -309,7 +309,8 @@
       "Subscription Category updated successfully!": "تم تحديث فئة الاشتراك بنجاح!",
       "Subscription Category": "فئة الاشتراك",
       "Subscription Category added successfully!": "تمت إضافة فئة الاشتراك بنجاح!",
-      "Employee deleted successfully!": "تم حذف الموظف بنجاح!"
+      "Employee deleted successfully!": "تم حذف الموظف بنجاح!",
+      "Error adding account!": "خطأ في إضافة الحساب!"
     }
   }
   
