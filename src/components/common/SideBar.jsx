@@ -90,7 +90,7 @@ export default function Sidebar({children}) {
   }, [user, fetchUserUnreadNotifications, fetchData]);
   return (
     <div style={{display:"flex",flexDirection:"row"}}>
-      {user && user.name &&
+      {user && user.name && window.location.pathname !== "/" && 
     <Sheet
       className="Sidebar"
       sx={{

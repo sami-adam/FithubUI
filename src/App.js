@@ -46,6 +46,7 @@ import Dashboard from './pages/Dashboard';
 import ClassEnrollmentForm from './components/fitnessClass/ClassEnrollmentForm';
 import TaxPage from './pages/TaxPage';
 import TaxForm from './components/accounting/TaxForm';
+import LandingPage from './pages/LandingPage';
 //const joyTheme = extendJoyTheme();
 
 
@@ -60,6 +61,7 @@ function App() {
         <Header />
         <Sidebar>
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/user-created" element={<UserCreatedPage />} />

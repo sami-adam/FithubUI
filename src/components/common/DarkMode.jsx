@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 
-export default function DarkMode() {
+export default function DarkMode({sx = {}}) {
     const { mode, setMode } = useColorScheme();
     const [mounted, setMounted] = useState(false);
   
@@ -23,6 +23,7 @@ export default function DarkMode() {
         onClick={() => {
           setMode(mode === 'light' ? 'dark' : 'light');
         }}
+        sx={sx}
       >
         {mode === 'light' ? <DarkModeIcon/> : <LightModeIcon/>}
       </Button>
