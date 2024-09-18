@@ -46,7 +46,7 @@ export default function SubscriptionForm() {
 
   const [member, setMember] = useState(null);
   const [product, setProduct] = useState(null);
-  const [startDate, setStartDate] = useState(dayjs(new Date()));
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [unitPrice, setUnitPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
