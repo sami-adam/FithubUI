@@ -279,7 +279,7 @@ export default function Sidebar({children}) {
                 <ListItemButton role="menuitem" selected={window.location.pathname.includes("taxes")}>
                   <LinkIcon sx={{ fontSize: 18}}/>
                   <ListItemContent>
-                    <a href="https://odoo.fithub.life/web">
+                    <a href={`${process.env.REACT_APP_ODOO_URL}/web`} target="_blank" rel="noreferrer">
                       <img src={odooc} alt="logo" style={{width: "40px", height: "40px"}}/>
                     </a>
                   </ListItemContent>
