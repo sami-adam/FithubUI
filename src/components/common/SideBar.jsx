@@ -60,6 +60,8 @@ import WebStoriesIcon from '@mui/icons-material/WebStories';
 import ClassIcon from '@mui/icons-material/Class';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import MoneyOffIcon from '@mui/icons-material/MoneyOff';
+import odooc from '../../assets/odooc.webp';
+import LinkIcon from '@mui/icons-material/Link';
 
 export default function Sidebar({children}) {
   //const [emails, fetchEmails] = useEmailStore((state) => [state.emails, state.fetchEmails]);
@@ -269,6 +271,17 @@ export default function Sidebar({children}) {
                   <MoneyOffIcon sx={{ fontSize: 18}}/>
                   <ListItemContent>
                     <Typography level="body-sm">{t("Taxes")}</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem>
+                <ListItemButton role="menuitem" selected={window.location.pathname.includes("taxes")}>
+                  <LinkIcon sx={{ fontSize: 18}}/>
+                  <ListItemContent>
+                    <a href="https://odoo.fithub.life/web">
+                      <img src={odooc} alt="logo" style={{width: "40px", height: "40px"}}/>
+                    </a>
                   </ListItemContent>
                 </ListItemButton>
               </ListItem>
