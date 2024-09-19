@@ -26,11 +26,24 @@ export default function AccountForm() {
     const {t} = useTranslation();
 
     const accountTypes = [
-      'RECEIVABLE', 'BANk', 'CASH', 'PREPAYMENT', // Assets
-      'PAYABLE', 'CREDIT_CARD', 'CURRENT_LIABILITIES', 'NON_CURRENT_LIABILITIES', // Liabilities
-      'EQUITY', 'CURRENT_YEAR_EARNINGS', // Equity
-      'INCOME', 'OTHER_INCOME', // Income
-      'EXPENSE', 'COST_OF_REVENUE' // Expense
+        'ASSET_RECEIVABLE',
+        'ASSET_CASH',
+        'ASSET_CURRENT',
+        'ASSET_NON_CURRENT',
+        'ASSET_PREPAYMENTS',
+        'ASSET_FIXED',
+        'LIABILITY_PAYABLE',
+        'LIABILITY_CREDIT_CARD',
+        'LIABILITY_CURRENT',
+        'LIABILITY_NON_CURRENT',
+        'EQUITY',
+        'EQUITY_UNAFFECTED',
+        'INCOME',
+        'INCOME_OTHER',
+        'EXPENSE',
+        'EXPENSE_DEPRECIATION',
+        'EXPENSE_DIRECT_COST',
+        'OFF_BALANCE'
     ]
 
     useEffect(() => {
