@@ -27,8 +27,8 @@ export default function AccountPage({ defaultSearch="" }) {
 
     const columns = [
         {"name": "code", "label": "Code", "width": 140, "sort": true},
-        {"name": "name", "label": "Name"},
-        {"name": "type", "label": "Type"},
+        {"name": "name", "label": "Name", "width": 280},
+        {"name": "type", "label": "Type", "width": 200},
         {"name": "debit", "label": "Debit", "special": "amount"},
         {"name": "credit", "label": "Credit", "special": "amount"},
         {"name": "balance", "label": "Balance", "special": "amount"}
