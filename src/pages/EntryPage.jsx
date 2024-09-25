@@ -26,8 +26,8 @@ export default function EntryPage({ defaultSearch="" }) {
     }, [fetchEntries, search, searchEntries, defaultSearch]);
 
     const columns = [
-        {"name": "transaction", "label": "Transaction", "width": 140, "sort": true},
-        {"name": "account", "label": "Account", "width": 200, "sort": true},
+        {"name": "transaction", "label": "Transaction", "width": 180, "sort": true},
+        {"name": "account", "label": "Account", "width": 280, "sort": true},
         {"name": "type", "label": "Type"},
         {"name": "debit", "label": "Debit", "special": "amount"},
         {"name": "credit", "label": "Credit", "special": "amount"},

@@ -24,7 +24,7 @@ export default function TransactionPage({ defaultSearch="" }) {
     }, [fetchTransactions, search, searchTransactions, defaultSearch]);
 
     const columns = [
-        {"name": "id", "label": "Reference", "width": 140, "sort": true},
+        {"name": "id", "label": "Reference", "width": 180, "sort": true},
         {"name": "journal", "label": "Journal"},
         {"name": "timestamp", "label": "Timestamp", "width": 200},
         {"name": "description", "label": "Description", "width": 300},
@@ -44,7 +44,7 @@ export default function TransactionPage({ defaultSearch="" }) {
 
     const listItems = transactions.map((transaction) => ({
         "id": transaction.id,
-        "avatar": transaction.description.charAt(0),
+        "avatar": transaction.description && transaction.description.charAt(0),
         "title": transaction.description,
         "subtitle": transaction.timestamp,
         "firstRow": [transaction.status],
