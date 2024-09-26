@@ -31,7 +31,7 @@ function LandingPage() {
             All-in-one software to streamline operations, boost efficiency, and keep your customers happy!
           </Typography>
           <Button size="lg" variant="solid" color="primary">
-            <Typography level="button" color='primary'>Get Started Today</Typography>
+            <Typography level="button" color='primary'><a href="mailto:fithubsoft@gmail.com"> Get Started Today </a></Typography>
           </Button>
         </Container>
       </Box>
@@ -78,9 +78,9 @@ function LandingPage() {
         <Typography level="h2" component="h2" sx={{ mb: 4 }}>
           Ready to Get Started?
         </Typography>
-        <Button size="lg" variant="solid" color="primary">
+        {/* <Button size="lg" variant="solid" color="primary">
           Sign Up Now
-        </Button>
+        </Button> */}
       </Box>
 
       {/* Testimonials */}
