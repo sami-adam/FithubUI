@@ -36,7 +36,7 @@ import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import SyncDisabledIcon from '@mui/icons-material/SyncDisabled';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 //import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-import AddNewButton, { TableBackButton } from './Buttons';
+import AddNewButton, { TableBackButton, TableDeleteButton } from './Buttons';
 import { useNavigate } from 'react-router-dom';
 //import { useTranslation } from 'react-i18next';
 //import { IoInformationCircle } from "react-icons/io5";
@@ -120,7 +120,7 @@ function RowMenu() {
   );
 }
 
-export default function DataTable({columns, rows, selectionFilters, pageTitle="", formUrl="", setSearch, excelExport, pages=1, currentPage=0, setCurrentPage}) {
+export default function DataTable({columns, rows, selectionFilters, pageTitle="", formUrl="", setSearch, excelExport, pages=1, currentPage=0, setCurrentPage, deleteMethod }) {
   const [order, setOrder] = React.useState('desc');
   const [selected, setSelected] = React.useState([]);
   const [open, setOpen] = React.useState(false);
@@ -318,11 +318,7 @@ export default function DataTable({columns, rows, selectionFilters, pageTitle=""
                     }}>
                     <Typography level="body-sm">{t("Export")}</Typography>
                 </Button>
-                <Button size="sm" variant="contained" sx={{ color: "#921A40", display: selected.length > 0? "flex": "none",
-                    ':hover': {backgroundColor: "danger", opacity: 0.8}
-                    }} startDecorator={<MdOutlineDeleteForever fontSize={18}/>}>
-                    {t("Delete")}
-                </Button>
+                {selected.length > 0 && <TableDeleteButton deleteMethod={deleteMethod} targetIds={selected} message={t("Successfully Deleted")}/>}
               </CardActions>
             </tr>
             <tr>

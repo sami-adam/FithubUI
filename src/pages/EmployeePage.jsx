@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 export default function EmployeePage({ defaultSearch="" }) {
     const [employees, fetchEmployees] = useEmployeeStore((state) => [state.employees, state.fetchEmployees]);
     const searchEmployees = useEmployeeStore((state) => state.searchEmployees);
+    const deleteEmployee = useEmployeeStore((state) => state.deleteEmployee);
 
     const location = useLocation();
     if (location.state && location.state.search) {
@@ -57,7 +58,7 @@ export default function EmployeePage({ defaultSearch="" }) {
 
     return (
         <div style={{marginTop:"20px", paddingInlineStart:8}}>
-            <DataTable columns={columns} rows={rows} selectionFilters={[]} setSearch={setSearch} pageTitle="Employees" formUrl="/employee-form"/>
+            <DataTable columns={columns} rows={rows} selectionFilters={[]} setSearch={setSearch} pageTitle="Employees" formUrl="/employee-form" deleteMethod={deleteEmployee}/>
             <DataList i18nIsDynamicList={true} listItems={listItems} formUrl="/employee-form"/>
         </div>
     );

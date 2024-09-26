@@ -310,7 +310,8 @@
       "Subscription Category": "فئة الاشتراك",
       "Subscription Category added successfully!": "تمت إضافة فئة الاشتراك بنجاح!",
       "Employee deleted successfully!": "تم حذف الموظف بنجاح!",
-      "Error adding account!": "خطأ في إضافة الحساب!"
+      "Error adding account!": "خطأ في إضافة الحساب!",
+      "Delete method not provided!": "خاصيه الحذف غير متوفرة!"
     }
   }
   

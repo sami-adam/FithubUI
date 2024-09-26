@@ -25,7 +25,7 @@ export default function TransactionPage({ defaultSearch="" }) {
 
     const columns = [
         {"name": "id", "label": "Reference", "width": 180, "sort": true},
-        {"name": "journal", "label": "Journal"},
+        {"name": "journal", "label": "Journal", "width": 200},
         {"name": "timestamp", "label": "Timestamp", "width": 200},
         {"name": "description", "label": "Description", "width": 300},
         {"name": "amount", "label": "Amount", "special": "amount"},
