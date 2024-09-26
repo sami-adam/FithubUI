@@ -152,7 +152,7 @@ export default function TransactionForm() {
         <FormControl sx={{gridColumn: { xs: '1/-1', md: '1/-1' }}}>
           <FormLabel>{t("Entries")}</FormLabel>
           <Box sx={{ p: 2 }}>
-            {entries.length > 0 && entries.map(entry => (
+            {entries.length > 0 && entries.sort((a, b) => a.debit < b.debit? 1: -1).map(entry => (
                 <Box key={entry.id} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <FormControl sx={{ width: "45%"}}>
                 <Autocomplete
